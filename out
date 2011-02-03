@@ -1,0 +1,115 @@
+Index: mplayer.c
+===================================================================
+--- mplayer.c	(revision 32806)
++++ mplayer.c	(working copy)
+@@ -276,7 +276,7 @@
+        double force_fps=0;
+ static int force_srate=0;
+ static int audio_output_format=-1; // AF_FORMAT_UNKNOWN
+-       int frame_dropping=0; // option  0=no drop  1= drop vo  2= drop decode
++       int frame_dropping=1; // option  0=no drop  1= drop vo  2= drop decode
+ static int play_n_frames=-1;
+ static int play_n_frames_mf=-1;
+ 
+@@ -744,8 +744,8 @@
+     mp_msg(MSGT_IDENTIFY, MSGL_INFO, "ID_EXIT=NONE\n");
+   }
+   mp_msg(MSGT_CPLAYER,MSGL_DBG2,"max framesize was %d bytes\n",max_framesize);
+-
+-  exit(rc);
++  
++   exit(rc);
+ }
+ 
+ void exit_player(enum exit_reason how)
+@@ -2028,10 +2028,10 @@
+ 	    static int drop_message=0;
+ 	    double AV_delay = a_pts - audio_delay - v_pts;
+ 	    double x;
+-	    if (AV_delay>0.5 && drop_frame_cnt>50 && drop_message==0){
++	/*    if (AV_delay>0.5 && drop_frame_cnt>50 && drop_message==0){
+ 		++drop_message;
+ 		mp_msg(MSGT_AVSYNC,MSGL_WARN,MSGTR_SystemTooSlow);
+-	    }
++	    }*/
+ 	    if (autosync)
+ 		x = AV_delay*0.1f;
+ 	    else
+@@ -2053,6 +2053,8 @@
+ 	    }
+ 	    if(!quiet)
+ 		print_status(a_pts - audio_delay, AV_delay, c_total);
++        	
++
+ 	}
+ 
+     } else {
+@@ -3693,9 +3695,20 @@
+   if(!quiet)
+     print_status(a_pos, 0, 0);
+ 
++
++	   static unsigned last_heartbeat;
++           unsigned now = GetTimerMS();
++           if (now - last_heartbeat > 1000) {
++           last_heartbeat = now;
++ //       main_update(0,(int)demuxer_get_percent_pos(mpctx->demuxer),(int)playing_audio_pts(mpctx->sh_audio, mpctx->d_audio, mpctx->audio_out),(int)demuxer_get_time_length(mpctx->demuxer));   
++        main_update(0,(int)demuxer_get_percent_pos(mpctx->demuxer),0,0,0);   
++    	   }
++
++
+   if(end_at.type == END_AT_TIME && end_at.pos < a_pos ||
+      end_at.type == END_AT_SIZE && end_at.pos < stream_tell(mpctx->stream))
+-    mpctx->eof = PT_NEXT_ENTRY;
++    
++  mpctx->eof = PT_NEXT_ENTRY;
+   update_subtitles(NULL, a_pos, mpctx->d_sub, 0);
+   update_osd_msg();
+ 
+@@ -3749,15 +3762,15 @@
+ 	xscreensaver_heartbeat();
+     }
+ #endif
+-    if (heartbeat_cmd) {
+-        static unsigned last_heartbeat;
+-        unsigned now = GetTimerMS();
+-        if (now - last_heartbeat > 30000) {
+-            last_heartbeat = now;
+-            system(heartbeat_cmd);
+-        }
+-    }
++	   static unsigned last_heartbeat;
++           unsigned now = GetTimerMS();
++           if (now - last_heartbeat > 1000) {
++           last_heartbeat = now;
++           //main_update(1,(int)demuxer_get_percent_pos(mpctx->demuxer),(int)demuxer_get_current_time(mpctx->demuxer),(int)demuxer_get_time_length(mpctx->demuxer));
++           main_update(1,(int)demuxer_get_percent_pos(mpctx->demuxer),0,0,0);
+ 
++    	   }
++
+     frame_time_remaining = sleep_until_update(&mpctx->time_frame, &aq_sleep_time);
+ 
+ //====================== FLIP PAGE (VIDEO BLT): =========================
+@@ -3946,7 +3959,14 @@
+ }
+ 
+ goto_next_file:  // don't jump here after ao/vo/getch initialization!
++/*if (mpctx->eof == PT_NEXT_SRC || mpctx->eof==PT_STOP){
+ 
++}
++else
++{*/
++main_stop();
++//}
++
+ mp_msg(MSGT_CPLAYER,MSGL_INFO,"\n");
+ 
+ if(benchmark){
+@@ -4056,3 +4076,7 @@
+ return 1;
+ }
+ #endif /* DISABLE_MAIN */
++void run_command_android(char *command){
++mp_input_queue_cmd(mp_input_parse_cmd(command));
++//run_command(mpctx,mp_input_parse_cmd(command));
++}

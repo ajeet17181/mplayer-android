@@ -1,0 +1,214 @@
+command.c:        if (set_prop_cmd[i].cmd == cmd->id)
+command.c:        if (cmd->nargs > 0 && cmd->args[0].v.i >= prop->min)
+command.c:            r = mp_property_do(pname, M_PROPERTY_SET, &cmd->args[0].v.i, mpctx);
+command.c:        else if (cmd->nargs > 0)
+command.c:    } else if (cmd->args[1].v.i)        //set
+command.c:        r = mp_property_do(pname, M_PROPERTY_SET, &cmd->args[0].v, mpctx);
+command.c:        r = mp_property_do(pname, M_PROPERTY_STEP_UP, &cmd->args[0].v, mpctx);
+command.c:        switch (cmd->id) {
+command.c:                v = cmd->args[0].v.f;
+command.c:                abs = (cmd->nargs > 1) ? cmd->args[1].v.i : 0;
+command.c:                int r = mp_property_do(cmd->args[0].v.s, M_PROPERTY_PARSE,
+command.c:                                       cmd->args[1].v.s, mpctx);
+command.c:                           "Unknown property: '%s'\n", cmd->args[0].v.s);
+command.c:                           cmd->args[0].v.s, cmd->args[1].v.s);
+command.c:                if (cmd->args[1].v.f) {
+command.c:                    if((r = mp_property_do(cmd->args[0].v.s,
+command.c:                        i = cmd->args[1].v.f, arg = &i;
+command.c:                        arg = &cmd->args[1].v.f;
+command.c:                        d = cmd->args[1].v.f, arg = &d;
+command.c:                        o = cmd->args[1].v.f, arg = &o;
+command.c:                               cmd->args[0].v.s);
+command.c:                r = mp_property_do(cmd->args[0].v.s,
+command.c:                                   cmd->args[2].v.i < 0 ?
+command.c:                           "Unknown property: '%s'\n", cmd->args[0].v.s);
+command.c:                           cmd->args[0].v.s, cmd->args[1].v.f);
+command.c:                int r = mp_property_do(cmd->args[0].v.s, M_PROPERTY_TO_STRING,
+command.c:                           cmd->args[0].v.s);
+command.c:                       cmd->args[0].v.s, tmp);
+command.c:            if (cmd->nargs == 0 || cmd->args[0].v.f == -1)
+command.c:                movie_aspect = cmd->args[0].v.f;
+command.c:                float v = cmd->args[0].v.f;
+command.c:                float v = cmd->args[0].v.f;
+command.c:                float v = cmd->args[0].v.f;
+command.c:            cmd->pausing = 1;
+command.c:            file_filter = cmd->args[0].v.i;
+command.c:                                (cmd->nargs > 0) ? cmd->args[0].v.i : 0);
+command.c:                int n = cmd->args[0].v.i == 0 ? 1 : cmd->args[0].v.i;
+command.c:                int force = cmd->args[1].v.i;
+command.c:                int n = cmd->args[0].v.i > 0 ? 1 : -1;
+command.c:                int force = cmd->args[1].v.i;
+command.c:                int v = cmd->args[0].v.i;
+command.c:                int movement = cmd->args[0].v.i;
+command.c:                int v = cmd->args[0].v.i;
+command.c:            set_osd_msg(OSD_MSG_TEXT, cmd->args[2].v.i,
+command.c:                        (cmd->args[1].v.i <
+command.c:                         0 ? osd_duration : cmd->args[1].v.i),
+command.c:                        "%-.63s", cmd->args[0].v.s);
+command.c:                                                       cmd->args[0].v.s,
+command.c:                    set_osd_msg(OSD_MSG_TEXT, cmd->args[2].v.i,
+command.c:                                (cmd->args[1].v.i <
+command.c:                                 0 ? osd_duration : cmd->args[1].v.i),
+command.c:                play_tree_add_file(e, cmd->args[0].v.s);
+command.c:                if (cmd->args[1].v.i)   // append
+command.c:                play_tree_t *e = parse_playlist_file(cmd->args[0].v.s);
+command.c:                           MSGTR_PlaylistLoadUnable, cmd->args[0].v.s);
+command.c:                    if (cmd->args[1].v.i)       // append
+command.c:                int v = cmd->args[0].v.i;
+command.c:                radio_set_channel(mpctx->demuxer->stream, cmd->args[0].v.s);
+command.c:                radio_set_freq(mpctx->demuxer->stream, cmd->args[0].v.f);
+command.c:                radio_step_freq(mpctx->demuxer->stream, cmd->args[0].v.f);
+command.c:                            cmd->args[0].v.f * 16.0);
+command.c:              pvr_set_freq (mpctx->stream, ROUND (cmd->args[0].v.f));
+command.c:                            cmd->args[0].v.f * 16.0);
+command.c:              pvr_force_freq_step (mpctx->stream, ROUND (cmd->args[0].v.f));
+command.c:                            cmd->args[0].v.s);
+command.c:                    int v = cmd->args[0].v.i;
+command.c:                  pvr_set_channel_step (mpctx->stream, cmd->args[0].v.i);
+command.c:                    int v = cmd->args[0].v.i;
+command.c:                               cmd->args[0].v.s);
+command.c:              pvr_set_channel (mpctx->stream, cmd->args[0].v.s);
+command.c:                        (mpctx->stream, cmd->args[1].v.i, cmd->args[0].v.i))
+command.c:                                 &(cmd->args[0].v.s));
+command.c:                                 &(cmd->args[0].v.i));
+command.c:            overlay_add(cmd->args[0].v.s, cmd->args[1].v.i,
+command.c:                        cmd->args[2].v.i, cmd->args[3].v.i, cmd->args[4].v.i);
+command.c:            overlay_remove(cmd->args[0].v.i);
+command.c:                add_subtitles(cmd->args[0].v.s, sh_video->fps, 0);
+command.c:                int v = cmd->args[0].v.i;
+command.c:                            &cmd->args[0].v.i))
+command.c:            set_rectangle(sh_video, cmd->args[0].v.i, cmd->args[1].v.i);
+command.c:                execl("/bin/sh", "sh", "-c", cmd->args[0].v.s, NULL);
+command.c:            mplayer_put_key(cmd->args[0].v.i);
+command.c:                pointer_x = cmd->args[0].v.i;
+command.c:                pointer_y = cmd->args[1].v.i;
+command.c:                  if (cmd->args[0].v.s &&
+command.c:                      !strcasecmp (cmd->args[0].v.s,
+command.c:                mp_dvdnav_switch_title(mpctx->stream, cmd->args[0].v.i);
+command.c:            char* af_args = strdup(cmd->args[0].v.s);
+command.c:                if (cmd->id == MP_CMD_AF_DEL)
+command.c:            af_instance_t *af = af_get(sh_audio->afilter, cmd->args[0].v.s);
+command.c:                       "Filter '%s' not found in chain.\n", cmd->args[0].v.s);
+command.c:            af->control(af, AF_CONTROL_COMMAND_LINE, cmd->args[1].v.s);
+command.c:                       "Received unknown cmd %s\n", cmd->name);
+command.c:    switch (cmd->pausing) {
+gui/win32/interface.c:            cmd->id=MP_CMD_MUTE;
+gui/win32/interface.c:            cmd->name=strdup("mute");
+gui/win32/interface.c:       cmd->id=MP_CMD_PAUSE;
+gui/win32/interface.c:       cmd->name=strdup("pause");
+gui/win32/interface.c:/*  This function imports the initial playtree (based on cmd-line files) into the gui playlist
+gui/win32/.svn/text-base/interface.c.svn-base:            cmd->id=MP_CMD_MUTE;
+gui/win32/.svn/text-base/interface.c.svn-base:            cmd->name=strdup("mute");
+gui/win32/.svn/text-base/interface.c.svn-base:       cmd->id=MP_CMD_PAUSE;
+gui/win32/.svn/text-base/interface.c.svn-base:       cmd->name=strdup("pause");
+gui/win32/.svn/text-base/interface.c.svn-base:/*  This function imports the initial playtree (based on cmd-line files) into the gui playlist
+gui/interface.c:         mp_cmd->id=MP_CMD_PANSCAN;    mp_cmd->name=strdup( "panscan" );
+gui/interface.c:	 mp_cmd->args[0].v.f=fparam;   mp_cmd->args[1].v.i=1;
+gui/interface.c:// This function imports the initial playtree (based on cmd-line files) into the gui playlist
+gui/.svn/text-base/interface.c.svn-base:         mp_cmd->id=MP_CMD_PANSCAN;    mp_cmd->name=strdup( "panscan" );
+gui/.svn/text-base/interface.c.svn-base:	 mp_cmd->args[0].v.f=fparam;   mp_cmd->args[1].v.i=1;
+gui/.svn/text-base/interface.c.svn-base:// This function imports the initial playtree (based on cmd-line files) into the gui playlist
+gui/mplayer/.svn/text-base/play.c.svn-base:   cmd->id=MP_CMD_PAUSE;
+gui/mplayer/.svn/text-base/play.c.svn-base:   cmd->name=strdup("pause");
+gui/mplayer/play.c:   cmd->id=MP_CMD_PAUSE;
+gui/mplayer/play.c:   cmd->name=strdup("pause");
+input/.svn/text-base/input.c.svn-base:  cmd->id = cmd_def->id;
+input/.svn/text-base/input.c.svn-base:  cmd->name = strdup(cmd_def->name);
+input/.svn/text-base/input.c.svn-base:    switch (cmd->id) {
+input/.svn/text-base/input.c.svn-base:  cmd->pausing = pausing;
+input/.svn/text-base/input.c.svn-base:    cmd->args[i].type = cmd_def->args[i].type;
+input/.svn/text-base/input.c.svn-base:      cmd->args[i].v.i = atoi(ptr);
+input/.svn/text-base/input.c.svn-base:      cmd->args[i].v.f = atof(ptr);
+input/.svn/text-base/input.c.svn-base:      cmd->args[i].v.s = malloc(l+1);
+input/.svn/text-base/input.c.svn-base:      strncpy(cmd->args[i].v.s,start,l);
+input/.svn/text-base/input.c.svn-base:      cmd->args[i].v.s[l] = '\0';
+input/.svn/text-base/input.c.svn-base:  cmd->nargs = i;
+input/.svn/text-base/input.c.svn-base:  if(cmd_def->nargs > cmd->nargs) {
+input/.svn/text-base/input.c.svn-base:    mp_msg(MSGT_INPUT,MSGL_ERR,MSGTR_INPUT_INPUT_Err2FewArgs,cmd_def->name,cmd_def->nargs,cmd->nargs);
+input/.svn/text-base/input.c.svn-base:    memcpy(&cmd->args[i],&cmd_def->args[i],sizeof(mp_cmd_arg_t));
+input/.svn/text-base/input.c.svn-base:      cmd->args[i].v.s = strdup(cmd_def->args[i].v.s);
+input/.svn/text-base/input.c.svn-base:    cmd->args[i].type = -1;
+input/.svn/text-base/input.c.svn-base:  free(cmd->name);
+input/.svn/text-base/input.c.svn-base:  for(i=0; i < MP_CMD_MAX_ARGS && cmd->args[i].type != -1; i++) {
+input/.svn/text-base/input.c.svn-base:    if(cmd->args[i].type == MP_CMD_ARG_STRING)
+input/.svn/text-base/input.c.svn-base:      free(cmd->args[i].v.s);
+input/.svn/text-base/input.c.svn-base:  if(cmd->name)
+input/.svn/text-base/input.c.svn-base:    ret->name = strdup(cmd->name);
+input/.svn/text-base/input.c.svn-base:  for(i = 0;  i < MP_CMD_MAX_ARGS && cmd->args[i].type != -1; i++) {
+input/.svn/text-base/input.c.svn-base:    if(cmd->args[i].type == MP_CMD_ARG_STRING && cmd->args[i].v.s != NULL)
+input/.svn/text-base/input.c.svn-base:      ret->args[i].v.s = strdup(cmd->args[i].v.s);
+input/.svn/text-base/input.c.svn-base:    printf("%-20.20s",cmd->name);
+input/.svn/text-base/input.c.svn-base:    for(j= 0 ; j < MP_CMD_MAX_ARGS && cmd->args[j].type != -1 ; j++) {
+input/.svn/text-base/input.c.svn-base:      switch(cmd->args[j].type) {
+input/.svn/text-base/input.c.svn-base:      if(j+1 > cmd->nargs)
+input/.svn/text-base/input.c.svn-base:  switch(cmd->id) {
+input/input.c:  cmd->id = cmd_def->id;
+input/input.c:  cmd->name = strdup(cmd_def->name);
+input/input.c:    switch (cmd->id) {
+input/input.c:  cmd->pausing = pausing;
+input/input.c:    cmd->args[i].type = cmd_def->args[i].type;
+input/input.c:      cmd->args[i].v.i = atoi(ptr);
+input/input.c:      cmd->args[i].v.f = atof(ptr);
+input/input.c:      cmd->args[i].v.s = malloc(l+1);
+input/input.c:      strncpy(cmd->args[i].v.s,start,l);
+input/input.c:      cmd->args[i].v.s[l] = '\0';
+input/input.c:  cmd->nargs = i;
+input/input.c:  if(cmd_def->nargs > cmd->nargs) {
+input/input.c:    mp_msg(MSGT_INPUT,MSGL_ERR,MSGTR_INPUT_INPUT_Err2FewArgs,cmd_def->name,cmd_def->nargs,cmd->nargs);
+input/input.c:    memcpy(&cmd->args[i],&cmd_def->args[i],sizeof(mp_cmd_arg_t));
+input/input.c:      cmd->args[i].v.s = strdup(cmd_def->args[i].v.s);
+input/input.c:    cmd->args[i].type = -1;
+input/input.c:  free(cmd->name);
+input/input.c:  for(i=0; i < MP_CMD_MAX_ARGS && cmd->args[i].type != -1; i++) {
+input/input.c:    if(cmd->args[i].type == MP_CMD_ARG_STRING)
+input/input.c:      free(cmd->args[i].v.s);
+input/input.c:  if(cmd->name)
+input/input.c:    ret->name = strdup(cmd->name);
+input/input.c:  for(i = 0;  i < MP_CMD_MAX_ARGS && cmd->args[i].type != -1; i++) {
+input/input.c:    if(cmd->args[i].type == MP_CMD_ARG_STRING && cmd->args[i].v.s != NULL)
+input/input.c:      ret->args[i].v.s = strdup(cmd->args[i].v.s);
+input/input.c:    printf("%-20.20s",cmd->name);
+input/input.c:    for(j= 0 ; j < MP_CMD_MAX_ARGS && cmd->args[j].type != -1 ; j++) {
+input/input.c:      switch(cmd->args[j].type) {
+input/input.c:      if(j+1 > cmd->nargs)
+input/input.c:  switch(cmd->id) {
+libmenu/vf_menu.c:  switch(cmd->id) {
+libmenu/vf_menu.c:    char* arg = cmd->args[0].v.s;
+libmenu/vf_menu.c:    char* menu = cmd->args[0].v.s;
+libmenu/.svn/text-base/vf_menu.c.svn-base:  switch(cmd->id) {
+libmenu/.svn/text-base/vf_menu.c.svn-base:    char* arg = cmd->args[0].v.s;
+libmenu/.svn/text-base/vf_menu.c.svn-base:    char* menu = cmd->args[0].v.s;
+libvo/vo_dga.c:                                            // I think there should be a cmd-line switch to let the
+libvo/.svn/text-base/vo_dga.c.svn-base:                                            // I think there should be a cmd-line switch to let the
+mplayer.c:       switch(cmd->id) {
+mplayer.c:	 exit_player_with_rc(EXIT_QUIT, (cmd->nargs > 0)? cmd->args[0].v.i : 0);
+mplayer.c:	 eof = (cmd->args[0].v.i > 0) ? PT_NEXT_ENTRY : PT_PREV_ENTRY;
+mplayer.c:	 mpctx->play_tree_step = (cmd->args[0].v.i == 0) ? 1 : cmd->args[0].v.i;
+mplayer.c:	 eof = (cmd->args[0].v.i > 0) ? PT_UP_NEXT : PT_UP_PREV;
+mplayer.c:	 eof = (cmd->args[0].v.i > 0) ?  PT_NEXT_SRC : PT_PREV_SRC;
+mplayer.c:    while ( (cmd = mp_input_get_cmd(20, 1, 1)) == NULL || cmd->pausing == 4) {
+mplayer.c:    if (cmd && cmd->id == MP_CMD_PAUSE) {
+mplayer.c:	  guiGetEvent(guiIEvent, (char *)cmd->id);
+mplayer.c:    switch (cmd->id) {
+mplayer.c:            play_tree_add_file(entry, cmd->args[0].v.s);
+mplayer.c:            entry = parse_playlist_file(cmd->args[0].v.s);
+mplayer.c:            exit_player_with_rc(EXIT_QUIT, (cmd->nargs > 0)? cmd->args[0].v.i : 0);
+mplayer.c:      if (cmd->id == MP_CMD_EDL_LOADFILE) {
+mplayer.c:          edl_filename = strdup(cmd->args[0].v.s);
+mplayer.c:                     cmd->args[0].v.s);
+out:<     switch (cmd->id) {
+out:> 	switch (cmd->id) {
+stream/asf_mmst_streaming.c:  cmd->buf[cmd->num_bytes  ] = value % 256;
+stream/asf_mmst_streaming.c:  cmd->buf[cmd->num_bytes+1] = value % 256 ;
+stream/asf_mmst_streaming.c:  cmd->buf[cmd->num_bytes+2] = value % 256 ;
+stream/asf_mmst_streaming.c:  cmd->buf[cmd->num_bytes+3] = value % 256 ;
+stream/asf_mmst_streaming.c:  cmd->num_bytes += 4;
+stream/dvb_tune.c:   if(ioctl(fd, FE_DISEQC_SEND_MASTER_CMD, &cmd->cmd) == -1)
+stream/dvb_tune.c:   usleep(cmd->wait * 1000);
+stream/.svn/text-base/asf_mmst_streaming.c.svn-base:  cmd->buf[cmd->num_bytes  ] = value % 256;
+stream/.svn/text-base/asf_mmst_streaming.c.svn-base:  cmd->buf[cmd->num_bytes+1] = value % 256 ;
+stream/.svn/text-base/asf_mmst_streaming.c.svn-base:  cmd->buf[cmd->num_bytes+2] = value % 256 ;
+stream/.svn/text-base/asf_mmst_streaming.c.svn-base:  cmd->buf[cmd->num_bytes+3] = value % 256 ;
+stream/.svn/text-base/asf_mmst_streaming.c.svn-base:  cmd->num_bytes += 4;
+stream/.svn/text-base/dvb_tune.c.svn-base:   if(ioctl(fd, FE_DISEQC_SEND_MASTER_CMD, &cmd->cmd) == -1)
+stream/.svn/text-base/dvb_tune.c.svn-base:   usleep(cmd->wait * 1000);

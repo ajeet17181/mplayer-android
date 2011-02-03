@@ -1,0 +1,23 @@
+K 10
+svn:ignore
+V 161
+alaw-gen
+alaw.dat
+alaw.out
+asfinfo
+avi-fix
+avisubdump
+bmovl-test
+compare
+cpuinfo
+dump_mp4
+fastmemcpybench
+modify_reg
+movinfo
+netstream
+subrip
+vivodump
+*.d
+*.exe
+
+END

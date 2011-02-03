@@ -1,0 +1,11 @@
+K 10
+svn:ignore
+V 59
+*.d
+*.ho
+pci_dev_ids.c
+pci_ids.h
+pci_names.c
+pci_vendors.h
+
+END

@@ -1,0 +1,1 @@
+/android/android-ndk-r4b/build/prebuilt/linux-x86/arm-eabi-4.4.0/bin/arm-eabi-gcc wrap.c -I /android/android-ndk-r4b/build/platforms/android-8/arch-arm/usr/include/  -nostdlib -L /android/android-ndk-r4b/build/platforms/android-8/arch-arm/usr/lib/ -ldl -lc  -o libwrap.so -llog --shared

@@ -1,0 +1,30 @@
+class PlasmaView extends View {
+    private Bitmap mBitmap;
+    static int W = 320;
+    static int H = 240;
+    static short[] sPixels = new short[W*H];
+    static ShortBuffer sScreenBuff = ShortBuffer.allocate(W*H);
+
+ public PlasmaView(Context context) {
+        super(context);
+       mBitmap = Bitmap.createBitmap(W, H, Bitmap.Config.RGB_565);
+    }
+
+
+
+ public native void xUpdateScreen(short[] sPixels);
+
+
+    @Override protected void onDraw(Canvas canvas) {
+        //canvas.drawColor(0xFFCCCCCC);
+        xUpdateScreen(sPixels); // call Native C code
+        sScreenBuff.put(sPixels);
+        sScreenBuff.rewind();
+        mBitmap.copyPixelsFromBuffer(sScreenBuff);
+        canvas.drawBitmap(mBitmap, 0, 0, null);
+        // force a redraw, with a different time-based pattern.
+        invalidate();
+    }
+
+}
+

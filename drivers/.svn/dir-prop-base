@@ -1,0 +1,9 @@
+K 10
+svn:ignore
+V 36
+*.d
+*.ho
+mga_vid_test
+tdfx_vid_test
+
+END

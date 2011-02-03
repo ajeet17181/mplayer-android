@@ -1,0 +1,324 @@
+dec_video.c:    mp_image_t *mpi = NULL;
+dec_video.c:    mp_image_t *mpi = frame;
+mp_image.c:void mp_image_alloc_planes(mp_image_t *mpi) {
+mp_image.c:mp_image_t* alloc_mpi(int w, int h, unsigned long int fmt) {
+mp_image.c:  mp_image_t* mpi = new_mp_image(w,h);
+mp_image.c:void copy_mpi(mp_image_t *dmpi, mp_image_t *mpi) {
+mp_image.c:void mp_image_setfmt(mp_image_t* mpi,unsigned int out_fmt){
+mp_image.c:mp_image_t* new_mp_image(int w,int h){
+mp_image.c:    mp_image_t* mpi = malloc(sizeof(mp_image_t));
+mp_image.c:    memset(mpi,0,sizeof(mp_image_t));
+mp_image.c:void free_mp_image(mp_image_t* mpi){
+mp_image.h:} mp_image_t;
+mp_image.h:void mp_image_setfmt(mp_image_t* mpi,unsigned int out_fmt);
+mp_image.h:mp_image_t* new_mp_image(int w,int h);
+mp_image.h:void free_mp_image(mp_image_t* mpi);
+mp_image.h:mp_image_t* alloc_mpi(int w, int h, unsigned long int fmt);
+mp_image.h:void mp_image_alloc_planes(mp_image_t *mpi);
+mp_image.h:void copy_mpi(mp_image_t *dmpi, mp_image_t *mpi);
+vd.c:// returns NULL or allocated mp_image_t*
+vd.c:mp_image_t *mpcodecs_get_image(sh_video_t *sh, int mp_imgtype, int mp_imgflag,
+vd.c:    mp_image_t *mpi =
+vd_dmo.c://mp_image_t* mpcodecs_get_image(sh_video_t *sh, int mp_imgtype, int mp_imgflag, int w, int h);
+vd_dmo.c:static mp_image_t* decode(sh_video_t *sh,void* data,int len,int flags){
+vd_dmo.c:    mp_image_t* mpi;
+vd_dshow.c://mp_image_t* mpcodecs_get_image(sh_video_t *sh, int mp_imgtype, int mp_imgflag, int w, int h);
+vd_dshow.c:static mp_image_t* decode(sh_video_t *sh,void* data,int len,int flags){
+vd_dshow.c:    mp_image_t* mpi;
+vd_ffmpeg.c:static const mp_image_t mpi_no_picture =
+vd_ffmpeg.c:    mp_image_t *mpi=NULL;
+vd_ffmpeg.c:    mp_image_t *mpi= pic->opaque;
+vd_ffmpeg.c:static mp_image_t *decode(sh_video_t *sh, void *data, int len, int flags){
+vd_ffmpeg.c:    mp_image_t *mpi=NULL;
+vd_ffmpeg.c:        mpi= (mp_image_t *)pic->opaque;
+vd.h:        mp_image_t* (*decode)(sh_video_t *sh,void* data,int len,int flags);
+vd.h:mp_image_t* mpcodecs_get_image(sh_video_t *sh, int mp_imgtype, int mp_imgflag, int w, int h);
+vd_hmblck.c:static int nv12_to_yv12(unsigned char *data, int len, mp_image_t* mpi, int swapped) {
+vd_hmblck.c:static mp_image_t* decode(sh_video_t *sh,void* data,int len,int flags){
+vd_hmblck.c:    mp_image_t* mpi;
+vd_ijpg.c://mp_image_t* mpcodecs_get_image(sh_video_t *sh, int mp_imgtype, int mp_imgflag, int w, int h);
+vd_ijpg.c:static mp_image_t* decode(sh_video_t *sh,void* data,int len,int flags){
+vd_ijpg.c: mp_image_t * mpi = NULL;
+vd_internal.h:static mp_image_t* decode(sh_video_t *sh,void* data,int len,int flags);
+vd_libdv.c:static mp_image_t* decode(sh_video_t *sh,void* data,int len,int flags)
+vd_libdv.c:   mp_image_t* mpi;
+vd_libmpeg2.c:static mp_image_t* decode(sh_video_t *sh,void* data,int len,int flags){
+vd_libmpeg2.c:	mp_image_t* mpi_new;
+vd_libmpeg2.c:		mp_image_t* mpi = info->display_fbuf->id;
+vd_lzo.c:static mp_image_t* decode(sh_video_t *sh,void* data,int len,int flags)
+vd_lzo.c:    mp_image_t* mpi;
+vd_mpegpes.c:static mp_image_t* decode(sh_video_t *sh,void* data,int len,int flags){
+vd_mpegpes.c:    mp_image_t* mpi;
+vd_mpng.c://mp_image_t* mpcodecs_get_image(sh_video_t *sh, int mp_imgtype, int mp_imgflag, int w, int h);
+vd_mpng.c:static mp_image_t* decode(sh_video_t *sh,void* data,int len,int flags){
+vd_mpng.c:    mp_image_t* mpi;
+vd_mtga.c:static void decode_rle_tga(TGAInfo *info, unsigned char *data, mp_image_t *mpi)
+vd_mtga.c:static void decode_uncompressed_tga(TGAInfo *info, unsigned char *data, mp_image_t *mpi)
+vd_mtga.c:static mp_image_t *decode(sh_video_t *sh, void *raw, int len, int flags)
+vd_mtga.c:    mp_image_t	    *mpi;
+vd_null.c:static mp_image_t* decode(sh_video_t *sh,void* data,int len,int flags){
+vd_qtvideo.c:static mp_image_t* mpi;
+vd_qtvideo.c:static mp_image_t* decode(sh_video_t *sh,void* data,int len,int flags){
+vd_raw.c://mp_image_t* mpcodecs_get_image(sh_video_t *sh, int mp_imgtype, int mp_imgflag, int w, int h);
+vd_raw.c:static mp_image_t* decode(sh_video_t *sh,void* data,int len,int flags){
+vd_raw.c:    mp_image_t* mpi;
+vd_realvid.c:static mp_image_t* decode(sh_video_t *sh,void* data,int len,int flags){
+vd_realvid.c:	mp_image_t* mpi;
+vd_sgi.c:decode_rle_sgi(SGIInfo *info, unsigned char *data, mp_image_t *mpi)
+vd_sgi.c:decode_uncompressed_sgi(SGIInfo *info, unsigned char *data, mp_image_t *mpi)
+vd_sgi.c:mp_image_t *decode(sh_video_t *sh, void *raw, int len, int flags)
+vd_sgi.c:  mp_image_t *mpi;
+vd_theora.c:static mp_image_t* decode(sh_video_t *sh,void* data,int len,int flags)
+vd_theora.c:   mp_image_t* mpi;
+vd_vfw.c:static mp_image_t* decode(sh_video_t *sh,void* data,int len,int flags){
+vd_vfw.c:    mp_image_t* mpi;
+vd_xanim.c:    mp_image_t *mpi;
+vd_xanim.c:    mp_image_t *mpi = (mp_image_t *)image_p;
+vd_xanim.c:    mp_image_t *mpi = (mp_image_t *)image_p;
+vd_xanim.c:    mp_image_t *mpi;
+vd_xanim.c:    mp_image_t *mpi;
+vd_xanim.c:static mp_image_t* decode(sh_video_t *sh, void *data, int len, int flags)
+vd_xvid4.c:	mp_image_t* mpi;
+vd_xvid4.c:static mp_image_t* decode(sh_video_t *sh, void* data, int len, int flags)
+vd_xvid4.c:	mp_image_t* mpi = NULL;
+vd_zrmjpeg.c:static mp_image_t* decode(sh_video_t *sh, void* data, int len, int flags) {
+vd_zrmjpeg.c:	mp_image_t* mpi;
+ve_lavc.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+ve_libdv.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+ve_nuv.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+ve_qtvideo.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+ve_raw.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts) {
+ve_vfw.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+ve_x264.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts);
+ve_x264.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts)
+ve_xvid4.c:static int set_frame_struct(xvid_mplayer_module_t *mod, mp_image_t *mpi);
+ve_xvid4.c:put_image(struct vf_instance *vf, mp_image_t *mpi, double pts)
+ve_xvid4.c:static int set_frame_struct(xvid_mplayer_module_t *mod, mp_image_t *mpi)
+vf_1bpp.c:static void convert(mp_image_t *mpi, mp_image_t *dmpi, int value0, int value1,int bpp){
+vf_1bpp.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+vf_1bpp.c:    mp_image_t *dmpi;
+vf_2xsai.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+vf_2xsai.c:    mp_image_t *dmpi;
+vf_ass.c:static void get_image(struct vf_instance *vf, mp_image_t *mpi)
+vf_ass.c:static void blank(mp_image_t *mpi, int y1, int y2)
+vf_ass.c:static int prepare_image(struct vf_instance *vf, mp_image_t *mpi)
+vf_ass.c:    mp_image_t *dmpi = vf->dmpi;
+vf_ass.c:static void render_frame(struct vf_instance *vf, mp_image_t *mpi,
+vf_ass.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts)
+vf_blackframe.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+vf_blackframe.c:    mp_image_t *dmpi;
+vf_bmovl.c:put_image(struct vf_instance *vf, mp_image_t* mpi, double pts){
+vf_bmovl.c:	mp_image_t* dmpi;
+vf_boxblur.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+vf_boxblur.c:        mp_image_t *dmpi=vf_get_image(vf->next,mpi->imgfmt,
+vf.c:void vf_mpi_clear(mp_image_t* mpi,int x0,int y0,int w,int h){
+vf.c:mp_image_t* vf_get_image(vf_instance_t* vf, unsigned int outfmt, int mp_imgtype, int mp_imgflag, int w, int h){
+vf.c:  mp_image_t* mpi=NULL;
+vf.c:            mp_msg(MSGT_DECVIDEO,MSGL_V,"*** [%s] %s%s mp_image_t, %dx%dx%dbpp %s %s, %d bytes\n",
+vf.c:void vf_clone_mpi_attributes(mp_image_t* dst, mp_image_t* src){
+vf.c:int vf_next_put_image(struct vf_instance *vf,mp_image_t *mpi, double pts){
+vf_crop.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+vf_crop.c:    mp_image_t *dmpi;
+vf_crop.c:static void start_slice(struct vf_instance *vf, mp_image_t *mpi){
+vf_cropdetect.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+vf_cropdetect.c:    mp_image_t *dmpi;
+vf_decimate.c:static int diff_to_drop(int hi, int lo, float frac, mp_image_t *old, mp_image_t *new)
+vf_decimate.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts)
+vf_decimate.c:    mp_image_t *dmpi;
+vf_delogo.c:static void get_image(struct vf_instance *vf, mp_image_t *mpi){
+vf_delogo.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+vf_delogo.c:    mp_image_t *dmpi;
+vf_denoise3d.c:        mp_image_t *pmpi;
+vf_denoise3d.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+vf_denoise3d.c:        mp_image_t *dmpi=vf_get_image(vf->next,mpi->imgfmt,
+vf_detc.c:        int (*analyze)(struct vf_priv_s *, mp_image_t *, mp_image_t *);
+vf_detc.c:static void diff_fields(struct metrics *metr, mp_image_t *old, mp_image_t *new)
+vf_detc.c:static int analyze_fixed_pattern(struct vf_priv_s *p, mp_image_t *new, mp_image_t *old)
+vf_detc.c:static int analyze_aggressive(struct vf_priv_s *p, mp_image_t *new, mp_image_t *old)
+vf_detc.c:static void copy_image(mp_image_t *dmpi, mp_image_t *mpi, int field)
+vf_detc.c:static int do_put_image(struct vf_instance *vf, mp_image_t *dmpi)
+vf_detc.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts)
+vf_detc.c:        mp_image_t *dmpi;
+vf_detc.c:        int (*func)(struct vf_priv_s *p, mp_image_t *new, mp_image_t *old);
+vf_dint.c:  mp_image_t *pmpi; // previous mpi
+vf_dint.c:static int put_image (struct vf_instance *vf, mp_image_t *mpi, double pts)
+vf_divtc.c:                 mp_image_t *dst, mp_image_t *src, int arg)
+vf_divtc.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts)
+vf_divtc.c:   mp_image_t *dmpi, *tmpi=0;
+vf_down3dright.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts)
+vf_down3dright.c:        mp_image_t *dmpi;
+vf_eq2.c:int put_image (vf_instance_t *vf, mp_image_t *src, double pts)
+vf_eq2.c:  mp_image_t    *dst;
+vf_eq.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts)
+vf_eq.c:        mp_image_t *dmpi;
+vf_expand.c:static void get_image(struct vf_instance *vf, mp_image_t *mpi){
+vf_expand.c:static void start_slice(struct vf_instance *vf, mp_image_t *mpi){
+vf_expand.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+vf_expand.c:      mp_image_t *dmpi = vf_get_image(vf->next, IMGFMT_MPEGPES,
+vf_field.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+vf_fil.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+vf_fil.c:        return vf_next_put_image(vf,(mp_image_t*)mpi->priv, pts);
+vf_filmdint.c:copy_merge_fields(struct vf_priv_s *p, mp_image_t *dmpi,
+vf_filmdint.c:static void init(struct vf_priv_s *p, mp_image_t *mpi)
+vf_filmdint.c:static void get_image(struct vf_instance *vf, mp_image_t *mpi)
+vf_filmdint.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts)
+vf_filmdint.c:    mp_image_t *dmpi;
+vf_fixpts.c:static int put_image(vf_instance_t *vf, mp_image_t *src, double pts)
+vf_flip.c:static void get_image(struct vf_instance *vf, mp_image_t *mpi){
+vf_flip.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+vf_flip.c:	    ((mp_image_t*)mpi->priv)->planes[1] = mpi->planes[1]; // passthrough rgb8 palette
+vf_flip.c:	return vf_next_put_image(vf,(mp_image_t*)mpi->priv, pts);
+vf_framestep.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts)
+vf_framestep.c:    mp_image_t        *dmpi;
+vf_fspp.c:static void get_image(struct vf_instance *vf, mp_image_t *mpi)
+vf_fspp.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts)
+vf_fspp.c:    mp_image_t *dmpi;
+vf_geq.c:    mp_image_t *mpi;
+vf_geq.c:    mp_image_t *mpi= vf->priv->mpi;
+vf_geq.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+vf_geq.c:    mp_image_t *dmpi;
+vf_gradfun.c:static void get_image(struct vf_instance *vf, mp_image_t *mpi)
+vf_gradfun.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts)
+vf_gradfun.c:    mp_image_t *dmpi = vf->dmpi;
+vf.h:    mp_image_t* static_images[2];
+vf.h:    mp_image_t* temp_images[1];
+vf.h:    mp_image_t* export_images[1];
+vf.h:    mp_image_t* numbered_images[NUM_NUMBERED_MPI];
+vf.h:        mp_image_t *mpi);
+vf.h:        mp_image_t *mpi, double pts);
+vf.h:        mp_image_t *mpi);
+vf.h:    mp_image_t *dmpi;
+vf.h:void vf_mpi_clear(mp_image_t* mpi,int x0,int y0,int w,int h);
+vf.h:mp_image_t* vf_get_image(vf_instance_t* vf, unsigned int outfmt, int mp_imgtype, int mp_imgflag, int w, int h);
+vf.h:void vf_clone_mpi_attributes(mp_image_t* dst, mp_image_t* src);
+vf.h:int vf_next_put_image(struct vf_instance *vf,mp_image_t *mpi, double pts);
+vf_halfpack.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts)
+vf_halfpack.c:	mp_image_t *dmpi;
+vf_harddup.c:    mp_image_t *last_mpi;
+vf_harddup.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts)
+vf_harddup.c:    mp_image_t *dmpi;
+vf_hqdn3d.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+vf_hqdn3d.c:        mp_image_t *dmpi=vf_get_image(vf->next,mpi->imgfmt,
+vf_hue.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts)
+vf_hue.c:        mp_image_t *dmpi;
+vf_il.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+vf_il.c:    mp_image_t *dmpi=vf_get_image(vf->next,mpi->imgfmt,
+vf_ilpack.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts)
+vf_ilpack.c:    mp_image_t *dmpi;
+vf_ivtc.c:    mp_image_t *dmpi;
+vf_ivtc.c:static void diff_fields(struct frameinfo *fi, mp_image_t *old, mp_image_t *new)
+vf_ivtc.c:static int foo(struct vf_priv_s *p, mp_image_t *new, mp_image_t *cur)
+vf_ivtc.c:static void copy_image(mp_image_t *dmpi, mp_image_t *mpi, int field)
+vf_ivtc.c:static int do_put_image(struct vf_instance *vf, mp_image_t *dmpi)
+vf_ivtc.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts)
+vf_kerndeint.c:static inline int IsRGB(mp_image_t *mpi)
+vf_kerndeint.c:static inline int IsYUY2(mp_image_t *mpi)
+vf_kerndeint.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+vf_kerndeint.c:    mp_image_t *dmpi, *pmpi;
+vf_lavc.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+vf_lavc.c:    mp_image_t* dmpi;
+vf_lavcdeint.c:put_image (struct vf_instance *vf, mp_image_t *mpi, double pts)
+vf_lavcdeint.c:  mp_image_t* dmpi;
+vf_mcdeint.c:static void get_image(struct vf_instance *vf, mp_image_t *mpi){
+vf_mcdeint.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+vf_mcdeint.c:    mp_image_t *dmpi;
+vf_mirror.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+vf_mirror.c:    mp_image_t *dmpi;
+vf_noise.c:static void get_image(struct vf_instance *vf, mp_image_t *mpi){
+vf_noise.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+vf_noise.c:        mp_image_t *dmpi;
+Binary file vf.o matches
+vf_ow.c:static void get_image(struct vf_instance *vf, mp_image_t *mpi){
+vf_ow.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+vf_ow.c:    mp_image_t *dmpi;
+vf_palette.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+vf_palette.c:    mp_image_t *dmpi;
+vf_perspective.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+vf_perspective.c:    mp_image_t *dmpi=vf_get_image(vf->next,mpi->imgfmt,
+vf_phase.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts)
+vf_phase.c:   mp_image_t *dmpi;
+vf_pp7.c:static void get_image(struct vf_instance *vf, mp_image_t *mpi){
+vf_pp7.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+vf_pp7.c:    mp_image_t *dmpi;
+vf_pp.c:static void get_image(struct vf_instance *vf, mp_image_t *mpi){
+vf_pp.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+vf_pullup.c:static void init_pullup(struct vf_instance *vf, mp_image_t *mpi)
+vf_pullup.c:static void get_image(struct vf_instance *vf, mp_image_t *mpi)
+vf_pullup.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts)
+vf_pullup.c:    mp_image_t *dmpi;
+vf_qp.c:static void get_image(struct vf_instance *vf, mp_image_t *mpi){
+vf_qp.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+vf_qp.c:        mp_image_t *dmpi;
+vf_rectangle.c:put_image(struct vf_instance *vf, mp_image_t* mpi, double pts){
+vf_rectangle.c:    mp_image_t* dmpi;
+vf_remove_logo.c:              const mp_image_t * const image, const int x, const int y, const int plane)
+vf_remove_logo.c:                         const mp_image_t * const source_image, const int width, const int height,
+vf_remove_logo.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+vf_remove_logo.c:    mp_image_t *dmpi;
+vf_rgbtest.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+vf_rgbtest.c:    mp_image_t *dmpi;
+vf_rotate.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+vf_rotate.c:    mp_image_t *dmpi;
+vf_sab.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+vf_sab.c:    mp_image_t *dmpi=vf_get_image(vf->next,mpi->imgfmt,
+vf_scale.c:static void start_slice(struct vf_instance *vf, mp_image_t *mpi){
+vf_scale.c:    mp_image_t *dmpi=vf->dmpi;
+vf_scale.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+vf_scale.c:    mp_image_t *dmpi=mpi->priv;
+vf_scale.orig:static void start_slice(struct vf_instance *vf, mp_image_t *mpi){
+vf_scale.orig:    mp_image_t *dmpi=vf->dmpi;
+vf_scale.orig:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+vf_scale.orig:    mp_image_t *dmpi=mpi->priv;
+vf_screenshot.c:static void scale_image(struct vf_priv_s* priv, mp_image_t *mpi)
+vf_screenshot.c:static void start_slice(struct vf_instance *vf, mp_image_t *mpi)
+vf_screenshot.c:static void get_image(struct vf_instance *vf, mp_image_t *mpi)
+vf_screenshot.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts)
+vf_screenshot.c:    mp_image_t *dmpi = (mp_image_t *)mpi->priv;
+vf_smartblur.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+vf_smartblur.c:    mp_image_t *dmpi=vf_get_image(vf->next,mpi->imgfmt,
+vf_softpulldown.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts)
+vf_softpulldown.c:    mp_image_t *dmpi;
+vf_softskip.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts)
+vf_softskip.c:    mp_image_t *dmpi;
+vf_spp.c:static void get_image(struct vf_instance *vf, mp_image_t *mpi){
+vf_spp.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+vf_spp.c:        mp_image_t *dmpi;
+vf_stereo3d.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts)
+vf_stereo3d.c:    mp_image_t *dmpi;
+vf_swapuv.c:static void get_image(struct vf_instance *vf, mp_image_t *mpi){
+vf_swapuv.c:    mp_image_t *dmpi= vf_get_image(vf->next, mpi->imgfmt,
+vf_swapuv.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+vf_swapuv.c:    mp_image_t *dmpi;
+vf_swapuv.c:        dmpi=(mp_image_t*)mpi->priv;
+vf_telecine.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts)
+vf_telecine.c:    mp_image_t *dmpi;
+vf_test.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+vf_test.c:    mp_image_t *dmpi;
+vf_tfields.c:	mp_image_t *buffered_mpi;
+vf_tfields.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts)
+vf_tfields.c:	mp_image_t *mpi = vf->priv->buffered_mpi;
+vf_tfields.c:	mp_image_t *dmpi;
+vf_tile.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts)
+vf_tile.c:    mp_image_t        *dmpi;
+vf_tinterlace.c:    mp_image_t *dmpi;
+vf_tinterlace.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts)
+vf_tinterlace.c:    mp_image_t *dmpi;
+vf_unsharp.c:static void get_image( struct vf_instance *vf, mp_image_t *mpi ) {
+vf_unsharp.c:static int put_image( struct vf_instance *vf, mp_image_t *mpi, double pts) {
+vf_unsharp.c:    mp_image_t *dmpi;
+vf_uspp.c:static void get_image(struct vf_instance *vf, mp_image_t *mpi){
+vf_uspp.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+vf_uspp.c:    mp_image_t *dmpi;
+vf_vo.c:        mp_image_t *mpi){
+vf_vo.c:        mp_image_t *mpi, double pts){
+vf_vo.c:		       mp_image_t *mpi) {
+vf_yadif.c:    mp_image_t *buffered_mpi;
+vf_yadif.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+vf_yadif.c:    mp_image_t *mpi = vf->priv->buffered_mpi;
+vf_yadif.c:    mp_image_t *dmpi;
+vf_yuvcsp.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+vf_yvu9.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+vf_yvu9.c:    mp_image_t *dmpi;
+vf_zrmjpeg.c: * \param mpi pointer to mp_image_t structure
+vf_zrmjpeg.c:static int put_image(struct vf_instance *vf, mp_image_t *mpi, double pts){
+vf_zrmjpeg.c:	mp_image_t* dmpi;

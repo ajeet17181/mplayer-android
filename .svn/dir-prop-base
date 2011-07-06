@@ -1,0 +1,28 @@
+K 13
+svn:externals
+V 123
+libdvdread4	svn://svn.mplayerhq.hu/dvdnav/trunk/libdvdread/src
+libdvdnav	svn://svn.mplayerhq.hu/dvdnav/trunk/libdvdnav/src
+
+K 10
+svn:ignore
+V 146
+*.d
+*.ho
+config.*
+ffmpeg
+gmplayer
+help_mp.h
+mencoder
+mplayer
+version.h
+codecs.conf.h
+codec-cfg
+codec-cfg-test
+codecs2html
+cpuinfo
+tags
+TAGS
+*.exe
+
+END

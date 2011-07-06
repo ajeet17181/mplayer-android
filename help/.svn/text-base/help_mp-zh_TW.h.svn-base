@@ -154,7 +154,6 @@ static const char help_text[]=
 #define MSGTR_IncreaseRTCMaxUserFreq "試圖添加 \"echo %lu > /proc/sys/dev/rtc/max-user-freq\" 到你的係統啟動脚本。\n"
 #define MSGTR_LinuxRTCInitErrorPieOn "Linux RTC 初始化錯誤在 ioctl (rtc_pie_on): %s\n"
 #define MSGTR_UsingTimingType "正在使用 %s 計時。\n"
-#define MSGTR_NoIdleAndGui "GMPLayer 不能使用選項 -idle。\n"
 #define MSGTR_MenuInitialized "菜單已初始化: %s\n"
 #define MSGTR_MenuInitFailed "菜單初始化失敗。\n"
 #define MSGTR_Getch2InitializedTwice "警告: getch2_init 被調用兩次!\n"
@@ -614,7 +613,7 @@ static const char help_text[]=
 #define MSGTR_EnterTelecineMode "\ndemux_mpg: 檢測到 24fps 漸進的 NTSC 内容, 改變幀率中。\n"
 
 #define MSGTR_CacheFill "\r緩存填充: %5.2f%% (%"PRId64" 字節)   "
-#define MSGTR_NoBindFound "找不到鍵 '%s' 的鍵綁定。"
+#define MSGTR_NoBindFound "找不到鍵 '%s' 的鍵綁定。\n"
 #define MSGTR_FailedToOpen "打開 %s 失敗。\n"
 
 // dec_video.c & dec_audio.c:
@@ -725,33 +724,24 @@ static const char help_text[]=
 #define MSGTR_NEMFMR "抱歉, 没有足够的内存用于菜單渲染。"
 #define MSGTR_IDFGCVD "抱歉, 未找到 GUI-兼容的視頻輸出驅動。"
 #define MSGTR_NEEDLAVC "抱歉, 不能用没有重編碼的 DXR3/H+ 設備播放 non-MPEG 文件\n請啟用 DXR3/H+ 配置盒中的 lavc。"
-#define MSGTR_UNKNOWNWINDOWTYPE "發現未知窗口類型 ..."
 
 // --- skin loader error messages
 #define MSGTR_SKIN_ERRORMESSAGE "[skin] 皮膚配置文件的 %d: %s行出錯"
-#define MSGTR_SKIN_WARNING1 "[skin] 警告: 在配置文件的 %d行:\n找到組件 (%s) 但在這之前没有找到 \"section\""
-#define MSGTR_SKIN_WARNING2 "[skin] 警告: 在配置文件的 %d行:\n找到組件 (%s) 但在這之前没有找到 \"subsection\""
-#define MSGTR_SKIN_WARNING3 "[skin] 警告: 在配置文件的 %d行:\n組件 (%s) 不支持此 subsection"
 #define MSGTR_SKIN_SkinFileNotFound "[skin] 文件 (%s) 没找到。\n"
 #define MSGTR_SKIN_SkinFileNotReadable "[skin] 文件 (%s) 不可讀。\n"
 #define MSGTR_SKIN_BITMAP_16bit  "不支持少于 16 比特色深的位圖 (%s)。\n"
 #define MSGTR_SKIN_BITMAP_FileNotFound  "找不到文件 (%s)\n"
-#define MSGTR_SKIN_BITMAP_BMPReadError "BMP 讀取錯誤 (%s)\n"
-#define MSGTR_SKIN_BITMAP_TGAReadError "TGA 讀取錯誤 (%s)\n"
 #define MSGTR_SKIN_BITMAP_PNGReadError "PNG 讀取錯誤 (%s)\n"
-#define MSGTR_SKIN_BITMAP_RLENotSupported "不支持 RLE 格式壓縮的 TGA (%s)\n"
-#define MSGTR_SKIN_BITMAP_UnknownFileType "未知的文件格式 (%s)\n"
 #define MSGTR_SKIN_BITMAP_ConversionError "24 比特到 32 比特的轉換發生錯誤 (%s)\n"
-#define MSGTR_SKIN_BITMAP_UnknownMessage "未知信息: %s\n"
-#define MSGTR_SKIN_FONT_NotEnoughtMemory "内存不够\n"
+#define MSGTR_SKIN_UnknownMessage "未知信息: %s\n"
+#define MSGTR_SKIN_NotEnoughMemory "内存不够\n"
 #define MSGTR_SKIN_FONT_TooManyFontsDeclared "聲明字體太多。\n"
 #define MSGTR_SKIN_FONT_FontFileNotFound "找不到字體文件。\n"
 #define MSGTR_SKIN_FONT_FontImageNotFound "找不到字體圖像文件。\n"
-#define MSGTR_SKIN_FONT_NonExistentFontID "不存在的字體標簽 (%s)\n"
+#define MSGTR_SKIN_FONT_NonExistentFont "不存在的字體標簽 (%s)\n"
 #define MSGTR_SKIN_UnknownParameter "未知參數 (%s)\n"
 #define MSGTR_SKIN_SKINCFG_SkinNotFound "找不到皮膚 (%s)。\n"
 #define MSGTR_SKIN_SKINCFG_SelectedSkinNotFound "没找到選定的皮膚 (%s), 試着使用默認的...\n"
-#define MSGTR_SKIN_SKINCFG_SkinCfgReadError "皮膚配置文件 (%s) 讀取錯誤。\n"
 #define MSGTR_SKIN_LABEL "Skins:"
 
 // --- gtk menus
@@ -945,14 +935,8 @@ static const char help_text[]=
 #define MSGTR_MSGBOX_LABEL_Error "錯誤!"
 #define MSGTR_MSGBOX_LABEL_Warning "警告!"
 
-// bitmap.c
-
-#define MSGTR_NotEnoughMemoryC32To1 "[c32to1] 内存不够, 容不下圖片\n"
-#define MSGTR_NotEnoughMemoryC1To32 "[c1to32] 内存不够, 容不下圖片\n"
-
 // cfg.c
 
-#define MSGTR_ConfigFileReadError "[cfg] 配置文件讀取錯誤...\n"
 #define MSGTR_UnableToSaveOption "[cfg] 無法保存 '%s' 選項。\n"
 
 // interface.c
@@ -960,7 +944,6 @@ static const char help_text[]=
 #define MSGTR_DeletingSubtitles "[GUI] 删除字幕。\n"
 #define MSGTR_LoadingSubtitles "[GUI] 導入字幕: %s\n"
 #define MSGTR_AddingVideoFilter "[GUI] 添加視頻過濾器: %s\n"
-#define MSGTR_RemovingVideoFilter "[GUI] 删除視頻過濾器: %s\n"
 
 // mw.c
 
@@ -968,7 +951,6 @@ static const char help_text[]=
 
 // ws.c
 
-#define MSGTR_WS_CouldNotOpenDisplay "[ws] 打不開顯示。\n"
 #define MSGTR_WS_RemoteDisplay "[ws] 遠程顯示, 停用 XMITSHM。\n"
 #define MSGTR_WS_NoXshm "[ws] 抱歉, 你的係統不支持 X 共享内存擴展。\n"
 #define MSGTR_WS_NoXshape "[ws] 抱歉, 你的係統不支持 XShape 擴展。\n"

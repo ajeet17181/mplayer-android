@@ -150,7 +150,6 @@ static const char help_text[]=
 #define MSGTR_IncreaseRTCMaxUserFreq "Skúste pridať \"echo %lu > /proc/sys/dev/rtc/max-user-freq\" do štartovacích skriptov vášho systému.\n"
 #define MSGTR_LinuxRTCInitErrorPieOn "Chyba pri inicializácii Linuxových RTC v ioctl (rtc_pie_on): %s\n"
 #define MSGTR_UsingTimingType "Používam %s časovanie.\n"
-#define MSGTR_NoIdleAndGui "Voľba -idle sa nedá použiť pre GMPlayer.\n"
 #define MSGTR_MenuInitialized "Menu inicializované: %s\n"
 #define MSGTR_MenuInitFailed "Zlyhala inicializácia menu.\n"
 #define MSGTR_Getch2InitializedTwice "VAROVANIE: getch2_init je volaná dvakrát!\n"
@@ -580,7 +579,7 @@ static const char help_text[]=
 #define MSGTR_EnterTelecineMode "\ndemux_mpg: detekovaný 24000/1001 fps progresívny NTSC, prepínam frekvenciu snímkov.\n"
 
 #define MSGTR_CacheFill "\rNaplnenie cache: %5.2f%% (%"PRId64" bajtov)   "
-#define MSGTR_NoBindFound "Tlačidlo '%s' nemá priradenú žiadnu funkciu."
+#define MSGTR_NoBindFound "Tlačidlo '%s' nemá priradenú žiadnu funkciu.\n"
 #define MSGTR_FailedToOpen "Zlyhalo otvorenie %s\n"
 
 // dec_video.c & dec_audio.c:
@@ -691,33 +690,24 @@ static const char help_text[]=
 #define MSGTR_NEMFMR "Žiaľ, nedostatok pamäte pre vytváranie menu."
 #define MSGTR_IDFGCVD "Žiaľ, nemôžem nájsť gui kompatibilný ovládač video výstupu."
 #define MSGTR_NEEDLAVC "Žiaľ, nemôžete prehrávať nie mpeg súbory s DXR3/H+ zariadením bez prekódovania.\nProsím zapnite lavc v DXR3/H+ konfig. okne."
-#define MSGTR_UNKNOWNWINDOWTYPE "Neznámy typ okna nájdený ..."
 
 // --- skin loader error messages
 #define MSGTR_SKIN_ERRORMESSAGE "[témy] chyba v konfig. súbore tém %d: %s"
-#define MSGTR_SKIN_WARNING1 "[témy] varovanie v konfig. súbore tém na riadku %d: widget najdený ale pred  \"section\" nenájdený (%s)"
-#define MSGTR_SKIN_WARNING2 "[témy] varovanie v konfig. súbore tém na riadku %d: widget najdený ale pred \"subsection\" nenájdený (%s)"
-#define MSGTR_SKIN_WARNING3 "[témy] varovanie v konfig. súbore tém na riadku %d: táto subsekcia nie je podporovaná týmto widget (%s)"
 #define MSGTR_SKIN_SkinFileNotFound "[skin] súbor ( %s ) nenájdený.\n"
 #define MSGTR_SKIN_SkinFileNotReadable "[skin] súbor ( %s ) sa nedá prečítať.\n"
 #define MSGTR_SKIN_BITMAP_16bit  "bitmapa s hĺbkou 16 bit a menej je nepodporovaná (%s).\n"
 #define MSGTR_SKIN_BITMAP_FileNotFound  "súbor nenájdený (%s)\n"
-#define MSGTR_SKIN_BITMAP_BMPReadError "chyba čítania BMP (%s)\n"
-#define MSGTR_SKIN_BITMAP_TGAReadError "chyba čítania TGA (%s)\n"
 #define MSGTR_SKIN_BITMAP_PNGReadError "chyba čítania PNG (%s)\n"
-#define MSGTR_SKIN_BITMAP_RLENotSupported "formát RLE packed TGA nepodporovaný (%s)\n"
-#define MSGTR_SKIN_BITMAP_UnknownFileType "neznámy typ súboru (%s)\n"
 #define MSGTR_SKIN_BITMAP_ConversionError "chyba konverzie z 24 bit do 32 bit (%s)\n"
-#define MSGTR_SKIN_BITMAP_UnknownMessage "neznáma správa: %s\n"
-#define MSGTR_SKIN_FONT_NotEnoughtMemory "nedostatok pamäte\n"
+#define MSGTR_SKIN_UnknownMessage "neznáma správa: %s\n"
+#define MSGTR_SKIN_NotEnoughMemory "nedostatok pamäte\n"
 #define MSGTR_SKIN_FONT_TooManyFontsDeclared "príliš mnoho fontov deklarovaných\n"
 #define MSGTR_SKIN_FONT_FontFileNotFound "súbor fontov nenájdený\n"
 #define MSGTR_SKIN_FONT_FontImageNotFound "súbor obrazov fontu nenájdený\n"
-#define MSGTR_SKIN_FONT_NonExistentFontID "neexistujúci identifikátor fontu (%s)\n"
+#define MSGTR_SKIN_FONT_NonExistentFont "neexistujúci identifikátor fontu (%s)\n"
 #define MSGTR_SKIN_UnknownParameter "neznámy parameter (%s)\n"
 #define MSGTR_SKIN_SKINCFG_SkinNotFound "Téma nenájdená (%s).\n"
 #define MSGTR_SKIN_SKINCFG_SelectedSkinNotFound "Vybraná téma ( %s ) nenájdená, skúšam 'prednastavenú'...\n"
-#define MSGTR_SKIN_SKINCFG_SkinCfgReadError "Chyba pri čítaní konfiguračného súboru tém (%s).\n"
 #define MSGTR_SKIN_LABEL "Témy:"
 
 // --- gtk menus

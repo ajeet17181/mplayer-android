@@ -164,7 +164,6 @@ static const char help_text[]=
 #define MSGTR_IncreaseRTCMaxUserFreq "Pruebe agregando \"echo %lu > /proc/sys/dev/rtc/max-user-freq\" a los scripts de inicio de su sistema.\n"
 #define MSGTR_LinuxRTCInitErrorPieOn "Error iniciando Linux RTC en llamada a ioctl (rtc_pie_on): %s\n"
 #define MSGTR_UsingTimingType "Usando temporización %s.\n"
-#define MSGTR_NoIdleAndGui "La opción -idle no puede usarse con GMPlayer.\n"
 #define MSGTR_MenuInitialized "Menú inicializado: %s\n"
 #define MSGTR_MenuInitFailed "Fallo en inicialización del menú.\n"
 #define MSGTR_Getch2InitializedTwice "ADVERTENCIA: getch2_init llamada dos veces!\n"
@@ -578,33 +577,24 @@ static const char help_text[]=
 #define MSGTR_NEMFMR "No hay suficiente memoria para dibujar el menú."
 #define MSGTR_IDFGCVD "No se encuentra driver -vo compatible con la interfaz gráfica."
 #define MSGTR_NEEDLAVC "No puede reproducir archivos no MPEG con su DXR3/H+ sin recodificación. Activa lavc en la configuración del DXR3/H+."
-#define MSGTR_UNKNOWNWINDOWTYPE "Encontrado tipo de ventana desconocido ..."
 
 // --- skin loader error messages
 #define MSGTR_SKIN_ERRORMESSAGE "[skin] error en configuración de skin en la línea %d: %s"
-#define MSGTR_SKIN_WARNING1 "[skin] advertencia en archivo de configuración en la línea %d:\n control (%s) encontrado pero no se encontro \"section\" antes"
-#define MSGTR_SKIN_WARNING2 "[skin] advertencia en archivo de configuración en la línea %d:\n control (%s) encontrado pero no se encontro \"subsection\" antes"
-#define MSGTR_SKIN_WARNING3 "[skin] advertencia en archivo de configuración en la linea %d:\nesta subsección no esta soportada por control (%s)"
 #define MSGTR_SKIN_SkinFileNotFound "[skin] no se encontró archivo ( %s ).\n"
 #define MSGTR_SKIN_SkinFileNotReadable "[skin] file no leible ( %s ).\n"
 #define MSGTR_SKIN_BITMAP_16bit  "Mapa de bits de 16 bits o menos no soportado (%s).\n"
 #define MSGTR_SKIN_BITMAP_FileNotFound  "Archivo no encontrado (%s).\n"
-#define MSGTR_SKIN_BITMAP_BMPReadError "Error al leer BMP (%s).\n"
-#define MSGTR_SKIN_BITMAP_TGAReadError "Error al leer TGA (%s).\n"
 #define MSGTR_SKIN_BITMAP_PNGReadError "Error al leer PNG (%s).\n"
-#define MSGTR_SKIN_BITMAP_RLENotSupported "RLE packed TGA no soportado (%s).\n"
-#define MSGTR_SKIN_BITMAP_UnknownFileType "Tipo de archivo desconocido (%s)\n"
 #define MSGTR_SKIN_BITMAP_ConversionError "Error de conversión de 24 bit a 32 bit (%s).\n"
-#define MSGTR_SKIN_BITMAP_UnknownMessage "Mensaje desconocido: %s.\n"
-#define MSGTR_SKIN_FONT_NotEnoughtMemory "No hay suficiente memoria.\n"
+#define MSGTR_SKIN_UnknownMessage "Mensaje desconocido: %s.\n"
+#define MSGTR_SKIN_NotEnoughMemory "No hay suficiente memoria.\n"
 #define MSGTR_SKIN_FONT_TooManyFontsDeclared "Demasiadas fuentes declaradas.\n"
 #define MSGTR_SKIN_FONT_FontFileNotFound "Archivo de fuentes no encontrado.\n"
 #define MSGTR_SKIN_FONT_FontImageNotFound "Archivo de imagen de fuente no encontrado.\n"
-#define MSGTR_SKIN_FONT_NonExistentFontID "identificador de fuente no existente (%s).\n"
+#define MSGTR_SKIN_FONT_NonExistentFont "identificador de fuente no existente (%s).\n"
 #define MSGTR_SKIN_UnknownParameter "parámetro desconocido (%s)\n"
 #define MSGTR_SKIN_SKINCFG_SkinNotFound "Skin no encontrado (%s).\n"
 #define MSGTR_SKIN_SKINCFG_SelectedSkinNotFound "Skin elegida ( %s ) no encontrada, probando 'default'...\n"
-#define MSGTR_SKIN_SKINCFG_SkinCfgReadError "Error de lectura del archivo de configuración del skin (%s).\n"
 #define MSGTR_SKIN_LABEL "Skins:"
 
 // --- GTK menus
@@ -796,25 +786,18 @@ static const char help_text[]=
 #define MSGTR_MSGBOX_LABEL_Error "Error"
 #define MSGTR_MSGBOX_LABEL_Warning "Advertencia"
 
-// bitmap.c
-#define MSGTR_NotEnoughMemoryC32To1 "[c32to1] no hay suficiente memoria para la imagen\n"
-#define MSGTR_NotEnoughMemoryC1To32 "[c1to32] no hay suficiente memoria para la imagen\n"
-
 // cfg.c
-#define MSGTR_ConfigFileReadError "[cfg] error al leer archivo de configuración ...\n"
 #define MSGTR_UnableToSaveOption "[cfg] No se puede guardar la opción '%s'.\n"
 
 // interface.c
 #define MSGTR_DeletingSubtitles "[GUI] Borrando subtítulos.\n"
 #define MSGTR_LoadingSubtitles "[GUI] Carganado subtítulos: %s\n"
 #define MSGTR_AddingVideoFilter "[GUI] Agregando filtro de video: %s\n"
-#define MSGTR_RemovingVideoFilter "[GUI] Eliminando filtro de video: %s\n"
 
 // mw.c
 #define MSGTR_NotAFile "Esto no parece ser un archivo: %s !\n"
 
 // ws.c
-#define MSGTR_WS_CouldNotOpenDisplay "[ws] No puede abrir el display.\n"
 #define MSGTR_WS_RemoteDisplay "[ws] Display remoto, desactivando XMITSHM.\n"
 #define MSGTR_WS_NoXshm "[ws] Lo lamento, su sistema no soporta la extensión de memoria compartida X.\n"
 #define MSGTR_WS_NoXshape "[ws] Lo lamento, su sistema no soporta la extensión XShape.\n"
@@ -1446,7 +1429,7 @@ static const char help_text[]=
 #define MSGTR_LeaveTelecineMode "\ndemux_mpg: contenido NTSC de 30000/1001cps detectado, cambiando cuadros por segundo.\n"
 #define MSGTR_EnterTelecineMode "\ndemux_mpg: contenido NTSC progresivo de 24000/1001cps detectado, cambiando cuadros por segundo.\n"
 #define MSGTR_CacheFill "\rLlenando cache: %5.2f%% (%"PRId64" bytes)   "
-#define MSGTR_NoBindFound "No se econtró una asignación para la tecla '%s'"
+#define MSGTR_NoBindFound "No se econtró una asignación para la tecla '%s'\n"
 #define MSGTR_FailedToOpen "No se pudo abrir %s\n"
 #define MSGTR_VideoID "[%s] Stream de video encontrado, -vid %d\n"
 #define MSGTR_AudioID "[%s] Stream de audio encontrado, -aid %d\n"

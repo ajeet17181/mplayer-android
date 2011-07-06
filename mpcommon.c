@@ -21,6 +21,12 @@
 #endif
 #include <stdlib.h>
 #include "stream/stream.h"
+#ifdef CONFIG_DVDREAD
+#include "stream/stream_dvd.h"
+#endif
+#ifdef CONFIG_DVDNAV
+#include "stream/stream_dvdnav.h"
+#endif
 #include "libmpdemux/demuxer.h"
 #include "libmpdemux/stheader.h"
 #include "codec-cfg.h"
@@ -52,6 +58,8 @@ ASS_Track* ass_track = 0; // current track to render
 
 sub_data* subdata = NULL;
 subtitle* vo_sub_last = NULL;
+char *spudec_ifo;
+int forced_subs_only;
 
 const char *mencoder_version = "MEncoder " VERSION;
 const char *mplayer_version  = "MPlayer "  VERSION;
@@ -64,10 +72,10 @@ void print_version(const char* name)
     GetCpuCaps(&gCpuCaps);
 #if ARCH_X86
     mp_msg(MSGT_CPLAYER, MSGL_V,
-	   "CPUflags:  MMX: %d MMX2: %d 3DNow: %d 3DNowExt: %d SSE: %d SSE2: %d SSSE3: %d\n",
-	   gCpuCaps.hasMMX, gCpuCaps.hasMMX2,
-	   gCpuCaps.has3DNow, gCpuCaps.has3DNowExt,
-	   gCpuCaps.hasSSE, gCpuCaps.hasSSE2, gCpuCaps.hasSSSE3);
+           "CPUflags:  MMX: %d MMX2: %d 3DNow: %d 3DNowExt: %d SSE: %d SSE2: %d SSSE3: %d\n",
+           gCpuCaps.hasMMX, gCpuCaps.hasMMX2,
+           gCpuCaps.has3DNow, gCpuCaps.has3DNowExt,
+           gCpuCaps.hasSSE, gCpuCaps.hasSSE2, gCpuCaps.hasSSSE3);
 #if CONFIG_RUNTIME_CPUDETECT
     mp_msg(MSGT_CPLAYER,MSGL_V, MSGTR_CompiledWithRuntimeDetection);
 #else
@@ -91,6 +99,55 @@ if (HAVE_CMOV)
     mp_msg(MSGT_CPLAYER,MSGL_V,"\n");
 #endif /* CONFIG_RUNTIME_CPUDETECT */
 #endif /* ARCH_X86 */
+}
+
+void init_vo_spudec(struct stream *stream, struct sh_video *sh_video, struct sh_sub *sh_sub)
+{
+    unsigned width, height;
+    spudec_free(vo_spudec);
+    vo_spudec = NULL;
+
+    // we currently can't work without video stream
+    if (!sh_video)
+        return;
+
+    if (spudec_ifo) {
+        unsigned int palette[16];
+        current_module = "spudec_init_vobsub";
+        if (vobsub_parse_ifo(NULL, spudec_ifo, palette, &width, &height, 1, -1, NULL) >= 0)
+            vo_spudec = spudec_new_scaled(palette, width, height, NULL, 0);
+    }
+
+    width  = sh_video->disp_w;
+    height = sh_video->disp_h;
+
+#ifdef CONFIG_DVDREAD
+    if (vo_spudec == NULL && stream->type == STREAMTYPE_DVD) {
+        current_module = "spudec_init_dvdread";
+        vo_spudec      = spudec_new_scaled(((dvd_priv_t *)(stream->priv))->cur_pgc->palette,
+                                           width, height,
+                                           NULL, 0);
+    }
+#endif
+
+#ifdef CONFIG_DVDNAV
+    if (vo_spudec == NULL && stream->type == STREAMTYPE_DVDNAV) {
+        unsigned int *palette = mp_dvdnav_get_spu_clut(stream);
+        current_module = "spudec_init_dvdnav";
+        vo_spudec      = spudec_new_scaled(palette, width, height, NULL, 0);
+    }
+#endif
+
+    if (vo_spudec == NULL) {
+        current_module = "spudec_init_normal";
+        vo_spudec      = spudec_new_scaled(NULL, width, height,
+                                           sh_sub ? sh_sub->extradata : NULL,
+                                           sh_sub ? sh_sub->extradata_len : 0);
+        spudec_set_font_factor(vo_spudec, font_factor);
+    }
+
+    if (vo_spudec)
+        spudec_set_forced_subs_only(vo_spudec, forced_subs_only);
 }
 
 static int is_text_sub(int type)
@@ -202,6 +259,8 @@ void update_subtitles(sh_video_t *sh_video, double refpts, demux_stream_t *d_dvd
             if (is_av_sub(type)) {
 #ifdef CONFIG_FFMPEG
                 type = decode_avsub(d_dvdsub->sh, &packet, &len, &subpts, &endpts);
+                if (type < 0)
+                    mp_msg(MSGT_SPUDEC, MSGL_WARN, "lavc failed decoding subtitle\n");
                 if (type <= 0)
 #endif
                     continue;
@@ -270,6 +329,7 @@ void update_subtitles(sh_video_t *sh_video, double refpts, demux_stream_t *d_dvd
                     len -= p - packet;
                     packet = p;
                 }
+                if (endpts == MP_NOPTS_VALUE) endpts = subpts + 4;
                 sub_add_text(&subs, packet, len, endpts, 1);
                 set_osd_subtitle(&subs);
             }
@@ -459,4 +519,45 @@ int common_init(void)
     ass_library = ass_init();
 #endif
     return 1;
+}
+
+/// Returns a_pts
+double calc_a_pts(sh_audio_t *sh_audio, demux_stream_t *d_audio)
+{
+    double a_pts;
+    if(!sh_audio || !d_audio)
+        return MP_NOPTS_VALUE;
+    // first calculate the end pts of audio that has been output by decoder
+    a_pts = sh_audio->pts;
+    // If we cannot get any useful information at all from the demuxer layer
+    // just count the decoded bytes. This is still better than constantly
+    // resetting to 0.
+    if (sh_audio->pts_bytes && a_pts == MP_NOPTS_VALUE &&
+        !d_audio->pts && !sh_audio->i_bps)
+        a_pts = 0;
+    if (a_pts != MP_NOPTS_VALUE)
+        // Good, decoder supports new way of calculating audio pts.
+        // sh_audio->pts is the timestamp of the latest input packet with
+        // known pts that the decoder has decoded. sh_audio->pts_bytes is
+        // the amount of bytes the decoder has written after that timestamp.
+        a_pts += sh_audio->pts_bytes / (double) sh_audio->o_bps;
+    else {
+        // Decoder doesn't support new way of calculating pts (or we're
+        // being called before it has decoded anything with known timestamp).
+        // Use the old method of audio pts calculation: take the timestamp
+        // of last packet with known pts the decoder has read data from,
+        // and add amount of bytes read after the beginning of that packet
+        // divided by input bps. This will be inaccurate if the input/output
+        // ratio is not constant for every audio packet or if it is constant
+        // but not accurately known in sh_audio->i_bps.
+
+        a_pts = d_audio->pts;
+        // ds_tell_pts returns bytes read after last timestamp from
+        // demuxing layer, decoder might use sh_audio->a_in_buffer for bytes
+        // it has read but not decoded
+        if (sh_audio->i_bps)
+            a_pts += (ds_tell_pts(d_audio) - sh_audio->a_in_buffer_len) /
+                     (double)sh_audio->i_bps;
+    }
+    return a_pts;
 }

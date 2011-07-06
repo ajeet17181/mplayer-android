@@ -225,9 +225,7 @@ static const demuxer_desc_t *get_demuxer_desc_from_type(int file_format)
     return NULL;
 }
 
-
-demuxer_t *new_demuxer(stream_t *stream, int type, int a_id, int v_id,
-                       int s_id, char *filename)
+demuxer_t *alloc_demuxer(stream_t *stream, int type, const char *filename)
 {
     demuxer_t *d = calloc(1, sizeof(*d));
     d->stream = stream;
@@ -238,9 +236,6 @@ demuxer_t *new_demuxer(stream_t *stream, int type, int a_id, int v_id,
     d->seekable = 1;
     d->synced = 0;
     d->filepos = -1;
-    d->audio = new_demuxer_stream(d, a_id);
-    d->video = new_demuxer_stream(d, v_id);
-    d->sub = new_demuxer_stream(d, s_id);
     d->type = type;
     if (type)
         if (!(d->desc = get_demuxer_desc_from_type(type)))
@@ -249,6 +244,16 @@ demuxer_t *new_demuxer(stream_t *stream, int type, int a_id, int v_id,
                    "big troubles ahead.");
     if (filename) // Filename hack for avs_check_file
         d->filename = strdup(filename);
+    return d;
+}
+
+demuxer_t *new_demuxer(stream_t *stream, int type, int a_id, int v_id,
+                       int s_id, char *filename)
+{
+    demuxer_t *d = alloc_demuxer(stream, type, filename);
+    d->audio = new_demuxer_stream(d, a_id);
+    d->video = new_demuxer_stream(d, v_id);
+    d->sub = new_demuxer_stream(d, s_id);
     stream->eof = 0;
     stream_seek(stream, stream->start_pos);
     return d;
@@ -479,9 +484,12 @@ static void allocate_parser(AVCodecContext **avctx, AVCodecParserContext **parse
     case 0x332D6361:
     case 0x332D4341:
     case 0x20736D:
-    case MKTAG('d', 'n', 'e', 't'):
     case MKTAG('s', 'a', 'c', '3'):
         codec_id = CODEC_ID_AC3;
+        break;
+    case MKTAG('d', 'n', 'e', 't'):
+        // DNET/byte-swapped AC-3 - there is no parser for that yet
+        //codec_id = CODEC_ID_DNET;
         break;
     case MKTAG('E', 'A', 'C', '3'):
         codec_id = CODEC_ID_EAC3;
@@ -619,7 +627,7 @@ int demux_fill_buffer(demuxer_t *demux, demux_stream_t *ds)
 // return value:
 //     0 = EOF
 //     1 = successful
-#define MAX_ACUMULATED_PACKETS 64
+#define MAX_ACCUMULATED_PACKETS 64
 int ds_fill_buffer(demux_stream_t *ds)
 {
     demuxer_t *demux = ds->demuxer;
@@ -648,7 +656,7 @@ int ds_fill_buffer(demux_stream_t *ds)
             if (demux->reference_clock != MP_NOPTS_VALUE) {
                 if (   p->pts != MP_NOPTS_VALUE
                     && p->pts >  demux->reference_clock
-                    && ds->packs < MAX_ACUMULATED_PACKETS) {
+                    && ds->packs < MAX_ACCUMULATED_PACKETS) {
                     if (demux_fill_buffer(demux, ds))
                         continue;
                 }
@@ -839,7 +847,7 @@ int ds_get_packet_pts(demux_stream_t *ds, unsigned char **start, double *pts)
 /**
  * Get a subtitle packet. In particular avoid reading the stream.
  * \param pts input: maximum pts value of subtitle packet. NOPTS or NULL for any.
- *            output: start/referece pts of subtitle
+ *            output: start/reference pts of subtitle
  *            May be NULL.
  * \param endpts output: pts for end of display time. May be NULL.
  * \return -1 if no packet is available
@@ -1524,7 +1532,7 @@ int demuxer_add_attachment(demuxer_t *demuxer, const char *name,
         demuxer->attachments = realloc(demuxer->attachments,
                 (demuxer->num_attachments + 32) * sizeof(demux_attachment_t));
 
-    demuxer->attachments[demuxer->num_attachments].name = strdup(name);
+    demuxer->attachments[demuxer->num_attachments].name = name ? strdup(name) : NULL;
     demuxer->attachments[demuxer->num_attachments].type = strdup(type);
     demuxer->attachments[demuxer->num_attachments].data = malloc(size);
     memcpy(demuxer->attachments[demuxer->num_attachments].data, data, size);

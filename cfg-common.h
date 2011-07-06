@@ -34,6 +34,7 @@
 #include "libmpdemux/mf.h"
 #include "libpostproc/postprocess.h"
 #include "sub/sub.h"
+#include "sub/unrar_exec.h"
 #include "osdep/priority.h"
 #include "stream/cdd.h"
 #include "stream/network.h"
@@ -354,6 +355,7 @@ const m_option_t common_opts[] = {
     {"user", &network_username, CONF_TYPE_STRING, 0, 0, 0, NULL},
     {"passwd", &network_password, CONF_TYPE_STRING, 0, 0, 0, NULL},
     {"bandwidth", &network_bandwidth, CONF_TYPE_INT, CONF_MIN, 0, 0, NULL},
+    {"http-header-fields", &network_http_header_fields, CONF_TYPE_STRING_LIST, 0, 0, 0, NULL},
     {"user-agent", &network_useragent, CONF_TYPE_STRING, 0, 0, 0, NULL},
     {"referrer", &network_referrer, CONF_TYPE_STRING, 0, 0, 0, NULL},
     {"cookies", &network_cookies_enabled, CONF_TYPE_FLAG, 0, 0, 1, NULL},
@@ -533,7 +535,7 @@ const m_option_t common_opts[] = {
     {"ssf", scaler_filter_conf, CONF_TYPE_SUBCONFIG, 0, 0, 0, NULL},
     {"zoom", &softzoom, CONF_TYPE_FLAG, 0, 0, 1, NULL},
     {"nozoom", &softzoom, CONF_TYPE_FLAG, 0, 1, 0, NULL},
-    {"aspect", &movie_aspect, CONF_TYPE_FLOAT, CONF_RANGE, 0.2, 3.0, NULL},
+    {"aspect", &movie_aspect, CONF_TYPE_FLOAT, CONF_RANGE, 0.1, 10.0, NULL},
     {"noaspect", &movie_aspect, CONF_TYPE_FLAG, 0, 0, 0, NULL},
     {"xy", &screen_size_xy, CONF_TYPE_FLOAT, CONF_RANGE, 0.001, 4096, NULL},
 
@@ -562,6 +564,7 @@ const m_option_t common_opts[] = {
 // ------------------------- subtitles options --------------------
 
     {"sub", &sub_name, CONF_TYPE_STRING_LIST, 0, 0, 0, NULL},
+    {"sub-paths", &sub_paths, CONF_TYPE_STRING_LIST, 0, 0, 0, NULL},
 #ifdef CONFIG_FRIBIDI
     {"fribidi-charset", &fribidi_charset, CONF_TYPE_STRING, 0, 0, 0, NULL},
     {"flip-hebrew", &flip_hebrew, CONF_TYPE_FLAG, 0, 0, 1, NULL},
@@ -587,6 +590,11 @@ const m_option_t common_opts[] = {
     {"utf8", &sub_utf8, CONF_TYPE_FLAG, 0, 0, 1, NULL},
     {"noutf8", &sub_utf8, CONF_TYPE_FLAG, 0, 1, 0, NULL},
     {"forcedsubsonly", &forced_subs_only, CONF_TYPE_FLAG, 0, 0, 1, NULL},
+    {"vobsub", &vobsub_name, CONF_TYPE_STRING, 0, 0, 0, NULL},
+    {"vobsubid", &vobsub_id, CONF_TYPE_INT, CONF_RANGE, 0, 31, NULL},
+#ifdef CONFIG_UNRAR_EXEC
+    {"unrarexec", &unrar_executable, CONF_TYPE_STRING, 0, 0, 0, NULL},
+#endif
     // specify IFO file for VOBSUB subtitle
     {"ifo", &spudec_ifo, CONF_TYPE_STRING, 0, 0, 0, NULL},
     // enable Closed Captioning display

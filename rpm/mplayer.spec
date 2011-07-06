@@ -139,7 +139,6 @@ mv DOCS/man/zh DOCS/man/zh_CN
     --disable-encoder=X264 \
     \
     --enable-gui \
-    --enable-largefiles \
     --disable-termcap \
     --disable-bitmap-font \
     --enable-lirc \
@@ -187,7 +186,6 @@ mv -f mplayer gmplayer
     --disable-encoder=MP3LAME \
     --disable-encoder=X264 \
     \
-    --enable-largefiles \
     --disable-termcap \
     --disable-bitmap-font \
     --enable-lirc \
@@ -255,9 +253,9 @@ tar xjC $RPM_BUILD_ROOT%{_datadir}/mplayer/skins --exclude=.svn -f %{SOURCE1}
 ln -s Blue $RPM_BUILD_ROOT%{_datadir}/mplayer/skins/default
 
 # Icons
-install -dm 755 $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/32x32/apps
-install -pm 644 etc/mplayer.xpm \
-    $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/32x32/apps
+install -dm 755 $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/48x48/apps
+install -pm 644 etc/mplayer.png \
+    $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/48x48/apps
 
 # Desktop file
 desktop-file-install \
@@ -308,7 +306,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-, root, root, -)
 %{_bindir}/gmplayer
 %{_datadir}/applications/*mplayer.desktop
-%{_datadir}/icons/hicolor/32x32/apps/mplayer.xpm
+%{_datadir}/icons/hicolor/48x48/apps/mplayer.png
 %{_datadir}/mplayer/skins/
 
 %files -n mencoder

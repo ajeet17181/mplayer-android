@@ -7,7 +7,7 @@ The latest version can be found at http://www.linuxstb.org/dvbstream
 
 Modified for use with MPlayer, for details see the changelog at
 http://svn.mplayerhq.hu/mplayer/trunk/
-$Id: stream_dvb.c 32598 2010-11-07 12:47:40Z diego $
+$Id: stream_dvb.c 33346 2011-05-01 18:07:59Z iive $
 
 Copyright notice:
 
@@ -76,7 +76,7 @@ stream_defaults =
 static const m_option_t stream_params[] = {
 	{"prog", ST_OFF(prog), CONF_TYPE_STRING, 0, 0 ,0, NULL},
 	{"card", ST_OFF(card), CONF_TYPE_INT, M_OPT_RANGE, 1, 4, NULL},
-	{"timeout",ST_OFF(timeout),  CONF_TYPE_INT, M_OPT_RANGE, 1, 30, NULL},
+	{"timeout",ST_OFF(timeout),  CONF_TYPE_INT, M_OPT_RANGE, 1, 240, NULL},
 	{"file", ST_OFF(file), CONF_TYPE_STRING, 0, 0 ,0, NULL},
 
 	{"hostname", 	ST_OFF(prog), CONF_TYPE_STRING, 0, 0, 0, NULL },
@@ -96,7 +96,7 @@ static const struct m_struct_st stream_opts = {
 const m_option_t dvbin_opts_conf[] = {
 	{"prog", &stream_defaults.prog, CONF_TYPE_STRING, 0, 0 ,0, NULL},
 	{"card", &stream_defaults.card, CONF_TYPE_INT, M_OPT_RANGE, 1, 4, NULL},
-	{"timeout",  &stream_defaults.timeout,  CONF_TYPE_INT, M_OPT_RANGE, 1, 30, NULL},
+	{"timeout",  &stream_defaults.timeout,  CONF_TYPE_INT, M_OPT_RANGE, 1, 240, NULL},
 	{"file", &stream_defaults.file, CONF_TYPE_STRING, 0, 0 ,0, NULL},
 
 	{NULL, NULL, 0, 0, 0, 0, NULL}

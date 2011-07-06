@@ -1,9 +1,4 @@
-#include <stdlib.h>
-#include <stdio.h>
-  void _start(int argc, char **argv)
-       {
-               exit (main ());
-       }
-int main(){
-printf("hello");
+#include <math.h>
+float log2f(float x){
+ return (log(x) * 1.44269504088896340736);
 }

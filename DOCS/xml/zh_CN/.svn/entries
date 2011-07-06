@@ -1,14 +1,14 @@
 10
 
 dir
-32840
+33819
 svn://svn.mplayerhq.hu/mplayer/trunk/DOCS/xml/zh_CN
 svn://svn.mplayerhq.hu/mplayer
 
 
 
-2010-08-18T23:10:10.038954Z
-31980
+2011-02-03T12:31:09.427386Z
+32844
 diego
 has-props
 
@@ -304,10 +304,10 @@ file
 
 
 
-2010-10-22T14:29:54.000000Z
-5fb2cc3bfd7c8e9ab365ef93ff0c6dc0
-2010-06-14T15:17:48.225980Z
-31415
+2011-02-03T23:06:27.757760Z
+1de1a4af2331f24a4ac036246daa4564
+2011-02-03T12:31:09.427386Z
+32844
 diego
 
 
@@ -330,7 +330,7 @@ diego
 
 
 
-16014
+15998
 
 mencoder.xml
 file

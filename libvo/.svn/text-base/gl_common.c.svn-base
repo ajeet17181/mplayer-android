@@ -182,7 +182,7 @@ static const struct gl_name_map_struct gl_name_map[] = {
   MAP(GL_R3_G3_B2), MAP(GL_RGB4), MAP(GL_RGB5), MAP(GL_RGB8),
   MAP(GL_RGB10), MAP(GL_RGB12), MAP(GL_RGB16), MAP(GL_RGBA2),
   MAP(GL_RGBA4), MAP(GL_RGB5_A1), MAP(GL_RGBA8), MAP(GL_RGB10_A2),
-  MAP(GL_RGBA12), MAP(GL_RGBA16), MAP(GL_LUMINANCE8),
+  MAP(GL_RGBA12), MAP(GL_RGBA16), MAP(GL_LUMINANCE8), MAP(GL_LUMINANCE16),
 
   // format
   MAP(GL_RGB), MAP(GL_RGBA), MAP(GL_RED), MAP(GL_GREEN), MAP(GL_BLUE),
@@ -253,7 +253,7 @@ int glFindFormat(uint32_t fmt, int *bpp, GLint *gl_texfmt,
   if (!gl_format) gl_format = &dummy2;
   if (!gl_type) gl_type = &dummy2;
 
-  if (mp_get_chroma_shift(fmt, NULL, NULL)) {
+  if (mp_get_chroma_shift(fmt, NULL, NULL, NULL)) {
     // reduce the possible cases a bit
     if (IMGFMT_IS_YUVP16_LE(fmt))
       fmt = IMGFMT_420P16_LE;
@@ -281,7 +281,7 @@ int glFindFormat(uint32_t fmt, int *bpp, GLint *gl_texfmt,
       break;
     case IMGFMT_420P16:
       supported = 0; // no native YUV support
-      *gl_texfmt = 1;
+      *gl_texfmt = GL_LUMINANCE16;
       *bpp = 16;
       *gl_format = GL_LUMINANCE;
       *gl_type = GL_UNSIGNED_SHORT;
@@ -296,7 +296,9 @@ int glFindFormat(uint32_t fmt, int *bpp, GLint *gl_texfmt,
       *gl_type = GL_UNSIGNED_BYTE;
       break;
     case IMGFMT_UYVY:
-    case IMGFMT_YUY2:
+    // IMGFMT_YUY2 would be more logical for the _REV format,
+    // but gives clearly swapped colors.
+    case IMGFMT_YVYU:
       *gl_texfmt = GL_YCBCR_MESA;
       *bpp = 16;
       *gl_format = GL_YCBCR_MESA;

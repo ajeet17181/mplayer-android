@@ -1,7 +1,7 @@
 10
 
 dir
-32840
+33819
 svn://svn.mplayerhq.hu/mplayer/trunk/loader/wine
 svn://svn.mplayerhq.hu/mplayer
 
@@ -94,40 +94,6 @@ has-props
 
 604
 
-winreg.h
-file
-
-
-
-
-2010-10-22T14:32:07.000000Z
-1c0b7cd7d656fb032014144c8297ead9
-2010-02-11T14:33:57.785682Z
-30538
-diego
-has-props
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-1269
-
 driver.h
 file
 
@@ -161,6 +127,40 @@ has-props
 
 
 4213
+
+winreg.h
+file
+
+
+
+
+2010-10-22T14:32:07.000000Z
+1c0b7cd7d656fb032014144c8297ead9
+2010-02-11T14:33:57.785682Z
+30538
+diego
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1269
 
 winuser.h
 file
@@ -264,40 +264,6 @@ has-props
 
 81613
 
-msacm.h
-file
-
-
-
-
-2010-10-22T14:32:07.000000Z
-79b745412d34c021e40dec98a94a39d6
-2010-04-04T16:21:07.854655Z
-31003
-diego
-has-props
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-27619
-
 ntdef.h
 file
 
@@ -332,16 +298,16 @@ has-props
 
 1931
 
-vfw.h
+msacm.h
 file
 
 
 
 
 2010-10-22T14:32:07.000000Z
-abbe60bbf6b76da864fd6fc04dd2077d
-2010-02-21T23:33:03.844942Z
-30693
+79b745412d34c021e40dec98a94a39d6
+2010-04-04T16:21:07.854655Z
+31003
 diego
 has-props
 
@@ -364,7 +330,7 @@ has-props
 
 
 
-20592
+27619
 
 elfdll.h
 file
@@ -399,6 +365,40 @@ has-props
 
 
 335
+
+vfw.h
+file
+
+
+
+
+2010-10-22T14:32:07.000000Z
+abbe60bbf6b76da864fd6fc04dd2077d
+2010-02-21T23:33:03.844942Z
+30693
+diego
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+20592
 
 objbase.h
 file
@@ -468,40 +468,6 @@ has-props
 
 3226
 
-winerror.h
-file
-
-
-
-
-2010-10-22T14:32:07.000000Z
-f5caf0fb4ac47da285833047fb0e412e
-2008-02-23T14:50:55.628680Z
-26077
-diego
-has-props
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-98965
-
 debugtools.h
 file
 
@@ -535,6 +501,40 @@ has-props
 
 
 2290
+
+winerror.h
+file
+
+
+
+
+2010-10-22T14:32:07.000000Z
+f5caf0fb4ac47da285833047fb0e412e
+2008-02-23T14:50:55.628680Z
+26077
+diego
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+98965
 
 mmreg.h
 file

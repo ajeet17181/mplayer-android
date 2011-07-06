@@ -268,6 +268,16 @@ static const mp_key_name_t key_names[] = {
   { MOUSE_BTN7, "MOUSE_BTN7" },
   { MOUSE_BTN8, "MOUSE_BTN8" },
   { MOUSE_BTN9, "MOUSE_BTN9" },
+  { MOUSE_BTN10, "MOUSE_BTN10" },
+  { MOUSE_BTN11, "MOUSE_BTN11" },
+  { MOUSE_BTN12, "MOUSE_BTN12" },
+  { MOUSE_BTN13, "MOUSE_BTN13" },
+  { MOUSE_BTN14, "MOUSE_BTN14" },
+  { MOUSE_BTN15, "MOUSE_BTN15" },
+  { MOUSE_BTN16, "MOUSE_BTN16" },
+  { MOUSE_BTN17, "MOUSE_BTN17" },
+  { MOUSE_BTN18, "MOUSE_BTN18" },
+  { MOUSE_BTN19, "MOUSE_BTN19" },
   { MOUSE_BTN0_DBL, "MOUSE_BTN0_DBL" },
   { MOUSE_BTN1_DBL, "MOUSE_BTN1_DBL" },
   { MOUSE_BTN2_DBL, "MOUSE_BTN2_DBL" },
@@ -278,6 +288,16 @@ static const mp_key_name_t key_names[] = {
   { MOUSE_BTN7_DBL, "MOUSE_BTN7_DBL" },
   { MOUSE_BTN8_DBL, "MOUSE_BTN8_DBL" },
   { MOUSE_BTN9_DBL, "MOUSE_BTN9_DBL" },
+  { MOUSE_BTN10_DBL, "MOUSE_BTN10_DBL" },
+  { MOUSE_BTN11_DBL, "MOUSE_BTN11_DBL" },
+  { MOUSE_BTN12_DBL, "MOUSE_BTN12_DBL" },
+  { MOUSE_BTN13_DBL, "MOUSE_BTN13_DBL" },
+  { MOUSE_BTN14_DBL, "MOUSE_BTN14_DBL" },
+  { MOUSE_BTN15_DBL, "MOUSE_BTN15_DBL" },
+  { MOUSE_BTN16_DBL, "MOUSE_BTN16_DBL" },
+  { MOUSE_BTN17_DBL, "MOUSE_BTN17_DBL" },
+  { MOUSE_BTN18_DBL, "MOUSE_BTN18_DBL" },
+  { MOUSE_BTN19_DBL, "MOUSE_BTN19_DBL" },
   { JOY_AXIS1_MINUS, "JOY_UP" },
   { JOY_AXIS1_PLUS, "JOY_DOWN" },
   { JOY_AXIS0_MINUS, "JOY_LEFT" },
@@ -1070,13 +1090,14 @@ mp_input_get_cmd_from_keys(int n,int* keys, int paused) {
     cmd = mp_input_find_bind_for_key(def_cmd_binds,n,keys);
 
   if(cmd == NULL) {
-    mp_msg(MSGT_INPUT,MSGL_WARN,MSGTR_NoBindFound,mp_input_get_key_name(keys[0]));
-    if(n > 1) {
-      int s;
-      for(s=1; s < n; s++)
-	mp_msg(MSGT_INPUT,MSGL_WARN,"-%s",mp_input_get_key_name(keys[s]));
+    char key_name[100];
+    int i;
+    av_strlcpy(key_name, mp_input_get_key_name(keys[0]), sizeof(key_name));
+    for (i = 1; i < n; i++) {
+      av_strlcat(key_name, "-", sizeof(key_name));
+      av_strlcat(key_name, mp_input_get_key_name(keys[i]), sizeof(key_name));
     }
-    mp_msg(MSGT_INPUT,MSGL_WARN,"                         \n");
+    mp_msg(MSGT_INPUT,MSGL_WARN,MSGTR_NoBindFound,key_name);
     return NULL;
   }
   if (strcmp(cmd, "ignore") == 0) return NULL;
@@ -1099,6 +1120,15 @@ interpret_key(int code, int paused)
 {
   unsigned int j;
   mp_cmd_t* ret;
+
+  if (code & MP_KEY_RELEASE_ALL) {
+      code &= ~MP_KEY_RELEASE_ALL;
+      memset(key_down, 0, sizeof(key_down));
+      num_key_down = 0;
+      last_key_down = 0;
+      if (!code)
+          return NULL;
+  }
 
   if(mp_input_key_cb) {
       if (code & MP_KEY_DOWN)

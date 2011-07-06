@@ -1,15 +1,15 @@
 10
 
 dir
-32840
+33819
 svn://svn.mplayerhq.hu/mplayer/trunk/debian
 svn://svn.mplayerhq.hu/mplayer
 
 
 
-2011-01-01T14:27:41.776137Z
-32741
-diego
+2011-06-12T19:19:51.563109Z
+33606
+siretart
 has-props
 
 
@@ -69,10 +69,10 @@ file
 
 
 
-2010-12-27T07:04:40.269675Z
-b88da0bbf5d548633f1ebfe4da6df46c
-2010-10-27T07:17:22.156340Z
-32537
+2011-06-16T06:39:21.868667Z
+e55dfdd70da80abd251f93fc148eafd4
+2011-06-12T19:19:51.563109Z
+33606
 siretart
 
 
@@ -95,7 +95,7 @@ siretart
 
 
 
-6125
+6157
 
 mplayer-gui.mime
 file
@@ -307,11 +307,11 @@ file
 
 
 
-2010-10-22T14:27:21.000000Z
-ce3475ca6f20c461c0b98cabed90ff9a
-2010-10-19T15:48:51.191423Z
-32518
-siretart
+2011-06-08T09:01:11.681668Z
+10ca67d18c2a942875930ecb18bcfd72
+2011-06-07T15:16:22.926612Z
+33572
+ib
 has-props
 
 
@@ -333,7 +333,7 @@ has-props
 
 
 
-5883
+5851
 
 mplayer.preinst
 file

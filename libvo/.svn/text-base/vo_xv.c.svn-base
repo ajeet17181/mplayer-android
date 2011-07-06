@@ -43,6 +43,7 @@ Buffer allocation:
 #include "help_mp.h"
 #include "video_out.h"
 #include "video_out_internal.h"
+#include "libmpcodecs/vf.h"
 
 
 #include <X11/Xlib.h>
@@ -167,7 +168,7 @@ static void deallocate_xvimage(int foo);
 static void resize(void)
 {
     calc_src_dst_rects(image_width, image_height, &src_rect, &dst_rect, NULL, NULL);
-    vo_x11_clearwindow_part(mDisplay, vo_window, dst_rect.width, dst_rect.height, 1);
+//    vo_x11_clearwindow_part(mDisplay, vo_window, dst_rect.width, dst_rect.height, vo_fs);
     vo_xv_draw_colorkey(dst_rect.left, dst_rect.top, dst_rect.width, dst_rect.height);
 }
 
@@ -239,13 +240,13 @@ static int config(uint32_t width, uint32_t height, uint32_t d_width,
             depth = 24;
         XMatchVisualInfo(mDisplay, mScreen, depth, TrueColor, &vinfo);
 
-        xswa.background_pixel = 0;
+        xswa.border_pixel = 0;
+        xswamask = CWBorderPixel;
         if (xv_ck_info.method == CK_METHOD_BACKGROUND)
         {
           xswa.background_pixel = xv_colorkey;
+          xswamask |= CWBackPixel;
         }
-        xswa.border_pixel = 0;
-        xswamask = CWBackPixel | CWBorderPixel;
 
             vo_x11_create_vo_window(&vinfo, vo_dx, vo_dy, vo_dwidth, vo_dheight,
                    flags, CopyFromParent, "xv", title);
@@ -731,7 +732,7 @@ static int preinit(const char *arg)
     return 0;
 }
 
-static int control(uint32_t request, void *data, ...)
+static int control(uint32_t request, void *data)
 {
     switch (request)
     {
@@ -757,27 +758,13 @@ static int control(uint32_t request, void *data, ...)
             return VO_TRUE;
         case VOCTRL_SET_EQUALIZER:
             {
-                va_list ap;
-                int value;
-
-                va_start(ap, data);
-                value = va_arg(ap, int);
-
-                va_end(ap);
-
-                return vo_xv_set_eq(xv_port, data, value);
+                vf_equalizer_t *eq=data;
+                return vo_xv_set_eq(xv_port, eq->item, eq->value);
             }
         case VOCTRL_GET_EQUALIZER:
             {
-                va_list ap;
-                int *value;
-
-                va_start(ap, data);
-                value = va_arg(ap, int *);
-
-                va_end(ap);
-
-                return vo_xv_get_eq(xv_port, data, value);
+                vf_equalizer_t *eq=data;
+                return vo_xv_get_eq(xv_port, eq->item, &eq->value);
             }
         case VOCTRL_ONTOP:
             vo_x11_ontop();

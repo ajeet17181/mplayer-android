@@ -28,6 +28,7 @@
 #endif
 #include <fcntl.h>
 #include <strings.h>
+#include <assert.h>
 
 #include "config.h"
 
@@ -162,7 +163,7 @@ static stream_t* open_stream_plugin(const stream_info_t* sinfo, const char* file
       m_option_t url_opt =
 	{ "stream url", arg , CONF_TYPE_CUSTOM_URL, 0, 0 ,0, sinfo->opts };
       if(m_option_parse(&url_opt,"stream url",filename,arg,M_CONFIG_FILE) < 0) {
-	mp_msg(MSGT_OPEN,MSGL_ERR, "URL parsing failed on url %s\n",filename);
+	mp_msg(MSGT_OPEN,MSGL_ERR, MSGTR_URLParsingFailed,filename);
 	m_struct_free(desc,arg);
 	return NULL;
       }
@@ -173,7 +174,7 @@ static stream_t* open_stream_plugin(const stream_info_t* sinfo, const char* file
 	mp_msg(MSGT_OPEN,MSGL_DBG2, "Set stream arg %s=%s\n",
 	       options[i],options[i+1]);
 	if(!m_struct_set(desc,arg,options[i],options[i+1]))
-	  mp_msg(MSGT_OPEN,MSGL_WARN, "Failed to set stream option %s=%s\n",
+	  mp_msg(MSGT_OPEN,MSGL_WARN, MSGTR_FailedSetStreamOption,
 		 options[i],options[i+1]);
       }
     }
@@ -199,7 +200,7 @@ static stream_t* open_stream_plugin(const stream_info_t* sinfo, const char* file
     return NULL;
   }
   if(s->type <= -2)
-    mp_msg(MSGT_OPEN,MSGL_WARN, "Warning streams need a type !!!!\n");
+    mp_msg(MSGT_OPEN,MSGL_WARN, MSGTR_StreamNeedType);
   if(s->flags & MP_STREAM_SEEK && !s->seek)
     s->flags &= ~MP_STREAM_SEEK;
   if(s->seek && !(s->flags & MP_STREAM_SEEK))
@@ -225,7 +226,7 @@ stream_t* open_stream_full(const char* filename,int mode, char** options, int* f
   for(i = 0 ; auto_open_streams[i] ; i++) {
     sinfo = auto_open_streams[i];
     if(!sinfo->protocols) {
-      mp_msg(MSGT_OPEN,MSGL_WARN, "Stream type %s has protocols == NULL, it's a bug\n", sinfo->name);
+      mp_msg(MSGT_OPEN,MSGL_WARN, MSGTR_StreamProtocolNULL, sinfo->name);
       continue;
     }
     for(j = 0 ; sinfo->protocols[j] ; j++) {
@@ -254,14 +255,14 @@ stream_t* open_stream_full(const char* filename,int mode, char** options, int* f
     }
   }
 
-  mp_msg(MSGT_OPEN,MSGL_ERR, "No stream found to handle url %s\n",filename);
+  mp_msg(MSGT_OPEN,MSGL_ERR, MSGTR_StreamCantHandleURL,filename);
   return NULL;
 }
 
 stream_t* open_output_stream(const char* filename, char** options) {
   int file_format; //unused
   if(!filename) {
-    mp_msg(MSGT_OPEN,MSGL_ERR,"open_output_stream(), NULL filename, report this bug\n");
+    mp_msg(MSGT_OPEN,MSGL_ERR,MSGTR_StreamNULLFilename);
     return NULL;
   }
 
@@ -273,7 +274,7 @@ stream_t* open_output_stream(const char* filename, char** options) {
 void stream_capture_do(stream_t *s)
 {
   if (fwrite(s->buffer, s->buf_len, 1, s->capture_file) < 1) {
-    mp_msg(MSGT_GLOBAL, MSGL_ERR, "Error writing capture file: %s\n",
+    mp_msg(MSGT_GLOBAL, MSGL_ERR, MSGTR_StreamErrorWritingCapture,
            strerror(errno));
     fclose(s->capture_file);
     s->capture_file = NULL;
@@ -282,12 +283,15 @@ void stream_capture_do(stream_t *s)
 
 int stream_read_internal(stream_t *s, void *buf, int len)
 {
+  int orig_len = len;
   // we will retry even if we already reached EOF previously.
   switch(s->type){
   case STREAMTYPE_STREAM:
 #ifdef CONFIG_NETWORKING
     if( s->streaming_ctrl!=NULL && s->streaming_ctrl->streaming_read ) {
       len=s->streaming_ctrl->streaming_read(s->fd, buf, len, s->streaming_ctrl);
+      if (s->streaming_ctrl->status == streaming_stopped_e)
+        s->eof = 1;
     } else
 #endif
     if (s->fill_buffer)
@@ -303,7 +307,33 @@ int stream_read_internal(stream_t *s, void *buf, int len)
   default:
     len= s->fill_buffer ? s->fill_buffer(s, buf, len) : 0;
   }
-  if(len<=0){ s->eof=1; return 0; }
+  if(len<=0){
+    off_t pos = s->pos;
+    // do not retry if this looks like proper eof
+    if (s->eof || (s->end_pos && pos == s->end_pos))
+      goto eof_out;
+    // dvdnav has some horrible hacks to "suspend" reads,
+    // we need to skip this code or seeks will hang.
+    if (s->type == STREAMTYPE_DVDNAV)
+      goto eof_out;
+
+    // just in case this is an error e.g. due to network
+    // timeout reset and retry
+    // Seeking is used as a hack to make network streams
+    // reopen the connection, ideally they would implement
+    // e.g. a STREAM_CTRL_RECONNECT to do this
+    s->eof=1;
+    stream_reset(s);
+    if (stream_seek_internal(s, pos) >= 0 || s->pos != pos) // seek failed
+      goto eof_out;
+    // make sure EOF is set to ensure no endless loops
+    s->eof=1;
+    return stream_read_internal(s, buf, orig_len);
+
+eof_out:
+    s->eof=1;
+    return 0;
+  }
   // When reading succeeded we are obviously not at eof.
   // This e.g. avoids issues with eof getting stuck when lavf seeks in MPEG-TS
   s->eof=0;
@@ -331,6 +361,7 @@ int stream_write_buffer(stream_t *s, unsigned char *buf, int len) {
   if(rd < 0)
     return -1;
   s->pos += rd;
+  assert(rd == len && "stream_write_buffer(): unexpected short write");
   return rd;
 }
 
@@ -346,7 +377,7 @@ if(newpos==0 || newpos!=s->pos){
 #ifdef CONFIG_NETWORKING
     if(s->seek) { // new stream seek is much cleaner than streaming_ctrl one
       if(!s->seek(s,newpos)) {
-      	mp_msg(MSGT_STREAM,MSGL_ERR, "Seek failed\n");
+      	mp_msg(MSGT_STREAM,MSGL_ERR, MSGTR_StreamSeekFailed);
       	return 0;
       }
       break;
@@ -354,14 +385,14 @@ if(newpos==0 || newpos!=s->pos){
 
     if( s->streaming_ctrl!=NULL && s->streaming_ctrl->streaming_seek ) {
       if( s->streaming_ctrl->streaming_seek( s->fd, newpos, s->streaming_ctrl )<0 ) {
-        mp_msg(MSGT_STREAM,MSGL_INFO,"Stream not seekable!\n");
+        mp_msg(MSGT_STREAM,MSGL_INFO,MSGTR_StreamNotSeekable);
         return 1;
       }
       break;
     }
 #endif
     if(newpos<s->pos){
-      mp_msg(MSGT_STREAM,MSGL_INFO,"Cannot seek backward in linear streams!\n");
+      mp_msg(MSGT_STREAM,MSGL_INFO,MSGTR_StreamCannotSeekBackward);
       return 1;
     }
     break;
@@ -371,7 +402,7 @@ if(newpos==0 || newpos!=s->pos){
       return 0;
     // Now seek
     if(!s->seek(s,newpos)) {
-      mp_msg(MSGT_STREAM,MSGL_ERR, "Seek failed\n");
+      mp_msg(MSGT_STREAM,MSGL_ERR, MSGTR_StreamSeekFailed);
       return 0;
     }
   }

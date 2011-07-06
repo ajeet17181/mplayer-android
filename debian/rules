@@ -45,7 +45,6 @@ CONFIGURE_FLAGS = \
 	--enable-xvmc \
 	--enable-menu \
 	--disable-arts \
-	--enable-largefiles \
 	--language=all \
 	$(archconf)
 
@@ -104,7 +103,7 @@ debian/mplayer/usr/bin/mplayer debian/mencoder/usr/bin/mencoder:
 	$(CLEAN_ENV) \
 	./configure $(CONFIGURE_FLAGS) --disable-gui
 	$(CLEAN_ENV) \
-	$(MAKE) $(NUMJOBS) mplayer mencoder
+	$(MAKE) $(NUMJOBS) mplayer mencoder V=1
 	$(MAKE) install-mplayer DESTDIR=$(CURDIR)/debian/mplayer
 	$(MAKE) install-mplayer-man DESTDIR=$(CURDIR)/debian/mplayer
 	$(MAKE) install-mencoder DESTDIR=$(CURDIR)/debian/mencoder
@@ -118,12 +117,12 @@ debian/mplayer-gui/usr/bin/gmplayer:
 	$(CLEAN_ENV) \
 	./configure $(CONFIGURE_FLAGS) --enable-gui
 	$(CLEAN_ENV) \
-	$(MAKE) $(NUMJOBS) mplayer
+	$(MAKE) $(NUMJOBS) mplayer V=1
 	install -D -m 755 mplayer $(CURDIR)/debian/mplayer-gui/usr/bin/gmplayer
 	install -D -m 644 etc/mplayer.desktop \
 	                  $(CURDIR)/debian/mplayer-gui/usr/share/applications/mplayer.desktop
-	install -D -m 644 etc/mplayer.xpm \
-	                  $(CURDIR)/debian/mplayer-gui/usr/share/pixmaps/mplayer.xpm
+	install -D -m 644 etc/mplayer.png \
+	                  $(CURDIR)/debian/mplayer-gui/usr/share/pixmaps/mplayer.png
 
 
 # binaries already installed via build rules as we have to build several flavors
@@ -154,7 +153,7 @@ clean:
 	dh_testroot
 	-test ! -f config.mak || ( $(MAKE) -C DOCS/xml releaseclean ; $(MAKE) distclean )
 	# in case the previous command fails for some reason, remove 'svn ignored' files
-	rm -rf DOCS/HTML DOCS/HTML-single DOCS/codecs-status.html
+	rm -rf DOCS/HTML DOCS/codecs-status.html
 
 # Build architecture-independent packages
 binary-indep: install-indep

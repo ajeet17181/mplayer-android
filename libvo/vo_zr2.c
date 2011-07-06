@@ -20,7 +20,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-/* $Id: vo_zr2.c 30164 2010-01-01 13:18:49Z reimar $ */
+/* $Id: vo_zr2.c 33392 2011-05-07 10:59:11Z iive $ */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -451,7 +451,7 @@ static int config(uint32_t width, uint32_t height, uint32_t d_width,
 	return 0;
 }
 
-static int control(uint32_t request, void *data, ...) {
+static int control(uint32_t request, void *data) {
 	switch (request) {
   		case VOCTRL_QUERY_FORMAT:
 			return query_format(*((uint32_t*)data));

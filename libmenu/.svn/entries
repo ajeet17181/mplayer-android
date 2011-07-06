@@ -1,15 +1,15 @@
 10
 
 dir
-32840
+33819
 svn://svn.mplayerhq.hu/mplayer/trunk/libmenu
 svn://svn.mplayerhq.hu/mplayer
 
 
 
-2010-11-16T21:06:52.544945Z
-32630
-cboesch
+2011-07-02T23:27:19.104685Z
+33801
+reimar
 has-props
 
 
@@ -202,11 +202,11 @@ file
 
 
 
-2010-12-27T07:06:10.953760Z
-f1396bdf48e57765c6f43df7bf25b207
-2010-11-14T09:12:34.694315Z
-32624
-cboesch
+2011-05-11T00:57:33.207927Z
+5e7a2678546271199df81f0dbcf1aea1
+2011-05-08T08:52:43.361111Z
+33440
+reimar
 has-props
 
 
@@ -228,7 +228,7 @@ has-props
 
 
 
-20310
+20060
 
 menu_list.h
 file
@@ -338,11 +338,11 @@ file
 
 
 
-2010-10-22T14:31:52.000000Z
-e22dad54725c8dac6eef644d47c10bd5
-2010-04-04T16:11:20.506132Z
-30999
-diego
+2011-07-04T12:54:58.171898Z
+819595e31557d29a3f6951d4fb35a622
+2011-07-02T23:27:19.104685Z
+33801
+reimar
 has-props
 
 
@@ -364,7 +364,7 @@ has-props
 
 
 
-6049
+6051
 
 menu_filesel.c
 file
@@ -372,11 +372,11 @@ file
 
 
 
-2010-12-27T07:06:10.955644Z
-d7cd7ea6aa447150c56c2ba522b1f26b
-2010-11-14T09:12:34.694315Z
-32624
-cboesch
+2011-05-11T00:57:33.209052Z
+a0cdfb370e82569c3976ddfbdde3e87c
+2011-05-07T19:09:13.370018Z
+33404
+reimar
 has-props
 
 
@@ -398,7 +398,7 @@ has-props
 
 
 
-12286
+12235
 
 menu_pt.c
 file

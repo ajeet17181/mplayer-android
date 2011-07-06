@@ -70,7 +70,7 @@ static const vo_info_t info =
 const LIBVO_EXTERN (v4l2)
 
 int
-v4l2_write (unsigned char *data, int len)
+v4l2_write (const unsigned char *data, int len)
 {
   if (v4l2_fd < 0)
     return 0;
@@ -254,7 +254,7 @@ query_format (uint32_t format)
 }
 
 static int
-control (uint32_t request, void *data, ...)
+control (uint32_t request, void *data)
 {
   switch (request)
   {

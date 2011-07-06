@@ -152,7 +152,6 @@ static const char help_text[]=
 #define MSGTR_IncreaseRTCMaxUserFreq "Попробуйте добавить \"echo %lu > /proc/sys/dev/rtc/max-user-freq\" \nв загрузочные скрипты Вашей системы.\n"
 #define MSGTR_LinuxRTCInitErrorPieOn "Ошибка инициализации Linux RTC в ioctl (rtc_pie_on): %s\n"
 #define MSGTR_UsingTimingType "Используется %s синхронизация.\n"
-#define MSGTR_NoIdleAndGui "Опция -idle не может быть использована вместе с GMPlayer.\n"
 #define MSGTR_MenuInitialized "Меню инициализировано: %s\n"
 #define MSGTR_MenuInitFailed "Не могу инициализировать меню.\n"
 #define MSGTR_Getch2InitializedTwice "ПРЕДУПРЕЖДЕНИЕ: getch2_init вызван дважды!\n"
@@ -561,33 +560,24 @@ static const char help_text[]=
 #define MSGTR_NEMFMR "Извините, не хватает памяти для отображения меню."
 #define MSGTR_IDFGCVD "Извините, не нашёл совместимый с GUI драйвер видео вывода."
 #define MSGTR_NEEDLAVC "Извините, Вы не можете проигрывать не-MPEG файлы на Вашем DXR3/H+ устройстве\nбез перекодирования. Пожалуйста, включите lavc при конфигурации DXR3/H+."
-#define MSGTR_UNKNOWNWINDOWTYPE "Найден неизвестный тип окна..."
 
 // --- skin loader error messages
 #define MSGTR_SKIN_ERRORMESSAGE "[скин] ошибка в файле конфигурации шкуры на строке %d: %s"
-#define MSGTR_SKIN_WARNING1 "[скин] предупреждение: в файле конфигурации шкуры на строке %d:\nэлемент GUI найден, но до этого не найдено \"section\" (%s)"
-#define MSGTR_SKIN_WARNING2 "[скин] предупреждение: в файле конфигурации шкуры на строке %d:\nэлемент GUI найден, но до этого не найдено \"subsection\" (%s)"
-#define MSGTR_SKIN_WARNING3 "[скин] предупреждение: в файле конфигурации шкуры на строке %d:\nэта подсекция не поддерживается этим элементом GUI (%s)"
 #define MSGTR_SKIN_SkinFileNotFound "[скин] файл '%s' не найден.\n"
 #define MSGTR_SKIN_SkinFileNotReadable "[скин] файл ( %s ) не читаем.\n"
 #define MSGTR_SKIN_BITMAP_16bit  "Глубина битовой матрицы в 16 бит и меньше не поддерживается (%s).\n"
 #define MSGTR_SKIN_BITMAP_FileNotFound  "Файл не найден (%s)\n"
-#define MSGTR_SKIN_BITMAP_BMPReadError "ошибка чтения BMP (%s)\n"
-#define MSGTR_SKIN_BITMAP_TGAReadError "ошибка чтения TGA (%s)\n"
 #define MSGTR_SKIN_BITMAP_PNGReadError "ошибка чтения PNG (%s)\n"
-#define MSGTR_SKIN_BITMAP_RLENotSupported "RLE упакованный TGA не поддерживается (%s)\n"
-#define MSGTR_SKIN_BITMAP_UnknownFileType "неизвестный тип файла (%s)\n"
 #define MSGTR_SKIN_BITMAP_ConversionError "ошибка преобразования 24-бит в 32-бит (%s)\n"
-#define MSGTR_SKIN_BITMAP_UnknownMessage "неизвестное сообщение: %s\n"
-#define MSGTR_SKIN_FONT_NotEnoughtMemory "не хватает памяти\n"
+#define MSGTR_SKIN_UnknownMessage "неизвестное сообщение: %s\n"
+#define MSGTR_SKIN_NotEnoughMemory "не хватает памяти\n"
 #define MSGTR_SKIN_FONT_TooManyFontsDeclared "Объявлено слишком много шрифтов.\n"
 #define MSGTR_SKIN_FONT_FontFileNotFound "Файл шрифта не найден.\n"
 #define MSGTR_SKIN_FONT_FontImageNotFound "Файл образов шрифта не найден.\n"
-#define MSGTR_SKIN_FONT_NonExistentFontID "несуществующий идентификатор шрифта (%s)\n"
+#define MSGTR_SKIN_FONT_NonExistentFont "несуществующий идентификатор шрифта (%s)\n"
 #define MSGTR_SKIN_UnknownParameter "неизвестный параметр (%s)\n"
 #define MSGTR_SKIN_SKINCFG_SkinNotFound "Скин не найден (%s).\n"
 #define MSGTR_SKIN_SKINCFG_SelectedSkinNotFound "Выбранный скин '%s' не найден, пробую 'default'...\n"
-#define MSGTR_SKIN_SKINCFG_SkinCfgReadError "Ошибка чтения файла конфигурации шкур (%s)\n"
 #define MSGTR_SKIN_LABEL "Шкуры:"
 
 // --- GTK menus
@@ -782,25 +772,18 @@ static const char help_text[]=
 #define MSGTR_MSGBOX_LABEL_Error "Ошибка!"
 #define MSGTR_MSGBOX_LABEL_Warning "Предупреждение!"
 
-// bitmap.c
-#define MSGTR_NotEnoughMemoryC32To1 "[c32to1] недостаточно памяти для изображения\n"
-#define MSGTR_NotEnoughMemoryC1To32 "[c1to32] недостаточно памяти для изображения\n"
-
 // cfg.c
-#define MSGTR_ConfigFileReadError "[cfg] ошибка чтения конфигурационного файла...\n"
 #define MSGTR_UnableToSaveOption "[cfg] Не могу сохранить опцию '%s'.\n"
 
 // interface.c
 #define MSGTR_DeletingSubtitles "[GUI] Удаляю субтитры.\n"
 #define MSGTR_LoadingSubtitles "[GUI] Загружаю субтитры: %s\n"
 #define MSGTR_AddingVideoFilter "[GUI] Добавляю видеофильтр: %s\n"
-#define MSGTR_RemovingVideoFilter "[GUI] Удаляю видеофильтр: %s\n"
 
 // mw.c
 #define MSGTR_NotAFile "Это не похоже на файл: '%s' !\n"
 
 // ws.c
-#define MSGTR_WS_CouldNotOpenDisplay "[ws] Не могу открыть дисплей.\n"
 #define MSGTR_WS_RemoteDisplay "[ws] Удалённый дисплей, отключаю XMITSHM.\n"
 #define MSGTR_WS_NoXshm "[ws] Извините, ваша система не поддерживает расширение разделяемой памяти X'ов.\n"
 #define MSGTR_WS_NoXshape "[ws] Извините, ваша система не поддерживает расширение XShape.\n"
@@ -1437,7 +1420,7 @@ static const char help_text[]=
 #define MSGTR_EnterTelecineMode "\ndemux_mpg: обнаружено 24000/1001 кадра/сек NTSC содержимое с построчной развёрткой,\nпереключаю частоту кадров.\n"
 
 #define MSGTR_CacheFill "\rЗаполнение кэша: %5.2f%% (%"PRId64" байт(а))   "
-#define MSGTR_NoBindFound "Не найдена привязка к клавише '%s'."
+#define MSGTR_NoBindFound "Не найдена привязка к клавише '%s'.\n"
 #define MSGTR_FailedToOpen "Не могу открыть %s.\n"
 
 #define MSGTR_VideoID "[%s] Найден видео поток, -vid %d\n"

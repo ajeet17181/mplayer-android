@@ -1,15 +1,15 @@
 10
 
 dir
-32840
+33819
 svn://svn.mplayerhq.hu/mplayer/trunk/DOCS/man/fr
 svn://svn.mplayerhq.hu/mplayer
 
 
 
-2010-10-23T21:09:45.544422Z
-32533
-cehoyos
+2011-06-05T10:20:25.402341Z
+33559
+ib
 
 
 
@@ -32,11 +32,11 @@ file
 
 
 
-2010-12-27T07:05:38.794644Z
-7ee8452ee8dd28a2afea4039d3cad959
-2010-10-23T21:09:45.544422Z
-32533
-cehoyos
+2011-06-08T09:01:15.739667Z
+c48aa109573b6b8e33a7a42d3324e95d
+2011-06-05T10:20:25.402341Z
+33559
+ib
 has-props
 
 
@@ -58,5 +58,5 @@ has-props
 
 
 
-363182
+370467
 

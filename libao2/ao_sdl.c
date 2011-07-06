@@ -132,7 +132,7 @@ static void outputaudio(void *unused, Uint8 *stream, int len)
 // open & setup audio device
 // return: 1=success 0=fail
 static int init(int rate,int channels,int format,int flags){
-
+	main_ao_init();
 	/* SDL Audio Specifications */
 	SDL_AudioSpec aspec, obtained;
 
@@ -273,7 +273,7 @@ static void audio_pause(void)
 
 	//printf("SDL: audio_pause called!\n");
 	SDL_PauseAudio(1);
-
+	SDL_ANDROID_PauseAudioPlayback();
 }
 
 // resume playing, after audio_pause()
@@ -281,6 +281,7 @@ static void audio_resume(void)
 {
 	//printf("SDL: audio_resume called!\n");
 	SDL_PauseAudio(0);
+	SDL_ANDROID_ResumeAudioPlayback();
 }
 
 

@@ -29,9 +29,9 @@
 #include "mp_msg.h"
 #include "cpudetect.h"
 #include "libswscale/swscale.h"
-#include "libavcore/imgutils.h"
+#include "libavutil/imgutils.h"
 #include "gui.h"
-#include "gui/bitmap.h"
+#include "gui/util/bitmap.h"
 
 #define MAX_LINESIZE 256
 
@@ -52,7 +52,6 @@ static const evName evNames[] =
     {   evNext,                 "evNext"                },
     {   evLoad,                 "evLoad"                },
     {   evEqualizer,            "evEqualizer"           },
-    {   evEqualizer,            "evEqualeaser"          },
     {   evPlayList,             "evPlaylist"            },
     {   evExit,                 "evExit"                },
     {   evIconify,              "evIconify"             },
@@ -108,7 +107,7 @@ static char *geteventname(int event)
 static image *pngRead(skin_t *skin, unsigned char *fname)
 {
     int i;
-    txSample bmp;
+    guiImage bmp;
     image *bf;
     char *filename = NULL;
     FILE *fp;
@@ -145,12 +144,6 @@ static image *pngRead(skin_t *skin, unsigned char *fname)
     bpRead(filename ? filename : fname, &bmp);
     free(filename);
     bf->width = bmp.Width; bf->height = bmp.Height;
-
-#ifdef DEBUG
-    mp_msg(MSGT_GPLAYER, MSGL_DBG4, "[png] loaded image %s\n", fname);
-    mp_msg(MSGT_GPLAYER, MSGL_DBG4, "[png] size: %dx%d bits: %d\n", bf->width, bf->height, BPP);
-    mp_msg(MSGT_GPLAYER, MSGL_DBG4, "[png] imagesize: %u\n", imgsize);
-#endif
 
     bf->size = bf->width * bf->height * skin->desktopbpp / 8;
     if (skin->desktopbpp == 32)
@@ -194,7 +187,7 @@ static void freeimages(skin_t *skin)
 }
 
 #ifdef DEBUG
-void dumpwidgets(skin_t *skin)
+static void dumpwidgets(skin_t *skin)
 {
     unsigned int i;
     for (i=0; i<skin->widgetcount; i++)

@@ -157,8 +157,8 @@ static void alloc_buf(mp_osd_obj_t* obj)
 	obj->allocated = len;
 	free(obj->bitmap_buffer);
 	free(obj->alpha_buffer);
-	obj->bitmap_buffer = (unsigned char *)memalign(16, len);
-	obj->alpha_buffer = (unsigned char *)memalign(16, len);
+	obj->bitmap_buffer = memalign(16, len);
+	obj->alpha_buffer  = memalign(16, len);
     }
     memset(obj->bitmap_buffer, sub_bg_color, len);
     memset(obj->alpha_buffer, sub_bg_alpha, len);
@@ -671,7 +671,6 @@ inline static void vo_update_text_sub(mp_osd_obj_t* obj,int dxs,int dys){
    unsigned char *t;
    int c,i,j,l,x,y,font,prevc,counter;
    int k;
-   int lastStripPosition;
    int xsize;
    int xmin=dxs,xmax=0;
    int h,lasth;
@@ -690,7 +689,6 @@ inline static void vo_update_text_sub(mp_osd_obj_t* obj,int dxs,int dys){
       // too long lines divide into a smaller ones
       i=k=lasth=0;
       h=sub_font->height;
-      lastStripPosition=-1;
       l=vo_sub->lines;
 
     {

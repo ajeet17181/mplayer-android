@@ -1,14 +1,14 @@
 10
 
 dir
-32840
+33819
 svn://svn.mplayerhq.hu/mplayer/trunk/osdep
 svn://svn.mplayerhq.hu/mplayer
 
 
 
-2011-01-06T12:42:59.674625Z
-32763
+2011-05-24T19:51:38.505573Z
+33500
 diego
 has-props
 
@@ -270,10 +270,10 @@ file
 
 
 
-2010-10-22T14:31:19.000000Z
-038e0401751b1000ab9cd082d1ccad06
-2010-02-16T15:03:03.835831Z
-30596
+2011-06-08T09:01:16.040886Z
+e8b98b245a5af0a8235fddf31511673c
+2011-05-24T19:51:38.505573Z
+33500
 diego
 has-props
 
@@ -296,7 +296,7 @@ has-props
 
 
 
-3796
+3793
 
 mmap_anon.h
 file

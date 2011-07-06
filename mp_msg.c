@@ -79,7 +79,7 @@ const char* filename_recode(const char* filename)
 void mp_msg_init(void){
     int i;
     char *env = getenv("MPLAYER_VERBOSE");
-    FILE *fp=fopen("/sdcard/mplayer/log.txt","w+");
+    FILE *fp=fopen("/data/data/com.vnd.mplayer/cache/log.txt","w+");
     if (fp)
     fclose(fp);
     if (env)
@@ -242,7 +242,7 @@ void mp_msg_va(int mod, int lev, const char *format, va_list va){
     header = len && (tmp[len-1] == '\n' || tmp[len-1] == '\r');
 
     fprintf(stream, "%s", tmp);
-    FILE *fp=fopen("/sdcard/mplayer/log.txt","a+");
+    FILE *fp=fopen("/data/data/com.vnd.mplayer/cache/log.txt","a+");
     if (fp){
     fprintf(fp,"%s",tmp);
     fclose(fp);

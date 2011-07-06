@@ -363,7 +363,7 @@ static int demux_asf_fill_buffer(demuxer_t *demux, demux_stream_t *ds){
             unsigned char segtype=p[1];
             unsigned padding;
             unsigned plen;
-	    unsigned sequence;
+            unsigned sequence;
             unsigned long time=0;
             unsigned short duration=0;
 

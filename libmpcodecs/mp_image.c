@@ -123,9 +123,9 @@ void mp_image_setfmt(mp_image_t* mpi,unsigned int out_fmt){
     }
     mpi->flags|=MP_IMGFLAG_YUV;
     mpi->num_planes=3;
-    if (mp_get_chroma_shift(out_fmt, NULL, NULL)) {
+    if (mp_get_chroma_shift(out_fmt, NULL, NULL, NULL)) {
         mpi->flags|=MP_IMGFLAG_PLANAR;
-        mpi->bpp = mp_get_chroma_shift(out_fmt, &mpi->chroma_x_shift, &mpi->chroma_y_shift);
+        mpi->bpp = mp_get_chroma_shift(out_fmt, &mpi->chroma_x_shift, &mpi->chroma_y_shift, NULL);
         mpi->chroma_width  = mpi->width  >> mpi->chroma_x_shift;
         mpi->chroma_height = mpi->height >> mpi->chroma_y_shift;
     }
@@ -147,8 +147,14 @@ void mp_image_setfmt(mp_image_t* mpi,unsigned int out_fmt){
     case IMGFMT_444P16_BE:
     case IMGFMT_422P16_LE:
     case IMGFMT_422P16_BE:
+    case IMGFMT_422P10_LE:
+    case IMGFMT_422P10_BE:
     case IMGFMT_420P16_LE:
     case IMGFMT_420P16_BE:
+    case IMGFMT_420P10_LE:
+    case IMGFMT_420P10_BE:
+    case IMGFMT_420P9_LE:
+    case IMGFMT_420P9_BE:
         return;
     case IMGFMT_Y800:
     case IMGFMT_Y8:

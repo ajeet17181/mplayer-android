@@ -154,7 +154,6 @@ static const char help_text[]=
 #define MSGTR_IncreaseRTCMaxUserFreq "\"echo %lu > /proc/sys/dev/rtc/max-user-freq\" seçeneğini sistem açılış betiklerine eklemeyi deneyiniz.\n"
 #define MSGTR_LinuxRTCInitErrorPieOn "ioctl'de Linux RTC açılış hatası (rtc_pie_on): %s\n"
 #define MSGTR_UsingTimingType "%s zamanlaması kullanılıyor.\n"
-#define MSGTR_NoIdleAndGui "GMPlayer ile -idle seçeneği kullanılamaz.\n"
 #define MSGTR_MenuInitialized "Menü başlatıldı: %s\n"
 #define MSGTR_MenuInitFailed " Menü başlatılamadı.\n"
 #define MSGTR_Getch2InitializedTwice "UYARI:getch2_init iki defa çağırıldı!\n"
@@ -636,7 +635,7 @@ static const char help_text[]=
 #define MSGTR_EnterTelecineMode "\nBulunan içerik demux_mpg: 24000/1001fps progressive NTSC, kare oranı değiştirliyor.\n"
 
 #define MSGTR_CacheFill "\rÖnbellek doyumu: %5.2f%% (%"PRId64" bayt)  "
-#define MSGTR_NoBindFound "'%s' tuşu için bağ bulunamadı "
+#define MSGTR_NoBindFound "'%s' tuşu için bağ bulunamadı.\n"
 #define MSGTR_FailedToOpen "%s açılamadı\n"
 
 #define MSGTR_VideoID "[%s] Görüntü akışı bulundu, -vid %d\n"
@@ -752,33 +751,24 @@ static const char help_text[]=
 #define MSGTR_NEMFMR "Üzgünüm, menü oluşturmak için yeterli hafıza yok."
 #define MSGTR_IDFGCVD "Üzgünüm, KGA ile uyumlu video çıkış sürücüsü bulunamadı."
 #define MSGTR_NEEDLAVC "Üzgünüm, MPEG olmayan dosyaları DXR3/H+ aygıtınızla oynatamazsınız. \nLütfen DXR3/H+ ayarlarından lavc seçeneğini etkinleştirin."
-#define MSGTR_UNKNOWNWINDOWTYPE "Bilinmeyen pencere türü bulundu..."
 
 // --- skin loader error messages
 #define MSGTR_SKIN_ERRORMESSAGE "[arayüz] Hata : arayüz ayar dosyası %d satırı: %s"
-#define MSGTR_SKIN_WARNING1 "[arayüz] Uyarı: arayüz ayar dosyası %d satırı: widget (%s) bulundu ama \"section\" bulunamadı"
-#define MSGTR_SKIN_WARNING2 "[arayüz] Uyarı: arayüz ayar dosyası %d satırı: widget (%s) bulundu ama \"subsection\" bulunamadı "
-#define MSGTR_SKIN_WARNING3 "[arayüz] Uyarı: Ayar dosyasında satır %d\nbu altseçenek widget (%s) tarafından desteklenmiyor."
 #define MSGTR_SKIN_SkinFileNotFound "[arayüz] ( %s ) dosyası bulunamadı.\n"
 #define MSGTR_SKIN_SkinFileNotReadable "[arayüz] ( %s ) dosyası okunabilir değil.\n"
 #define MSGTR_SKIN_BITMAP_16bit  "16 bit veya daha az derinlikteki bitmap desteklenmiyor (%s).\n"
 #define MSGTR_SKIN_BITMAP_FileNotFound  "( %s ) dosyası bulunamadı\n"
-#define MSGTR_SKIN_BITMAP_BMPReadError "BMP okuma hatası (%s)\n"
-#define MSGTR_SKIN_BITMAP_TGAReadError "TGA okuma hatası (%s)\n"
 #define MSGTR_SKIN_BITMAP_PNGReadError "PNG okuma hatası (%s)\n"
-#define MSGTR_SKIN_BITMAP_RLENotSupported "RLE paketlenen TGA desteklemiyor (%s)\n"
-#define MSGTR_SKIN_BITMAP_UnknownFileType "bilinmeyen dosya türü (%s)\n"
 #define MSGTR_SKIN_BITMAP_ConversionError "24 bit --> 32 bit dönüştürme hatası (%s)\n"
-#define MSGTR_SKIN_BITMAP_UnknownMessage "Bilinmeyen ileti: %s\n"
-#define MSGTR_SKIN_FONT_NotEnoughtMemory "yetersiz bellek\n"
+#define MSGTR_SKIN_UnknownMessage "Bilinmeyen ileti: %s\n"
+#define MSGTR_SKIN_NotEnoughMemory "yetersiz bellek\n"
 #define MSGTR_SKIN_FONT_TooManyFontsDeclared "Çok sayıda yazıtipi tanıtıldı\n"
 #define MSGTR_SKIN_FONT_FontFileNotFound "yazıtipi dosyası bulunamadı\n"
 #define MSGTR_SKIN_FONT_FontImageNotFound "yazıtipi görüntü dosyası bulunamadı\n"
-#define MSGTR_SKIN_FONT_NonExistentFontID "Varolmayan yazıtipi tanımlayıcısı (%s)\n"
+#define MSGTR_SKIN_FONT_NonExistentFont "Varolmayan yazıtipi tanımlayıcısı (%s)\n"
 #define MSGTR_SKIN_UnknownParameter "bilinmeyen parametre (%s)\n"
 #define MSGTR_SKIN_SKINCFG_SkinNotFound "Arayüz bulunamadı (%s).\n"
 #define MSGTR_SKIN_SKINCFG_SelectedSkinNotFound "Seçili arayüz ( %s ) bulunamadı , 'varsayılan'ı deneyiniz...\n"
-#define MSGTR_SKIN_SKINCFG_SkinCfgReadError "Arayüz ayar dosyası okuma hatası (%s).\n"
 #define MSGTR_SKIN_LABEL "Arayüzler:"
 
 // --- gtk menus
@@ -973,14 +963,8 @@ static const char help_text[]=
 #define MSGTR_MSGBOX_LABEL_Error "Hata!"
 #define MSGTR_MSGBOX_LABEL_Warning "Uyarı!"
 
-// bitmap.c
-
-#define MSGTR_NotEnoughMemoryC32To1 "[c32to1] görüntü için yeterli bellek yok\n"
-#define MSGTR_NotEnoughMemoryC1To32 "[c1to32] görüntü için yeterli bellek yok\n"
-
 // cfg.c
 
-#define MSGTR_ConfigFileReadError "[cfg] ayar dosyası okuma hatası...\n"
 #define MSGTR_UnableToSaveOption "[cfg] '%s' seçeneği kaydedilemiyor.\n"
 
 // interface.c
@@ -988,7 +972,6 @@ static const char help_text[]=
 #define MSGTR_DeletingSubtitles "[GUI] Altyazılar siliniyor.\n"
 #define MSGTR_LoadingSubtitles "[GUI] Altyazılar yükleniyor: %s\n"
 #define MSGTR_AddingVideoFilter "[GUI] Video filtresi ekleniyor: %s\n"
-#define MSGTR_RemovingVideoFilter "[GUI] Video filtresi kaldırılıyor: %s\n"
 
 // mw.c
 
@@ -996,7 +979,6 @@ static const char help_text[]=
 
 // ws.c
 
-#define MSGTR_WS_CouldNotOpenDisplay "[ws] Gösterge açılamadı.\n"
 #define MSGTR_WS_RemoteDisplay "[ws] uzaktan kumanda göstergesi, XMITSHM devredışı bırakılıyor.\n"
 #define MSGTR_WS_NoXshm "[ws] Üzgünüm, sisteminiz X paylaşımlı bellek genişletmesini desteklemiyor.\n"
 #define MSGTR_WS_NoXshape "[ws] Üzgünüm, sisteminiz Xshape genişletmesini desteklemiyor.\n"

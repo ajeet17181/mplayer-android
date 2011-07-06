@@ -30,6 +30,7 @@
 #include "config.h"
 #include "video_out.h"
 #include "video_out_internal.h"
+#include "libmpcodecs/vf.h"
 #include "fastmemcpy.h"
 #include "sub/sub.h"
 #include "mp_msg.h"
@@ -1334,7 +1335,7 @@ draw_image( mp_image_t *mpi )
 }
 
 static int
-set_equalizer( char *data, int value )
+set_equalizer( const char *data, int value )
 {
      DFBResult res;
      DFBColorAdjustment ca;
@@ -1374,7 +1375,7 @@ set_equalizer( char *data, int value )
 }
 
 static int
-get_equalizer( char *data, int *value )
+get_equalizer( const char *data, int *value )
 {
      DFBResult res;
      DFBColorAdjustment ca;
@@ -1408,7 +1409,7 @@ get_equalizer( char *data, int *value )
 }
 
 static int
-control( uint32_t request, void *data, ... )
+control( uint32_t request, void *data )
 {
      switch (request) {
      case VOCTRL_GUISUPPORT:
@@ -1426,25 +1427,13 @@ control( uint32_t request, void *data, ... )
 
      case VOCTRL_SET_EQUALIZER:
           {
-               va_list ap;
-               int value;
-
-               va_start( ap, data );
-               value = va_arg( ap, int );
-               va_end( ap );
-
-               return set_equalizer( data, value );
+               vf_equalizer_t *eq=data;
+               return set_equalizer( eq->item, eq->value );
           }
      case VOCTRL_GET_EQUALIZER:
           {
-               va_list ap;
-               int *value;
-
-               va_start( ap, data );
-               value = va_arg( ap, int* );
-               va_end( ap );
-
-               return get_equalizer( data, value );
+               vf_equalizer_t *eq=data;
+               return get_equalizer( eq->item, &eq->value );
           }
      }
 

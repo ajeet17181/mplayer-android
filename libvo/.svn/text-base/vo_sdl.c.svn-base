@@ -1187,12 +1187,12 @@ static void erase_rectangle(int x, int y, int w, int h)
         case IMGFMT_YVYU:
         {
                 /* yuy2 and yvyu represent black the same way */
-            uint8_t yuy2_black[] = {0, 128, 0, 128};
+            uint32_t yuy2_black = HAVE_BIGENDIAN ? 0x00800080 : 0x80008000;
 
             SDL_OVR_LOCK((void) 0)
                 erase_area_4(x*2, w*2, h,
                              priv->overlay->pitches[0],
-                             *((uint32_t*) yuy2_black),
+                             yuy2_black,
                              priv->overlay->pixels[0] +
                              priv->overlay->pitches[0]*y);
             SDL_OVR_UNLOCK
@@ -1201,12 +1201,12 @@ static void erase_rectangle(int x, int y, int w, int h)
 
         case IMGFMT_UYVY:
         {
-            uint8_t uyvy_black[] = {128, 0, 128, 0};
+            uint32_t uyvy_black = HAVE_BIGENDIAN ? 0x80008000 : 0x00800080;
 
             SDL_OVR_LOCK((void) 0)
                 erase_area_4(x*2, w*2, h,
                              priv->overlay->pitches[0],
-                             *((uint32_t*) uyvy_black),
+                             uyvy_black,
                              priv->overlay->pixels[0] +
                              priv->overlay->pitches[0]*y);
             SDL_OVR_UNLOCK
@@ -1515,7 +1515,7 @@ static uint32_t get_image(mp_image_t *mpi)
     return VO_FALSE;
 }
 
-static int control(uint32_t request, void *data, ...)
+static int control(uint32_t request, void *data)
 {
   struct sdl_priv_s *priv = &sdl_priv;
   switch (request) {

@@ -95,10 +95,11 @@ static int control(struct af_instance_s *af, int cmd, void *arg)
             // Put sample parameters
             s->lavc_actx->channels = af->data->nch;
             s->lavc_actx->sample_rate = af->data->rate;
+            s->lavc_actx->sample_fmt  = AV_SAMPLE_FMT_S16;
             s->lavc_actx->bit_rate = bit_rate;
 
             if(avcodec_open(s->lavc_actx, s->lavc_acodec) < 0) {
-                mp_msg(MSGT_AFILTER, MSGL_ERR, MSGTR_CouldntOpenCodec, "ac3_fixed", bit_rate);
+                mp_msg(MSGT_AFILTER, MSGL_ERR, MSGTR_CouldntOpenCodec, "ac3", bit_rate);
                 return AF_ERROR;
             }
         }

@@ -389,7 +389,7 @@ static int preinit(const char *arg)
     return 0;
 }
 
-static int control(uint32_t request, void *data, ...)
+static int control(uint32_t request, void *data)
 {
     switch (request)
     {
@@ -413,30 +413,6 @@ static int control(uint32_t request, void *data, ...)
                 set_window(0);
             }
             return VO_TRUE;
-        case VOCTRL_SET_EQUALIZER:
-            {
-                va_list ap;
-                int value;
-
-                va_start(ap, data);
-                value = va_arg(ap, int);
-
-                va_end(ap);
-
-                return vidix_control(request, data, value);
-            }
-        case VOCTRL_GET_EQUALIZER:
-            {
-                va_list ap;
-                int *value;
-
-                va_start(ap, data);
-                value = va_arg(ap, int *);
-
-                va_end(ap);
-
-                return vidix_control(request, data, value);
-            }
         case VOCTRL_UPDATE_SCREENINFO:
             aspect_save_screenres(vo_screenwidth, vo_screenheight);
             return VO_TRUE;

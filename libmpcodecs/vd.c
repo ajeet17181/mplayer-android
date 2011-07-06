@@ -37,6 +37,8 @@
 #include "vf.h"
 
 extern const vd_functions_t mpcodecs_vd_null;
+extern const vd_functions_t mpcodecs_vd_h264;
+extern const vd_functions_t mpcodecs_vd_divx;
 extern const vd_functions_t mpcodecs_vd_ffmpeg;
 extern const vd_functions_t mpcodecs_vd_theora;
 extern const vd_functions_t mpcodecs_vd_dshow;
@@ -65,6 +67,8 @@ extern const vd_functions_t mpcodecs_vd_qtvideo;
 
 const vd_functions_t * const mpcodecs_vd_drivers[] = {
     &mpcodecs_vd_null,
+    &mpcodecs_vd_divx,
+    &mpcodecs_vd_h264,
 #ifdef CONFIG_FFMPEG
     &mpcodecs_vd_ffmpeg,
 #endif
@@ -128,7 +132,7 @@ int opt_screen_size_y = 0;
 float screen_size_xy = 0;
 float movie_aspect = -1.0;
 int vo_flags = 0;
-int vd_use_slices = 1;
+int vd_use_slices = -1;
 
 /** global variables for gamma, brightness, contrast, saturation and hue
     modified by mplayer.c and gui/mplayer/gtk/eq.c:

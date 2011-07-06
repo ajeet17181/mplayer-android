@@ -43,6 +43,7 @@ static const AVCodecTag mp_wav_tags[] = {
     { CODEC_ID_MUSEPACK7,         MKTAG('M', 'P', 'C', ' ')},
     { CODEC_ID_MUSEPACK8,         MKTAG('M', 'P', 'C', '8')},
     { CODEC_ID_NELLYMOSER,        MKTAG('N', 'E', 'L', 'L')},
+    { CODEC_ID_PCM_LXF,           MKTAG('P', 'L', 'X', 'F')},
     { CODEC_ID_QCELP,             MKTAG('Q', 'c', 'l', 'p')},
     { CODEC_ID_QDM2,              MKTAG('Q', 'D', 'M', '2')},
     { CODEC_ID_RA_144,            MKTAG('1', '4', '_', '4')},
@@ -66,6 +67,7 @@ static const AVCodecTag mp_codecid_override_tags[] = {
     { CODEC_ID_AC3,               0x2000},
     { CODEC_ID_ADPCM_IMA_AMV,     MKTAG('A', 'M', 'V', 'A')},
     { CODEC_ID_DTS,               0x2001},
+    { CODEC_ID_DVVIDEO,           MKTAG('d', 'v', 's', 'd')},
     { CODEC_ID_EAC3,              MKTAG('E', 'A', 'C', '3')},
     { CODEC_ID_H264,              MKTAG('H', '2', '6', '4')},
     { CODEC_ID_MPEG4,             MKTAG('M', 'P', '4', 'V')},
@@ -89,6 +91,8 @@ const struct AVCodecTag * const mp_codecid_override_taglists[] =
 
 static const AVCodecTag mp_bmp_tags[] = {
     { CODEC_ID_AMV,               MKTAG('A', 'M', 'V', 'V')},
+    { CODEC_ID_ANM,               MKTAG('A', 'N', 'M', ' ')},
+    { CODEC_ID_AVS,               MKTAG('A', 'V', 'S', ' ')},
     { CODEC_ID_BETHSOFTVID,       MKTAG('B', 'E', 'T', 'H')},
     { CODEC_ID_BFI,               MKTAG('B', 'F', 'I', 'V')},
     { CODEC_ID_C93,               MKTAG('C', '9', '3', 'V')},
@@ -99,6 +103,7 @@ static const AVCodecTag mp_bmp_tags[] = {
     { CODEC_ID_FLIC,              MKTAG('F', 'L', 'I', 'C')},
     { CODEC_ID_IDCIN,             MKTAG('I', 'D', 'C', 'I')},
     { CODEC_ID_INTERPLAY_VIDEO,   MKTAG('I', 'N', 'P', 'V')},
+    { CODEC_ID_JV,                MKTAG('F', 'F', 'J', 'V')},
     { CODEC_ID_MDEC,              MKTAG('M', 'D', 'E', 'C')},
     { CODEC_ID_MOTIONPIXELS,      MKTAG('M', 'V', 'I', '1')},
     { CODEC_ID_NUV,               MKTAG('N', 'U', 'V', '1')},

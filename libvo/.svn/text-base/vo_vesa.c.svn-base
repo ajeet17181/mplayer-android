@@ -1083,7 +1083,7 @@ static int preinit(const char *arg)
   return pre_init_err;
 }
 
-static int control(uint32_t request, void *data, ...)
+static int control(uint32_t request, void *data)
 {
   switch (request) {
   case VOCTRL_QUERY_FORMAT:
@@ -1092,30 +1092,6 @@ static int control(uint32_t request, void *data, ...)
 
 #ifdef CONFIG_VIDIX
   if (vidix_name) {
-    switch (request) {
-    case VOCTRL_SET_EQUALIZER:
-    {
-      va_list ap;
-      int value;
-
-      va_start(ap, data);
-      value = va_arg(ap, int);
-      va_end(ap);
-
-      return vidix_control(request, data, (int *)value);
-    }
-    case VOCTRL_GET_EQUALIZER:
-    {
-      va_list ap;
-      int *value;
-
-      va_start(ap, data);
-      value = va_arg(ap, int*);
-      va_end(ap);
-
-      return vidix_control(request, data, value);
-    }
-    }
     return vidix_control(request, data);
   }
 #endif

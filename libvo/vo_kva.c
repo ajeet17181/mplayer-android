@@ -40,6 +40,7 @@
 #include "help_mp.h"
 #include "video_out.h"
 #include "video_out_internal.h"
+#include "libmpcodecs/vf.h"
 #include "aspect.h"
 
 #include "fastmemcpy.h"
@@ -948,7 +949,7 @@ static int color_ctrl_get(char *what, int *value)
     return VO_TRUE;
 }
 
-static int control(uint32_t request, void *data, ...)
+static int control(uint32_t request, void *data)
 {
     switch (request) {
     case VOCTRL_GET_IMAGE:
@@ -965,26 +966,14 @@ static int control(uint32_t request, void *data, ...)
 
     case VOCTRL_SET_EQUALIZER:
         {
-        va_list ap;
-        int     value;
-
-        va_start(ap, data);
-        value = va_arg(ap, int);
-        va_end(ap);
-
-        return color_ctrl_set(data, value);
+        vf_equalizer_t *eq=data;
+        return color_ctrl_set(eq->item, eq->value);
         }
 
     case VOCTRL_GET_EQUALIZER:
         {
-        va_list ap;
-        int     *value;
-
-        va_start(ap, data);
-        value = va_arg(ap, int *);
-        va_end(ap);
-
-        return color_ctrl_get(data, value);
+        vf_equalizer_t *eq=data;
+        return color_ctrl_get(eq->item, &eq->value);
         }
 
     case VOCTRL_UPDATE_SCREENINFO:

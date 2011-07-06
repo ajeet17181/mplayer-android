@@ -76,8 +76,8 @@ void vo_x11_fullscreen( void );
 void vo_x11_setlayer( Display * mDisplay,Window vo_window,int layer );
 void vo_x11_uninit(void);
 Colormap vo_x11_create_colormap(XVisualInfo *vinfo);
-uint32_t vo_x11_set_equalizer(char *name, int value);
-uint32_t vo_x11_get_equalizer(char *name, int *value);
+uint32_t vo_x11_set_equalizer(const char *name, int value);
+uint32_t vo_x11_get_equalizer(const char *name, int *value);
 void fstype_help(void);
 Window vo_x11_create_smooth_window( Display *mDisplay, Window mRoot,
 	Visual *vis, int x, int y, unsigned int width, unsigned int height,
@@ -102,8 +102,8 @@ extern XSizeHints vo_hint;
 //XvPortID xv_port;
 extern unsigned int xv_port;
 
-int vo_xv_set_eq(uint32_t xv_port, char * name, int value);
-int vo_xv_get_eq(uint32_t xv_port, char * name, int *value);
+int vo_xv_set_eq(uint32_t xv_port, const char * name, int value);
+int vo_xv_get_eq(uint32_t xv_port, const char * name, int *value);
 
 int vo_xv_enable_vsync(void);
 

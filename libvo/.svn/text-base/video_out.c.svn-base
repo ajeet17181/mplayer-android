@@ -135,6 +135,7 @@ extern const vo_functions_t video_out_corevideo;
 extern const vo_functions_t video_out_quartz;
 extern const vo_functions_t video_out_pnm;
 extern const vo_functions_t video_out_md5sum;
+extern const vo_functions_t video_out_mng;
 
 /* The following declarations are _not_ const because functions pointers
  * get overloaded during (re)initialization. */
@@ -291,6 +292,9 @@ const vo_functions_t* const video_out_drivers[] =
 #ifdef CONFIG_MD5SUM
         &video_out_md5sum,
 #endif
+#ifdef CONFIG_MNG
+        &video_out_mng,
+#endif
         NULL
 };
 
@@ -368,7 +372,7 @@ int config_video_out(const vo_functions_t *vo, uint32_t width, uint32_t height,
 #ifdef CONFIG_GUI
     if (use_gui) {
       // GUI creates and manages window for us
-      guiGetEvent(guiSetShVideo, 0);
+      gui(GUI_SETUP_VIDEO_WINDOW, 0);
     }
 #endif
   }

@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  *
- * $Id: pnm.c 31913 2010-08-03 15:55:17Z siretart $
+ * $Id: pnm.c 33433 2011-05-07 21:15:13Z reimar $
  *
  * pnm protocol implementation
  * based upon code from joschka
@@ -416,7 +416,6 @@ static int pnm_write_chunk(uint16_t chunk_id, uint16_t length,
 
 static void pnm_send_request(pnm_t *p, uint32_t bandwidth) {
 
-  uint16_t i16;
   int c=sizeof(pnm_header);
   char fixme[]={0,1};
 
@@ -452,7 +451,6 @@ static void pnm_send_request(pnm_t *p, uint32_t bandwidth) {
   /* client id string */
   p->buffer[c]=PNA_CLIENT_STRING;
   AV_WB16(&p->buffer[c+1], strlen(client_string)-1); /* don't know why do we have -1 here */
-  memcpy(&p->buffer[c+1],&i16,2);
   memcpy(&p->buffer[c+3],client_string,strlen(client_string)+1);
   c=c+3+strlen(client_string)+1;
 

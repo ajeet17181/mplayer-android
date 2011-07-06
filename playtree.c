@@ -68,7 +68,14 @@ play_tree_free(play_tree_t* pt, int children) {
   for(iter = pt->child ; iter != NULL ; iter = iter->next)
     iter->parent = NULL;
 
-  //free(pt->params);
+  if (pt->params) {
+    int i;
+    for(i = 0 ; pt->params[i].name != NULL ; i++) {
+      free(pt->params[i].name);
+      free(pt->params[i].value);
+    }
+    free(pt->params);
+  }
   if(pt->files) {
     int i;
     for(i = 0 ; pt->files[i] != NULL ; i++)
@@ -272,9 +279,8 @@ play_tree_set_parent(play_tree_t* pt, play_tree_t* parent) {
 
 
 void
-play_tree_add_file(play_tree_t* pt,char* file) {
+play_tree_add_file(play_tree_t* pt,const char* file) {
   int n = 0;
-  char* e;
 
 #ifdef MP_DEBUG
   assert(pt != NULL);
@@ -296,7 +302,7 @@ play_tree_add_file(play_tree_t* pt,char* file) {
     return;
   }
 
-  e = pt->files[n] = strdup(file);
+  pt->files[n] = strdup(file);
   pt->files[n+1] = NULL;
 
   pt->entry_type = PLAY_TREE_ENTRY_FILE;
@@ -304,7 +310,7 @@ play_tree_add_file(play_tree_t* pt,char* file) {
 }
 
 int
-play_tree_remove_file(play_tree_t* pt,char* file) {
+play_tree_remove_file(play_tree_t* pt,const char* file) {
   int n,f = -1;
 
 #ifdef MP_DEBUG
@@ -343,7 +349,7 @@ play_tree_remove_file(play_tree_t* pt,char* file) {
 }
 
 void
-play_tree_set_param(play_tree_t* pt, char* name, char* val) {
+play_tree_set_param(play_tree_t* pt, const char* name, const char* val) {
   int n = 0;
 
 #ifdef MP_DEBUG
@@ -367,7 +373,7 @@ play_tree_set_param(play_tree_t* pt, char* name, char* val) {
 }
 
 int
-play_tree_unset_param(play_tree_t* pt, char* name) {
+play_tree_unset_param(play_tree_t* pt, const char* name) {
   int n,ni = -1;
 
 #ifdef MP_DEBUG
@@ -467,7 +473,6 @@ play_tree_iter_push_params(play_tree_iter_t* iter) {
 
   if(!pt->child)
     iter->entry_pushed = 1;
-  return;
 }
 
 play_tree_iter_t*
@@ -500,9 +505,7 @@ play_tree_iter_new(play_tree_t* pt,m_config_t* config) {
 void
 play_tree_iter_free(play_tree_iter_t* iter) {
 
-#ifdef MP_DEBUG
-  assert(iter != NULL);
-#endif
+  if (!iter) return;
 
   if(iter->status_stack) {
 #ifdef MP_DEBUG
@@ -928,7 +931,7 @@ void pt_iter_replace_entry(play_tree_iter_t* iter, play_tree_t* entry)
 }
 
 //Add a new file as a new entry
-void pt_add_file(play_tree_t** ppt, char* filename)
+void pt_add_file(play_tree_t** ppt, const char* filename)
 {
   play_tree_t *pt = *ppt, *entry = play_tree_new();
 #ifdef MP_DEBUG

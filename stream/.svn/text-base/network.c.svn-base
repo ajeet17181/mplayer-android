@@ -57,6 +57,7 @@ int   network_bandwidth=0;
 int   network_cookies_enabled = 0;
 char *network_useragent=NULL;
 char *network_referrer=NULL;
+char **network_http_header_fields=NULL;
 
 /* IPv6 options */
 int   network_ipv4_only_proxy = 0;
@@ -143,7 +144,6 @@ check4proxies( URL_t *url ) {
 		proxy = getenv("http_proxy");
 		if( proxy!=NULL ) {
 			// We got a proxy, build the URL to use it
-			int len;
 			char *new_url;
 			URL_t *tmp_url;
 			URL_t *proxy_url = url_new( proxy );
@@ -164,14 +164,12 @@ check4proxies( URL_t *url ) {
 #endif
 
 			mp_msg(MSGT_NETWORK,MSGL_V,"Using HTTP proxy: %s\n", proxy_url->url );
-			len = make_http_proxy_url(proxy_url, url->url, NULL, 0) + 1;
-			new_url = malloc(len);
+			new_url = get_http_proxy_url(proxy_url, url->url);
 			if( new_url==NULL ) {
 				mp_msg(MSGT_NETWORK,MSGL_FATAL,MSGTR_MemAllocFailed);
 				url_free(proxy_url);
 				return url_out;
 			}
-			make_http_proxy_url(proxy_url, url->url, new_url, len);
 			tmp_url = url_new( new_url );
 			if( tmp_url==NULL ) {
 				free( new_url );
@@ -248,6 +246,12 @@ http_send_request( URL_t *url, off_t pos ) {
 	}
 
 	if (network_cookies_enabled) cookies_set( http_hdr, server_url->hostname, server_url->url );
+
+	if (network_http_header_fields) {
+		int i=0;
+		while (network_http_header_fields[i])
+			http_set_field(http_hdr, network_http_header_fields[i++]);
+	}
 
 	http_set_field( http_hdr, "Connection: close");
 	if (proxy)
@@ -453,7 +457,9 @@ nop_streaming_read( int fd, char *buffer, int size, streaming_ctrl_t *stream_ctr
 		ret = recv( fd, buffer+len, size-len, 0 );
 		if( ret<0 ) {
 			mp_msg(MSGT_NETWORK,MSGL_ERR,"nop_streaming_read error : %s\n",strerror(errno));
-		}
+			ret = 0;
+		} else if (ret == 0)
+			stream_ctrl->status = streaming_stopped_e;
 		len += ret;
 //printf("read %d bytes from network\n", len );
 	}

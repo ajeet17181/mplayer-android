@@ -66,7 +66,7 @@ static const af_info_t * const filter_list[] = {
    &af_info_pan,
    &af_info_surround,
    &af_info_sub,
-#ifdef HAVE_SYS_MMAN_H
+#if HAVE_SYS_MMAN_H
    &af_info_export,
 #endif
    &af_info_volnorm,
@@ -491,7 +491,7 @@ int af_init(af_stream_t* s)
       af = af_control_any_rev(s, AF_CONTROL_RESAMPLE_RATE | AF_CONTROL_SET,
                &(s->output.rate));
       if (!af) {
-        char *resampler = "resample";
+        const char *resampler = "resample";
 #ifdef CONFIG_FFMPEG
         if ((AF_INIT_TYPE_MASK & s->cfg.force) == AF_INIT_SLOW)
           resampler = "lavcresample";

@@ -150,7 +150,6 @@ static const char help_text[]=
 #define MSGTR_IncreaseRTCMaxUserFreq "Zkuste přidat \"echo %lu > /proc/sys/dev/rtc/max-user-freq\" do startovacích\n skriptů vašeho systému.\n"
 #define MSGTR_LinuxRTCInitErrorPieOn "Chyba inicializace Linuxových RTC v ioctl (rtc_pie_on): %s\n"
 #define MSGTR_UsingTimingType "Používám %s časování.\n"
-#define MSGTR_NoIdleAndGui "Volbu -idle nelze použít pro GMPlayer.\n"
 #define MSGTR_MenuInitialized "Menu inicializováno: %s\n"
 #define MSGTR_MenuInitFailed "Selhala inicializace menu.\n"
 #define MSGTR_Getch2InitializedTwice "VAROVÁNÍ: getch2_init volána dvakrát!\n"
@@ -559,33 +558,24 @@ static const char help_text[]=
 #define MSGTR_NEMFMR "Bohužel není dostatek paměti pro vykreslení menu."
 #define MSGTR_IDFGCVD "Bohužel nebyl nalezen video ovladač kompatibilní s GUI."
 #define MSGTR_NEEDLAVC "Bohužel nelze přehrávat ne-MPEG s kartou DXR3/H+ bez přeenkódování.\nProsím, zapněte lavc v konfiguraci DXR3/H+."
-#define MSGTR_UNKNOWNWINDOWTYPE "Nalezen neznámý typ okna ..."
 
 // --- skin loader error messages
 #define MSGTR_SKIN_ERRORMESSAGE "[témata] chyba v konfiguračním souboru témat na řádce %d: %s"
-#define MSGTR_SKIN_WARNING1 "[témata] varování v konfiguračním souboru témat na řádce %d:\nwidget nalezen ale před ním nebyla nalezena žádná \"section\" (%s)"
-#define MSGTR_SKIN_WARNING2 "[témata] varování v konfiguračním souboru témat na řádce %d:\nwidget nalezen ale před ním nebyla nalezena žádná \"subsection\" (%s)"
-#define MSGTR_SKIN_WARNING3 "[témata] varování v konfiguračním souboru témat na řádce %d:\nwidget (%s) nepodporuje tuto subsekci"
 #define MSGTR_SKIN_SkinFileNotFound "[témata] soubor ( %s ) nenalezen.\n"
 #define MSGTR_SKIN_SkinFileNotReadable "[témata] soubor ( %s ) nelze přečíst.\n"
 #define MSGTR_SKIN_BITMAP_16bit  "Bitmapy s hloubkou 16 bitů a méně nejsou podporovány (%s).\n"
 #define MSGTR_SKIN_BITMAP_FileNotFound  "Soubor nenalezen (%s)\n"
-#define MSGTR_SKIN_BITMAP_BMPReadError "chyba čtení BMP (%s)\n"
-#define MSGTR_SKIN_BITMAP_TGAReadError "chyba čtení TGA (%s)\n"
 #define MSGTR_SKIN_BITMAP_PNGReadError "chyba čtení PNG (%s)\n"
-#define MSGTR_SKIN_BITMAP_RLENotSupported "formát TGA zapouzdřený v RLE není podporován (%s)\n"
-#define MSGTR_SKIN_BITMAP_UnknownFileType "neznámý typ souboru (%s)\n"
 #define MSGTR_SKIN_BITMAP_ConversionError "chyba konverze z 24 do 32 bitů (%s)\n"
-#define MSGTR_SKIN_BITMAP_UnknownMessage "neznámá zpráva: %s\n"
-#define MSGTR_SKIN_FONT_NotEnoughtMemory "nedostatek paměti\n"
+#define MSGTR_SKIN_UnknownMessage "neznámá zpráva: %s\n"
+#define MSGTR_SKIN_NotEnoughMemory "nedostatek paměti\n"
 #define MSGTR_SKIN_FONT_TooManyFontsDeclared "deklarováno příliš mnoho fontů\n"
 #define MSGTR_SKIN_FONT_FontFileNotFound "soubor fontu nebyl nalezen\n"
 #define MSGTR_SKIN_FONT_FontImageNotFound "soubor obrazu fontu nebyl nalezen\n"
-#define MSGTR_SKIN_FONT_NonExistentFontID "neexistující identifikátor fontu (%s)\n"
+#define MSGTR_SKIN_FONT_NonExistentFont "neexistující identifikátor fontu (%s)\n"
 #define MSGTR_SKIN_UnknownParameter "neznámý parametr (%s)\n"
 #define MSGTR_SKIN_SKINCFG_SkinNotFound "Téma nenalezeno (%s).\n"
 #define MSGTR_SKIN_SKINCFG_SelectedSkinNotFound "Vybraný skin ( %s ) nenalezen, zkouším 'výchozí'...\n"
-#define MSGTR_SKIN_SKINCFG_SkinCfgReadError "chyba při čtení konfiguračního souboru témat (%s)\n"
 #define MSGTR_SKIN_LABEL "Témata:"
 
 // --- GTK menus
@@ -780,25 +770,18 @@ static const char help_text[]=
 #define MSGTR_MSGBOX_LABEL_Error "Chyba!"
 #define MSGTR_MSGBOX_LABEL_Warning "Varování!"
 
-// bitmap.c
-#define MSGTR_NotEnoughMemoryC32To1 "[c32to1] nedostatek paměti pro obrázek\n"
-#define MSGTR_NotEnoughMemoryC1To32 "[c1to32] nedostatek paměti pro obrázek\n"
-
 // cfg.c
-#define MSGTR_ConfigFileReadError "[cfg] chyba při čtení konfiguračního souboru...\n"
 #define MSGTR_UnableToSaveOption "[cfg] Nelze uložit volbu '%s'.\n"
 
 // interface.c
 #define MSGTR_DeletingSubtitles "[GUI] Mažu titulky.\n"
 #define MSGTR_LoadingSubtitles "[GUI] Načítám titulky: %s\n"
 #define MSGTR_AddingVideoFilter "[GUI] Přidávám video filtr: %s\n"
-#define MSGTR_RemovingVideoFilter "[GUI] Odstraňuji video filtr: %s\n"
 
 // mw.c
 #define MSGTR_NotAFile "Toto nevypadá jako soubor: %s !\n"
 
 // ws.c
-#define MSGTR_WS_CouldNotOpenDisplay "[ws] Nelze otevřít display.\n"
 #define MSGTR_WS_RemoteDisplay "[ws] Vzdálený display, vypínám XMITSHM.\n"
 #define MSGTR_WS_NoXshm "[ws] Promiňte, ale váš systém nepodporuje rozšíření X shared memory.\n"
 #define MSGTR_WS_NoXshape "[ws] Promiňte, ale váš systém nepodporuje rozšíření XShape.\n"
@@ -1436,7 +1419,7 @@ static const char help_text[]=
 #define MSGTR_EnterTelecineMode "\ndemux_mpg: detekováno 24000/1001 fps progresivní NTSC, přepínám frekvenci snímků.\n"
 
 #define MSGTR_CacheFill "\rNaplnění cache: %5.2f%% (%"PRId64" bajtů)   "
-#define MSGTR_NoBindFound "Tlačítko '%s' nemá přiřazenu žádnou funkci."
+#define MSGTR_NoBindFound "Tlačítko '%s' nemá přiřazenu žádnou funkci.\n"
 #define MSGTR_FailedToOpen "Selhalo otevření %s.\n"
 
 #define MSGTR_VideoID "Nalezen video proud [%s], -vid %d\n"

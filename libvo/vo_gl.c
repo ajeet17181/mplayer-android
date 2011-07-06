@@ -32,6 +32,7 @@
 #include "subopt-helper.h"
 #include "video_out.h"
 #include "video_out_internal.h"
+#include "libmpcodecs/vf.h"
 #include "sub/font_load.h"
 #include "sub/sub.h"
 
@@ -229,7 +230,7 @@ static void texSize(int w, int h, int *texw, int *texh) {
 //! maximum size of custom fragment program
 #define MAX_CUSTOM_PROG_SIZE (1024 * 1024)
 static void update_yuvconv(void) {
-  int xs, ys;
+  int xs, ys, depth;
   float bri = eq_bri / 100.0;
   float cont = (eq_cont + 100) / 100.0;
   float hue = eq_hue / 100.0 * 3.1415927;
@@ -238,11 +239,12 @@ static void update_yuvconv(void) {
   float ggamma = exp(log(8.0) * eq_ggamma / 100.0);
   float bgamma = exp(log(8.0) * eq_bgamma / 100.0);
   gl_conversion_params_t params = {gl_target, yuvconvtype,
-      {colorspace, levelconv, bri, cont, hue, sat, rgamma, ggamma, bgamma},
+      {colorspace, levelconv, bri, cont, hue, sat, rgamma, ggamma, bgamma, 0},
       texture_width, texture_height, 0, 0, filter_strength};
-  mp_get_chroma_shift(image_format, &xs, &ys);
+  mp_get_chroma_shift(image_format, &xs, &ys, &depth);
   params.chrom_texw = params.texw >> xs;
   params.chrom_texh = params.texh >> ys;
+  params.csp_params.input_shift = -depth & 7;
   glSetupYUVConversion(&params);
   if (custom_prog) {
     FILE *f = fopen(custom_prog, "rb");
@@ -548,9 +550,11 @@ static int initGl(uint32_t d_width, uint32_t d_height) {
 
   if (is_yuv) {
     int i;
-    int xs, ys;
+    int xs, ys, depth;
+    int chroma_clear_val = 128;
     scale_type = get_scale_type(1);
-    mp_get_chroma_shift(image_format, &xs, &ys);
+    mp_get_chroma_shift(image_format, &xs, &ys, &depth);
+    chroma_clear_val >>= -depth & 7;
     mpglGenTextures(21, default_texs);
     default_texs[21] = 0;
     for (i = 0; i < 7; i++) {
@@ -561,12 +565,14 @@ static int initGl(uint32_t d_width, uint32_t d_height) {
     }
     mpglActiveTexture(GL_TEXTURE1);
     glCreateClearTex(gl_target, gl_texfmt, gl_format, gl_type, scale_type,
-                     texture_width >> xs, texture_height >> ys, 128);
+                     texture_width >> xs, texture_height >> ys,
+                     chroma_clear_val);
     if (mipmap_gen)
       mpglTexParameteri(gl_target, GL_GENERATE_MIPMAP, GL_TRUE);
     mpglActiveTexture(GL_TEXTURE2);
     glCreateClearTex(gl_target, gl_texfmt, gl_format, gl_type, scale_type,
-                     texture_width >> xs, texture_height >> ys, 128);
+                     texture_width >> xs, texture_height >> ys,
+                     chroma_clear_val);
     if (mipmap_gen)
       mpglTexParameteri(gl_target, GL_GENERATE_MIPMAP, GL_TRUE);
     mpglActiveTexture(GL_TEXTURE0);
@@ -652,7 +658,7 @@ config(uint32_t width, uint32_t height, uint32_t d_width, uint32_t d_height, uin
   image_height = height;
   image_width = width;
   image_format = format;
-  is_yuv = mp_get_chroma_shift(image_format, &xs, &ys) > 0;
+  is_yuv = mp_get_chroma_shift(image_format, &xs, &ys, NULL) > 0;
   is_yuv |= (xs << 8) | (ys << 16);
   glFindFormat(format, NULL, &gl_texfmt, &gl_format, &gl_type);
 
@@ -867,7 +873,7 @@ static int draw_slice(uint8_t *src[], int stride[], int w,int h,int x,int y)
               x, y, w, h, slice_height);
   if (is_yuv) {
     int xs, ys;
-    mp_get_chroma_shift(image_format, &xs, &ys);
+    mp_get_chroma_shift(image_format, &xs, &ys, NULL);
     mpglActiveTexture(GL_TEXTURE1);
     glUploadTex(gl_target, gl_format, gl_type, src[1], stride[1],
                 x >> xs, y >> ys, w >> xs, h >> ys, slice_height);
@@ -934,7 +940,7 @@ static uint32_t get_image(mp_image_t *mpi) {
   if (is_yuv) {
     // planar YUV
     int xs, ys;
-    mp_get_chroma_shift(image_format, &xs, &ys);
+    mp_get_chroma_shift(image_format, &xs, &ys, NULL);
     mpi->flags |= MP_IMGFLAG_COMMON_STRIDE | MP_IMGFLAG_COMMON_PLANE;
     mpi->stride[0] = mpi->width;
     mpi->planes[1] = mpi->planes[0] + mpi->stride[0] * mpi->height;
@@ -992,7 +998,7 @@ static uint32_t draw_image(mp_image_t *mpi) {
   if (force_pbo && !(mpi->flags & MP_IMGFLAG_DIRECT) && !gl_bufferptr && get_image(&mpi2) == VO_TRUE) {
     int bpp = is_yuv ? 8 : mpi->bpp;
     int xs, ys;
-    mp_get_chroma_shift(image_format, &xs, &ys);
+    mp_get_chroma_shift(image_format, &xs, &ys, NULL);
     memcpy_pic(mpi2.planes[0], mpi->planes[0], mpi->w * bpp / 8, mpi->h, mpi2.stride[0], mpi->stride[0]);
     if (is_yuv) {
       memcpy_pic(mpi2.planes[1], mpi->planes[1], mpi->w >> xs, mpi->h >> ys, mpi2.stride[1], mpi->stride[1]);
@@ -1034,7 +1040,7 @@ static uint32_t draw_image(mp_image_t *mpi) {
               mpi->x, mpi->y, w, h, slice);
   if (is_yuv) {
     int xs, ys;
-    mp_get_chroma_shift(image_format, &xs, &ys);
+    mp_get_chroma_shift(image_format, &xs, &ys, NULL);
     if ((mpi->flags & MP_IMGFLAG_DIRECT) && !(mpi->flags & MP_IMGFLAG_COMMON_PLANE)) {
       mpglBindBuffer(GL_PIXEL_UNPACK_BUFFER, gl_buffer_uv[0]);
       mpglUnmapBuffer(GL_PIXEL_UNPACK_BUFFER);
@@ -1071,6 +1077,7 @@ draw_frame(uint8_t *src[])
 static int
 query_format(uint32_t format)
 {
+    int depth;
     int caps = VFCAP_CSP_SUPPORTED | VFCAP_CSP_SUPPORTED_BY_HW |
                VFCAP_FLIP |
                VFCAP_HWSCALE_UP | VFCAP_HWSCALE_DOWN | VFCAP_ACCEPT_STRIDE;
@@ -1078,14 +1085,15 @@ query_format(uint32_t format)
       caps |= VFCAP_OSD | VFCAP_EOSD | (scaled_osd ? 0 : VFCAP_EOSD_UNSCALED);
     if (format == IMGFMT_RGB24 || format == IMGFMT_RGBA)
         return caps;
-    if (use_yuv && mp_get_chroma_shift(format, NULL, NULL) &&
+    if (use_yuv && mp_get_chroma_shift(format, NULL, NULL, &depth) &&
+        (depth == 8 || depth == 16 || glYUVLargeRange(use_yuv)) &&
         (IMGFMT_IS_YUVP16_NE(format) || !IMGFMT_IS_YUVP16(format)))
         return caps;
     // HACK, otherwise we get only b&w with some filters (e.g. -vf eq)
     // ideally MPlayer should be fixed instead not to use Y800 when it has the choice
     if (!use_yuv && (format == IMGFMT_Y8 || format == IMGFMT_Y800))
         return 0;
-    if (!use_ycbcr && (format == IMGFMT_UYVY || format == IMGFMT_YUY2))
+    if (!use_ycbcr && (format == IMGFMT_UYVY || format == IMGFMT_YVYU))
         return 0;
     if (many_fmts &&
          glFindFormat(format, NULL, NULL, NULL, NULL))
@@ -1306,7 +1314,7 @@ static const struct {
   {NULL,          NULL,       0                 }
 };
 
-static int control(uint32_t request, void *data, ...)
+static int control(uint32_t request, void *data)
 {
   switch (request) {
   case VOCTRL_PAUSE:
@@ -1361,32 +1369,26 @@ static int control(uint32_t request, void *data, ...)
   case VOCTRL_GET_EQUALIZER:
     if (is_yuv) {
       int i;
-      va_list va;
-      int *value;
-      va_start(va, data);
-      value = va_arg(va, int *);
-      va_end(va);
+      vf_equalizer_t *eq=data;
       for (i = 0; eq_map[i].name; i++)
-        if (strcmp(data, eq_map[i].name) == 0) break;
+        if (strcmp(eq->item, eq_map[i].name) == 0) break;
       if (!(eq_map[i].supportmask & (1 << use_yuv)))
         break;
-      *value = *eq_map[i].value;
+      eq->value = *eq_map[i].value;
       return VO_TRUE;
     }
     break;
   case VOCTRL_SET_EQUALIZER:
     if (is_yuv) {
       int i;
-      va_list va;
-      int value;
-      va_start(va, data);
-      value = va_arg(va, int);
-      va_end(va);
+      vf_equalizer_t *eq=data;
       for (i = 0; eq_map[i].name; i++)
-        if (strcmp(data, eq_map[i].name) == 0) break;
+        if (strcmp(eq->item, eq_map[i].name) == 0) break;
       if (!(eq_map[i].supportmask & (1 << use_yuv)))
         break;
-      *eq_map[i].value = value;
+      *eq_map[i].value = eq->value;
+      if (strcmp(data, "gamma") == 0)
+        eq_rgamma = eq_ggamma = eq_bgamma = eq->value;
       update_yuvconv();
       return VO_TRUE;
     }

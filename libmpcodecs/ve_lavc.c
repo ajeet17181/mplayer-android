@@ -64,8 +64,6 @@ static int lavc_param_vme = 4;
 static float lavc_param_vqscale = -1;
 static int lavc_param_vqmin = 2;
 static int lavc_param_vqmax = 31;
-static int lavc_param_mb_qmin = 2;
-static int lavc_param_mb_qmax = 31;
 static float lavc_param_lmin = 2;
 static float lavc_param_lmax = 31;
 static float lavc_param_mb_lmin = 2;
@@ -199,8 +197,6 @@ const m_option_t lavcopts_conf[]={
 	{"vqscale", &lavc_param_vqscale, CONF_TYPE_FLOAT, CONF_RANGE, 0.0, 255.0, NULL},
 	{"vqmin", &lavc_param_vqmin, CONF_TYPE_INT, CONF_RANGE, 1, 31, NULL},
 	{"vqmax", &lavc_param_vqmax, CONF_TYPE_INT, CONF_RANGE, 1, 31, NULL},
-	{"mbqmin", &lavc_param_mb_qmin, CONF_TYPE_INT, CONF_RANGE, 1, 31, NULL},
-	{"mbqmax", &lavc_param_mb_qmax, CONF_TYPE_INT, CONF_RANGE, 1, 31, NULL},
 	{"lmin", &lavc_param_lmin, CONF_TYPE_FLOAT, CONF_RANGE, 0.01, 255.0, NULL},
 	{"lmax", &lavc_param_lmax, CONF_TYPE_FLOAT, CONF_RANGE, 0.01, 255.0, NULL},
 	{"mblmin", &lavc_param_mb_lmin, CONF_TYPE_FLOAT, CONF_RANGE, 0.01, 255.0, NULL},
@@ -377,8 +373,6 @@ static int config(struct vf_instance *vf,
     lavc_venc_context->time_base= (AVRational){mux_v->h.dwScale, mux_v->h.dwRate};
     lavc_venc_context->qmin= lavc_param_vqmin;
     lavc_venc_context->qmax= lavc_param_vqmax;
-    lavc_venc_context->mb_qmin= lavc_param_mb_qmin;
-    lavc_venc_context->mb_qmax= lavc_param_mb_qmax;
     lavc_venc_context->lmin= (int)(FF_QP2LAMBDA * lavc_param_lmin + 0.5);
     lavc_venc_context->lmax= (int)(FF_QP2LAMBDA * lavc_param_lmax + 0.5);
     lavc_venc_context->mb_lmin= (int)(FF_QP2LAMBDA * lavc_param_mb_lmin + 0.5);
@@ -689,8 +683,8 @@ static int config(struct vf_instance *vf,
 	vf->priv->pic->quality = (int)(FF_QP2LAMBDA * lavc_param_vqscale + 0.5);
     }
 
-    if(lavc_param_threads > 1)
-	avcodec_thread_init(lavc_venc_context, lavc_param_threads);
+    lavc_venc_context->thread_count = lavc_param_threads;
+    lavc_venc_context->thread_type = FF_THREAD_FRAME | FF_THREAD_SLICE;
 
     if (avcodec_open(lavc_venc_context, vf->priv->codec) != 0) {
 	mp_msg(MSGT_MENCODER,MSGL_ERR,MSGTR_CantOpenCodec);
@@ -812,6 +806,13 @@ static int encode_frame(struct vf_instance *vf, AVFrame *pic, double pts){
 	out_size = avcodec_encode_video(lavc_venc_context, mux_v->buffer, mux_v->buffer_size,
 	    pic);
 
+    /* store stats if there are any */
+    if(lavc_venc_context->stats_out && stats_file) {
+        fprintf(stats_file, "%s", lavc_venc_context->stats_out);
+        /* make sure we can't accidentally store the same stats twice */
+        lavc_venc_context->stats_out[0] = 0;
+    }
+
     if(pts != MP_NOPTS_VALUE)
         dts= pts - lavc_venc_context->delay * av_q2d(lavc_venc_context->time_base);
     else
@@ -889,9 +890,6 @@ static int encode_frame(struct vf_instance *vf, AVFrame *pic, double pts){
             pict_type_char[lavc_venc_context->coded_frame->pict_type]
             );
     }
-    /* store stats if there are any */
-    if(lavc_venc_context->stats_out && stats_file)
-        fprintf(stats_file, "%s", lavc_venc_context->stats_out);
     return out_size;
 }
 
@@ -1024,6 +1022,8 @@ static int vf_open(vf_instance_t *vf, char* args){
 	mux_v->bih->biCompression = mmioFOURCC('d', 'r', 'a', 'c');
     else if (!strcasecmp(lavc_param_vcodec, "libdirac"))
 	mux_v->bih->biCompression = mmioFOURCC('d', 'r', 'a', 'c');
+    else if (!strcasecmp(lavc_param_vcodec, "libvpx"))
+	mux_v->bih->biCompression = mmioFOURCC('V', 'P', '8', '0');
     else
 	mux_v->bih->biCompression = mmioFOURCC(lavc_param_vcodec[0],
 		lavc_param_vcodec[1], lavc_param_vcodec[2], lavc_param_vcodec[3]); /* FIXME!!! */
@@ -1038,7 +1038,7 @@ static int vf_open(vf_instance_t *vf, char* args){
 
     vf->priv->pic = avcodec_alloc_frame();
     vf->priv->context = avcodec_alloc_context();
-    vf->priv->context->codec_type = CODEC_TYPE_VIDEO;
+    vf->priv->context->codec_type = AVMEDIA_TYPE_VIDEO;
     vf->priv->context->codec_id = vf->priv->codec->id;
 
     return 1;

@@ -36,7 +36,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <sys/time.h>
-#ifdef HAVE_SYS_MMAN_H
+#if HAVE_SYS_MMAN_H
 #include <sys/mman.h>
 #endif
 #include <sys/ioctl.h>
@@ -470,7 +470,7 @@ static int preinit(const char *arg) {
 	return 0;
 }
 
-static int control(uint32_t request, void *data, ...) {
+static int control(uint32_t request, void *data) {
 	switch (request) {
 		case VOCTRL_QUERY_FORMAT:
 			return query_format(*((uint32_t*)data));

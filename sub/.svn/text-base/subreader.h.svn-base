@@ -23,6 +23,11 @@
 
 #include "config.h"
 
+#ifdef CONFIG_FRIBIDI
+#include <fribidi/fribidi.h>
+int do_fribid_log2vis(int charset, const char *in, FriBidiChar *logical, FriBidiChar *visual, int flip_commas);
+#endif
+
 extern int suboverlap_enabled;
 extern int sub_no_text_pp;  // disable text post-processing
 extern int sub_match_fuzziness;
@@ -93,11 +98,9 @@ subtitle* subcp_recode (subtitle *sub);
 struct stream;
 void subcp_open (struct stream *st); /* for demux_ogg.c */
 void subcp_close (void); /* for demux_ogg.c */
-#ifdef CONFIG_ENCA
 const char* guess_buffer_cp(unsigned char* buffer, int buflen, const char *preferred_language, const char *fallback);
 const char* guess_cp(struct stream *st, const char *preferred_language, const char *fallback);
-#endif
-void load_subtitles(const char *fname, int fps, open_sub_func add_f);
+void load_subtitles(const char *fname, float fps, open_sub_func add_f);
 void load_vob_subtitle(const char *fname, const char * const spudec_ifo, void **spu, open_vob_func add_f);
 void list_sub_file(sub_data* subd);
 void dump_srt(sub_data* subd, float fps);

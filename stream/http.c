@@ -130,7 +130,6 @@ static void scast_meta_read(int fd, streaming_ctrl_t *sc) {
       if (info[i] && info[i] < 32) info[i] = '?';
     info[nlen] = 0;
     mp_msg(MSGT_DEMUXER, MSGL_INFO, "\nICY Info: %s\n", info);
-    main_update(info);
     free(info);
   }
 }

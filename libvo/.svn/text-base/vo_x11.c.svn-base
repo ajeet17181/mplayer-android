@@ -23,6 +23,7 @@
 #include "config.h"
 #include "video_out.h"
 #include "video_out_internal.h"
+#include "libmpcodecs/vf.h"
 #include "aspect.h"
 
 
@@ -104,7 +105,7 @@ static void check_events(void)
         vo_x11_clearwindow(mDisplay, vo_window);
     else if (ret & VO_EVENT_EXPOSE)
         vo_x11_clearwindow_part(mDisplay, vo_window, myximage->width,
-                                myximage->height, 0);
+                                myximage->height, vo_fs);
     if (ret & VO_EVENT_EXPOSE && int_pause)
         flip_page();
 }
@@ -309,10 +310,7 @@ static int config(uint32_t width, uint32_t height, uint32_t d_width,
 // int screen;
 
 // int interval, prefer_blank, allow_exp, nothing;
-    unsigned int fg, bg;
     Colormap theCmap;
-    XSetWindowAttributes xswa;
-    unsigned long xswamask;
     const struct fmt2Xfmtentry_s *fmte = fmt2Xfmt;
 
 #ifdef CONFIG_XF86VM
@@ -359,23 +357,8 @@ static int config(uint32_t width, uint32_t height, uint32_t d_width,
             vo_vm_switch();
         }
 #endif
-        bg = WhitePixel(mDisplay, mScreen);
-        fg = BlackPixel(mDisplay, mScreen);
 
         theCmap = vo_x11_create_colormap(&vinfo);
-
-        xswa.background_pixel = 0;
-        xswa.border_pixel = 0;
-        xswa.colormap = theCmap;
-        xswamask = CWBackPixel | CWBorderPixel | CWColormap;
-
-#ifdef CONFIG_XF86VM
-        if (vm)
-        {
-            xswa.override_redirect = True;
-            xswamask |= CWOverrideRedirect;
-        }
-#endif
 
             vo_x11_create_vo_window(&vinfo, vo_dx, vo_dy, vo_dwidth, vo_dheight,
                     flags, theCmap, "x11", title);
@@ -654,7 +637,7 @@ static int preinit(const char *arg)
     return 0;
 }
 
-static int control(uint32_t request, void *data, ...)
+static int control(uint32_t request, void *data)
 {
     switch (request)
     {
@@ -674,25 +657,13 @@ static int control(uint32_t request, void *data, ...)
             return VO_TRUE;
         case VOCTRL_SET_EQUALIZER:
             {
-                va_list ap;
-                int value;
-
-                va_start(ap, data);
-                value = va_arg(ap, int);
-
-                va_end(ap);
-                return vo_x11_set_equalizer(data, value);
+                vf_equalizer_t *eq=data;
+                return vo_x11_set_equalizer(eq->item, eq->value);
             }
         case VOCTRL_GET_EQUALIZER:
             {
-                va_list ap;
-                int *value;
-
-                va_start(ap, data);
-                value = va_arg(ap, int *);
-
-                va_end(ap);
-                return vo_x11_get_equalizer(data, value);
+                vf_equalizer_t *eq=data;
+                return vo_x11_get_equalizer(eq->item, &eq->value);
             }
         case VOCTRL_ONTOP:
             vo_x11_ontop();

@@ -1,7 +1,7 @@
 10
 
 dir
-32840
+33819
 svn://svn.mplayerhq.hu/mplayer/trunk/drivers
 svn://svn.mplayerhq.hu/mplayer
 
@@ -94,40 +94,6 @@ has-props
 
 5570
 
-mga_vid.c
-file
-
-
-
-
-2010-10-22T14:32:35.000000Z
-787b79b04c876e7c1889895df160015b
-2010-04-12T10:56:17.152819Z
-31032
-diego
-has-props
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-63969
-
 tdfx_vid_test.c
 file
 
@@ -161,6 +127,40 @@ has-props
 
 
 2739
+
+mga_vid.c
+file
+
+
+
+
+2010-10-22T14:32:35.000000Z
+787b79b04c876e7c1889895df160015b
+2010-04-12T10:56:17.152819Z
+31032
+diego
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+63969
 
 tdfx_vid.c
 file
@@ -264,40 +264,6 @@ has-props
 
 46887
 
-mga_vid.h
-file
-
-
-
-
-2010-10-22T14:32:35.000000Z
-985210cabc2b79900fbd7da65982e9dd
-2010-10-05T20:51:05.886041Z
-32444
-diego
-has-props
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-2306
-
 rage128_vid.c
 file
 
@@ -331,6 +297,40 @@ diego
 
 
 41
+
+mga_vid.h
+file
+
+
+
+
+2010-10-22T14:32:35.000000Z
+985210cabc2b79900fbd7da65982e9dd
+2010-10-05T20:51:05.886041Z
+32444
+diego
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2306
 
 tdfx_vid.h
 file

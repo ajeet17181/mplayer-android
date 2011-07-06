@@ -45,6 +45,7 @@
 #include "sub/sub.h"
 #include "vosub_vidix.h"
 
+#include "libmpcodecs/vf.h"
 #include "libmpcodecs/vfcap.h"
 #include "libmpcodecs/mp_image.h"
 
@@ -61,7 +62,7 @@ static vidix_playback_t   vidix_play;
 static vidix_fourcc_t	  vidix_fourcc;
 static vo_functions_t *   vo_server;
 static vidix_yuv_t	  dstrides;
-/*static uint32_t (*server_control)(uint32_t request, void *data, ...);*/
+/*static uint32_t (*server_control)(uint32_t request, void *data);*/
 
 int vidix_start(void)
 {
@@ -96,7 +97,7 @@ void vidix_term( void )
 //  vo_server->control=server_control;
 }
 
-static uint32_t vidix_draw_slice_420(uint8_t *image[], int stride[], int w,int h,int x,int y)
+static int vidix_draw_slice_420(uint8_t *image[], int stride[], int w,int h,int x,int y)
 {
     uint8_t *src;
     uint8_t *dest;
@@ -160,7 +161,7 @@ static uint32_t vidix_draw_slice_420(uint8_t *image[], int stride[], int w,int h
     return -1;
 }
 
-static uint32_t vidix_draw_slice_410(uint8_t *image[], int stride[], int w,int h,int x,int y)
+static int vidix_draw_slice_410(uint8_t *image[], int stride[], int w,int h,int x,int y)
 {
     uint8_t *src;
     uint8_t *dest;
@@ -206,7 +207,7 @@ static uint32_t vidix_draw_slice_410(uint8_t *image[], int stride[], int w,int h
     return -1;
 }
 
-static uint32_t vidix_draw_slice_packed(uint8_t *image[], int stride[], int w,int h,int x,int y)
+static int vidix_draw_slice_packed(uint8_t *image[], int stride[], int w,int h,int x,int y)
 {
     uint8_t *src;
     uint8_t *dest;
@@ -223,7 +224,7 @@ static uint32_t vidix_draw_slice_packed(uint8_t *image[], int stride[], int w,in
     return 0;
 }
 
-static uint32_t vidix_draw_slice_nv12(uint8_t *image[], int stride[], int w,int h,int x,int y)
+static int vidix_draw_slice_nv12(uint8_t *image[], int stride[], int w,int h,int x,int y)
 {
     uint8_t *src;
     uint8_t *dest;
@@ -251,7 +252,7 @@ static uint32_t vidix_draw_slice_nv12(uint8_t *image[], int stride[], int w,int 
     return 0;
 }
 
-static uint32_t vidix_draw_slice(uint8_t *image[], int stride[], int w,int h,int x,int y)
+static int vidix_draw_slice(uint8_t *image[], int stride[], int w,int h,int x,int y)
 {
     mp_msg(MSGT_VO,MSGL_WARN, MSGTR_LIBVO_SUB_VIDIX_DummyVidixdrawsliceWasCalled);
     return -1;
@@ -269,7 +270,7 @@ static uint32_t  vidix_draw_image(mp_image_t *mpi){
     return VO_TRUE;
 }
 
-static uint32_t vidix_draw_frame(uint8_t *image[])
+static int vidix_draw_frame(uint8_t *image[])
 {
   mp_msg(MSGT_VO,MSGL_WARN, MSGTR_LIBVO_SUB_VIDIX_DummyVidixdrawframeWasCalled);
   return -1;
@@ -576,7 +577,7 @@ static uint32_t vidix_get_image(mp_image_t *mpi)
     return VO_FALSE;
 }
 
-uint32_t vidix_control(uint32_t request, void *data, ...)
+uint32_t vidix_control(uint32_t request, void *data)
 {
   switch (request) {
   case VOCTRL_QUERY_FORMAT:
@@ -596,36 +597,32 @@ uint32_t vidix_control(uint32_t request, void *data, ...)
 	return VO_TRUE;
   case VOCTRL_SET_EQUALIZER:
   {
-    va_list ap;
-    int value;
+    vf_equalizer_t *eq=data;
     vidix_video_eq_t info;
 
     if(!video_on) return VO_FALSE;
-    va_start(ap, data);
-    value = va_arg(ap, int);
-    va_end(ap);
 
-//    printf("vidix seteq %s -> %d  \n",data,value);
+//    printf("vidix seteq %s -> %d  \n",eq->item,eq->value);
 
     /* vidix eq ranges are -1000..1000 */
-    if (!strcasecmp(data, "brightness"))
+    if (!strcasecmp(eq->item, "brightness"))
     {
-	info.brightness = value*10;
+	info.brightness = eq->value*10;
 	info.cap = VEQ_CAP_BRIGHTNESS;
     }
-    else if (!strcasecmp(data, "contrast"))
+    else if (!strcasecmp(eq->item, "contrast"))
     {
-	info.contrast = value*10;
+	info.contrast = eq->value*10;
 	info.cap = VEQ_CAP_CONTRAST;
     }
-    else if (!strcasecmp(data, "saturation"))
+    else if (!strcasecmp(eq->item, "saturation"))
     {
-	info.saturation = value*10;
+	info.saturation = eq->value*10;
 	info.cap = VEQ_CAP_SATURATION;
     }
-    else if (!strcasecmp(data, "hue"))
+    else if (!strcasecmp(eq->item, "hue"))
     {
-	info.hue = value*10;
+	info.hue = eq->value*10;
 	info.cap = VEQ_CAP_HUE;
     }
 
@@ -635,45 +632,39 @@ uint32_t vidix_control(uint32_t request, void *data, ...)
   }
   case VOCTRL_GET_EQUALIZER:
   {
-    va_list ap;
-    int *value;
+    vf_equalizer_t *eq=data;
     vidix_video_eq_t info;
 
     if(!video_on) return VO_FALSE;
     if (vdlPlaybackGetEq(vidix_handler, &info) != 0)
 	return VO_FALSE;
 
-    va_start(ap, data);
-    value = va_arg(ap, int*);
-    va_end(ap);
-
     /* vidix eq ranges are -1000..1000 */
-    if (!strcasecmp(data, "brightness"))
+    if (!strcasecmp(eq->item, "brightness"))
     {
 	if (info.cap & VEQ_CAP_BRIGHTNESS)
-	    *value = info.brightness/10;
+	    eq->value = info.brightness/10;
     }
-    else if (!strcasecmp(data, "contrast"))
+    else if (!strcasecmp(eq->item, "contrast"))
     {
 	if (info.cap & VEQ_CAP_CONTRAST)
-	    *value = info.contrast/10;
+	    eq->value = info.contrast/10;
     }
-    else if (!strcasecmp(data, "saturation"))
+    else if (!strcasecmp(eq->item, "saturation"))
     {
 	if (info.cap & VEQ_CAP_SATURATION)
-	    *value = info.saturation/10;
+	    eq->value = info.saturation/10;
     }
-    else if (!strcasecmp(data, "hue"))
+    else if (!strcasecmp(eq->item, "hue"))
     {
 	if (info.cap & VEQ_CAP_HUE)
-	    *value = info.hue/10;
+	    eq->value = info.hue/10;
     }
 
     return VO_TRUE;
   }
   }
   return VO_NOTIMPL;
-  // WARNING: we drop extra parameters (...) here!
 //  return server_control(request,data); //VO_NOTIMPL;
 }
 

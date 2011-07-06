@@ -4,7 +4,7 @@
  * to compile test application:
  *  cc -I. -DTESTING -o codec-cfg-test codec-cfg.c mp_msg.o osdep/getch2.o -ltermcap
  * to compile CODECS2HTML:
- *   gcc -DCODECS2HTML -o codecs2html codec-cfg.c mp_msg.o
+ *   gcc -DCODECS2HTML -o codecs2html codec-cfg.c
  *
  * TODO: implement informat in CODECS2HTML too
  *
@@ -53,9 +53,7 @@
 
 #include "help_mp.h"
 
-// for mmioFOURCC:
-#include "libmpdemux/aviheader.h"
-
+#include "libavutil/avutil.h"
 #include "libmpcodecs/img_format.h"
 #include "codec-cfg.h"
 
@@ -94,12 +92,12 @@ static int add_to_fourcc(char *s, char *alias, unsigned int *fourcc,
         goto err_out_too_many;
 
     do {
-        tmp = mmioFOURCC(s[0], s[1], s[2], s[3]);
+        tmp = MKTAG(s[0], s[1], s[2], s[3]);
         for (j = 0; j < i; j++)
             if (tmp == fourcc[j])
                 goto err_out_duplicated;
         fourcc[i] = tmp;
-        map[i] = alias ? mmioFOURCC(alias[0], alias[1], alias[2], alias[3]) : tmp;
+        map[i] = alias ? MKTAG(alias[0], alias[1], alias[2], alias[3]) : tmp;
         s += 4;
         i++;
     } while ((*(s++) == ',') && --freeslots);
@@ -179,7 +177,10 @@ static const struct {
     {"420P16BE", IMGFMT_420P16_BE},
     {"444P16", IMGFMT_444P16},
     {"422P16", IMGFMT_422P16},
+    {"422P10", IMGFMT_422P10},
     {"420P16", IMGFMT_420P16},
+    {"420P10", IMGFMT_420P10},
+    {"420P9", IMGFMT_420P9},
     {"420A",  IMGFMT_420A},
     {"444P",  IMGFMT_444P},
     {"422P",  IMGFMT_422P},

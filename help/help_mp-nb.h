@@ -184,25 +184,18 @@ static const char help_text[]=
 
 // --- skin loader error messages
 #define MSGTR_SKIN_ERRORMESSAGE "[skin] feil i skin konfigurasjonsfil linje %d: %s"
-#define MSGTR_SKIN_WARNING1 "[skin] advarsel i skin konfigurasjonsfil linje %d: widget funnet, men før \"section\" ikke funnet  %s)"
-#define MSGTR_SKIN_WARNING2 "[skin] advarsel i skin konfigurasjonsfil linje %d: widget funnet, men før \"subsection\" ikke funnet (%s)"
 #define MSGTR_SKIN_BITMAP_16bit  "16 bits eller minde bitmap ikke støttet (%s).\n"
 #define MSGTR_SKIN_BITMAP_FileNotFound  "finner ikke filen (%s)\n"
-#define MSGTR_SKIN_BITMAP_BMPReadError "BMP lesefeil (%s)\n"
-#define MSGTR_SKIN_BITMAP_TGAReadError "TGA lesefeil (%s)\n"
 #define MSGTR_SKIN_BITMAP_PNGReadError "PNG lesefeil (%s)\n"
-#define MSGTR_SKIN_BITMAP_RLENotSupported "RLE packed TGA ikke støttet (%s)\n"
-#define MSGTR_SKIN_BITMAP_UnknownFileType "ukjent filtype (%s)\n"
 #define MSGTR_SKIN_BITMAP_ConversionError "24 bit til 32 bit konverteringsfeil (%s)\n"
-#define MSGTR_SKIN_BITMAP_UnknownMessage "ukjent beskjed: %s\n"
-#define MSGTR_SKIN_FONT_NotEnoughtMemory "ikke nok minne\n"
+#define MSGTR_SKIN_UnknownMessage "ukjent beskjed: %s\n"
+#define MSGTR_SKIN_NotEnoughMemory "ikke nok minne\n"
 #define MSGTR_SKIN_FONT_TooManyFontsDeclared "for mange skrifttyper deklarert\n"
 #define MSGTR_SKIN_FONT_FontFileNotFound "skrifttypefil ikke funnet\n"
 #define MSGTR_SKIN_FONT_FontImageNotFound "skrifttype image fil ikke funnet\n"
-#define MSGTR_SKIN_FONT_NonExistentFontID "ikke-ekstisterende skrifttype identifikasjon (%s)\n"
+#define MSGTR_SKIN_FONT_NonExistentFont "ikke-ekstisterende skrifttype identifikasjon (%s)\n"
 #define MSGTR_SKIN_UnknownParameter "ukjent parameter (%s)\n"
 #define MSGTR_SKIN_SKINCFG_SkinNotFound "Skin ikke funnet (%s).\n"
-#define MSGTR_SKIN_SKINCFG_SkinCfgReadError "Skin konfigurasjonfil lesefeil (%s).\n"
 #define MSGTR_SKIN_LABEL "Skins:"
 
 

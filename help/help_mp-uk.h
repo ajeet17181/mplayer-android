@@ -145,7 +145,6 @@ static const char help_text[]=
 #define MSGTR_IncreaseRTCMaxUserFreq "Спробуйте додати \"echo %lu > /proc/sys/dev/rtc/max-user-freq\" до скриптів запуску системи.\n"
 #define MSGTR_LinuxRTCInitErrorPieOn "Помилка ініціалізації Linux RTC у ioctl (rtc_pie_on): %s\n"
 #define MSGTR_UsingTimingType "Використовую %s синхронізацію.\n"
-#define MSGTR_NoIdleAndGui "Опція -idle не викориcтовується в GMPlayer.\n"
 #define MSGTR_MenuInitialized "Меню ініціалізовано: %s\n"
 #define MSGTR_MenuInitFailed "Ініціалізація меню невдале.\n"
 #define MSGTR_Getch2InitializedTwice "ПОПЕРЕДЖЕННЯ: getch2_init визвано двічі!\n"
@@ -555,33 +554,24 @@ static const char help_text[]=
 #define MSGTR_NEMFMR "Вибачте, не достатньо пам'яті для рендерення меню."
 #define MSGTR_IDFGCVD "Вибачте, не знаходжу відео драйвер для підтримки GUI."
 #define MSGTR_NEEDLAVC "Вибачте, ви не можете програвати не MPEG файли з вашим DXR3/H+ пристроєм без перекодування.\nВключіть lavc у нашалтунки DXR3/H+."
-#define MSGTR_UNKNOWNWINDOWTYPE "Знайдено невідомий тип вікна..."
 
 // --- skin loader error messages
 #define MSGTR_SKIN_ERRORMESSAGE "[скін] помилка у налаштунках скіна у рядку %d: %s"
-#define MSGTR_SKIN_WARNING1 "[скін] попередження: у налаштунках у рядку %d:\nвіджет (%s) знайдено але \"секцію\" не знайдено"
-#define MSGTR_SKIN_WARNING2 "[скін] попередження: у налаштунках у рядку %d:\nвіджет (%s) знайдено але \"підсекцію\" не знайдено"
-#define MSGTR_SKIN_WARNING3 "[скін] попередження: у налаштунках у рядку %d:\nця підсекція не підтримується віджетом (%s)"
 #define MSGTR_SKIN_SkinFileNotFound "[skin] файл ( %s ) не знайдено.\n"
 #define MSGTR_SKIN_SkinFileNotReadable "[skin] файл ( %s ) не прочитати.\n"
 #define MSGTR_SKIN_BITMAP_16bit  "Глибина матриці у 16 біт і менше не підтримується (%s).\n"
 #define MSGTR_SKIN_BITMAP_FileNotFound  "Файл не знайдено (%s)\n"
-#define MSGTR_SKIN_BITMAP_BMPReadError "Помилка читання BMP (%s)\n"
-#define MSGTR_SKIN_BITMAP_TGAReadError "Помилка читання TGA (%s)\n"
 #define MSGTR_SKIN_BITMAP_PNGReadError "Помилка читання PNG (%s)\n"
-#define MSGTR_SKIN_BITMAP_RLENotSupported "RLE запакований у TGA не підримується (%s)\n"
-#define MSGTR_SKIN_BITMAP_UnknownFileType "тип файлу невідомий (%s)\n"
 #define MSGTR_SKIN_BITMAP_ConversionError "помилка конвертування з 24 до 32 біт (%s)\n"
-#define MSGTR_SKIN_BITMAP_UnknownMessage "невідоме повідомлення: %s\n"
-#define MSGTR_SKIN_FONT_NotEnoughtMemory "недостатньо пам'яті\n"
+#define MSGTR_SKIN_UnknownMessage "невідоме повідомлення: %s\n"
+#define MSGTR_SKIN_NotEnoughMemory "недостатньо пам'яті\n"
 #define MSGTR_SKIN_FONT_TooManyFontsDeclared "Вказано забагато шрифтів.\n"
 #define MSGTR_SKIN_FONT_FontFileNotFound "Файл шрифту не знайдено.\n"
 #define MSGTR_SKIN_FONT_FontImageNotFound "Font image file not found.\n"
-#define MSGTR_SKIN_FONT_NonExistentFontID "ідентифікатор шрифту не існує (%s)\n"
+#define MSGTR_SKIN_FONT_NonExistentFont "ідентифікатор шрифту не існує (%s)\n"
 #define MSGTR_SKIN_UnknownParameter "невідомий параметр (%s)\n"
 #define MSGTR_SKIN_SKINCFG_SkinNotFound "Скін не знайдено (%s).\n"
 #define MSGTR_SKIN_SKINCFG_SelectedSkinNotFound "Обраний скін ( %s ) не знайдено, обираю 'default'...\n"
-#define MSGTR_SKIN_SKINCFG_SkinCfgReadError "помилка читання файлу налаштування скіну (%s)\n"
 #define MSGTR_SKIN_LABEL "Скіни:"
 
 // --- GTK menus
@@ -775,25 +765,18 @@ static const char help_text[]=
 #define MSGTR_MSGBOX_LABEL_Error "Помилка!"
 #define MSGTR_MSGBOX_LABEL_Warning "Попередження!"
 
-// bitmap.c
-#define MSGTR_NotEnoughMemoryC32To1 "[c32to1] недостатньо пам'яті для картинки\n"
-#define MSGTR_NotEnoughMemoryC1To32 "[c1to32] недостатньо пам'яті для картинки\n"
-
 // cfg.c
-#define MSGTR_ConfigFileReadError "[cfg] помилка читання файлу налаштунків ...\n"
 #define MSGTR_UnableToSaveOption "[cfg] Не можу зберегти '%s' опцію.\n"
 
 // interface.c
 #define MSGTR_DeletingSubtitles "[GUI] Видаляю субтитри.\n"
 #define MSGTR_LoadingSubtitles "[GUI] Вантажу субтитри: %s\n"
 #define MSGTR_AddingVideoFilter "[GUI] Додаю відео фільтр: %s\n"
-#define MSGTR_RemovingVideoFilter "[GUI] Видаляю відео фільтр: %s\n"
 
 // mw.c
 #define MSGTR_NotAFile "Здається, це не файл: %s !\n"
 
 // ws.c
-#define MSGTR_WS_CouldNotOpenDisplay "[ws] Не можу відкрити дисплей.\n"
 #define MSGTR_WS_RemoteDisplay "[ws] Віддалений дисплей, вимикаю XMITSHM.\n"
 #define MSGTR_WS_NoXshm "[ws] Вибачте, ваша система не підтримує розширення загальної пам'яті X.\n"
 #define MSGTR_WS_NoXshape "[ws] Вибачте, здається, ваша система не підтримує розширення XShape.\n"

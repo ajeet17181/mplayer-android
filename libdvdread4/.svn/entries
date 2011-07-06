@@ -1,15 +1,15 @@
 10
 
 dir
-1222
+1228
 svn://svn.mplayerhq.hu/dvdnav/trunk/libdvdread/src
 svn://svn.mplayerhq.hu/dvdnav
 
 
 
-2011-01-30T23:44:16.496727Z
-1222
-erik
+2011-06-15T18:09:15.636582Z
+1228
+reimar
 has-props
 
 
@@ -32,11 +32,11 @@ file
 
 
 
-2010-10-22T14:36:30.000000Z
-465f585ba0d80624ebb5a109c82aa094
-2010-07-31T00:10:28.870426Z
-1212
-erik
+2011-06-16T06:39:39.265668Z
+430fb4268d156101455eeb0b6036b54e
+2011-06-15T18:09:15.636582Z
+1228
+reimar
 has-props
 
 
@@ -58,7 +58,7 @@ has-props
 
 
 
-40404
+40429
 
 nav_print.c
 file

@@ -1,15 +1,15 @@
 10
 
 dir
-32840
+33819
 svn://svn.mplayerhq.hu/mplayer/trunk/DOCS/xml/es
 svn://svn.mplayerhq.hu/mplayer
 
 
 
-2011-01-01T14:40:02.226250Z
-32742
-diego
+2011-03-02T13:30:44.767962Z
+32997
+ib
 has-props
 
 
@@ -66,11 +66,11 @@ file
 
 
 
-2010-10-22T14:30:08.000000Z
-dfb1a9c1032414474eeb813cff52d44d
-2009-05-13T02:58:57.333510Z
-29305
-diego
+2011-03-04T01:40:32.469052Z
+4450c04d0006ac9badcc09578b70c1af
+2011-03-02T13:30:44.767962Z
+32997
+ib
 has-props
 
 
@@ -92,7 +92,7 @@ has-props
 
 
 
-38022
+38020
 
 usage.xml
 file
@@ -304,10 +304,10 @@ file
 
 
 
-2010-10-22T14:30:08.000000Z
-e36d8d9c6899ca44a3a56ce8f973c3c6
-2010-06-14T15:17:48.225980Z
-31415
+2011-02-03T23:06:27.839764Z
+48cb22f32842bc6e866a17fc754cd92a
+2011-02-03T12:31:09.427386Z
+32844
 diego
 has-props
 
@@ -330,7 +330,7 @@ has-props
 
 
 
-13848
+13832
 
 mencoder.xml
 file

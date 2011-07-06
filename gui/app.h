@@ -19,11 +19,10 @@
 #ifndef MPLAYER_GUI_APP_H
 #define MPLAYER_GUI_APP_H
 
-#include "bitmap.h"
+#include "util/bitmap.h"
 #include "wm/ws.h"
-#include "wm/wskeys.h"
 
-// --- User events ------
+// User events
 
 #define evNone              0
 #define evPlay              1
@@ -61,8 +60,8 @@
 
 #define evIncVolume         31
 #define evDecVolume         32
-#define evIncAudioBufDelay  33
-#define evDecAudioBufDelay  34
+#define evIncAudioBufDelay  33   // NOTE TO MYSELF: not all of these events
+#define evDecAudioBufDelay  34   // are actually implemented, and update doc
 #define evIncBalance        35
 #define evDecBalance        36
 
@@ -71,18 +70,17 @@
 #define evLoadSubtitle      38
 #define evDropSubtitle      43
 #define evPlayDVD           39
-#define evPlayVCD	    40
+#define evPlayVCD           40
 #define evPlayNetwork       41
-#define evLoadAudioFile	    42
+#define evLoadAudioFile     42
 #define evSetAspect         44
-#define evSetAudio	    45
-#define evSetVideo	    46
+#define evSetAudio          45
+#define evSetVideo          46
 #define evSetSubtitle       47
-// 48 ...
 
 #define evExit              1000
 
-// --- General events ---
+// General events
 
 #define evFileLoaded      5000
 #define evHideMouseCursor 5001
@@ -106,98 +104,97 @@
 #define evShowWindow      7004
 #define evFirstLoad       7005
 
-// ----------------------
-
-typedef struct
-{
- int    msg;
- const char * name;
+typedef struct {
+    int message;
+    const char *name;
 } evName;
 
-#define itNULL      0
-#define itButton    101 // button
-#define itHPotmeter 102 // horizontal potmeter
-#define itVPotmeter 103 // vertical potmeter
-#define itSLabel    104 // static label
-#define itDLabel    105 // dynamic label
+// Skin items
+
+#define itNone      0
+#define itButton    101
+#define itHPotmeter 102
+#define itVPotmeter 103
+#define itSLabel    104
+#define itDLabel    105
 #define itBase      106
 #define itPotmeter  107
-#define itFont      108
-// ---
-#define btnPressed  0
+#define itMenu      108
+
+#define itPLMButton (itNone - 1)
+#define itPRMButton (itNone - 2)
+
+// Button states
+
+#define btnDisabled 0
 #define btnReleased 1
-#define btnDisabled 2
-// ---
-typedef struct
-{
- int        type;
-// ---
- int        x,y;
- int        width,height;
-// ---
- int        px,py,psx,psy;
-// ---
- int        msg,msg2;
- int        pressed,tmp;
- int        key,key2;
- int        phases;
- float      value;
- txSample   Bitmap;
- txSample   Mask;
-// ---
- int        fontid;
- int        align;
- char     * label;
-// ---
- int        event;
-// ---
- int        R,G,B;
+#define btnPressed  2
+
+// Item definition
+
+#define MAX_ITEMS 64
+
+typedef struct {
+    int type;
+
+    int x, y;
+    int width, height;
+
+    guiImage Bitmap;
+    guiImage Mask;
+
+    int fontid;
+    int align;
+    char *label;
+
+    int pwidth, pheight;
+    int numphases;
+    float value;
+
+    int message;
+
+    int R, G, B;
+
+    char *text;
+    int textwidth;
+    unsigned int starttime;
+    int last_x;
+
+    int pressed;
 } wItem;
 
-typedef struct
-{
- wItem           main;
- wsTWindow       mainWindow;
- int             mainDecoration;
+typedef struct {
+    wItem main;
+    wsTWindow mainWindow;
+    int mainDecoration;
 
- wItem           sub;
- wsTWindow       subWindow;
+    wItem sub;
+    wsTWindow subWindow;
 
- wItem           bar;
- wsTWindow       barWindow;
- int             barIsPresent;
+    wItem playbar;
+    wsTWindow playbarWindow;
+    int playbarIsPresent;
 
- wItem           menuBase;
- wItem           menuSelected;
- wsTWindow       menuWindow;
- int		 menuIsPresent;
+    wItem menu;
+    wItem menuSelected;
+    wsTWindow menuWindow;
+    int menuIsPresent;
 
-// ---
- int             NumberOfItems;
- wItem           Items[256];
-// ---
- int             NumberOfMenuItems;
- wItem           MenuItems[64];
-// ---
- int		 NumberOfBarItems;
- wItem		 barItems[256];
-} listItems;
+    int IndexOfMainItems;
+    wItem mainItems[MAX_ITEMS];
 
-extern listItems   appMPlayer;
+    int IndexOfPlaybarItems;
+    wItem playbarItems[MAX_ITEMS];
 
-extern char      * skinDirInHome;
-extern char      * skinDirInHome_obsolete;
-extern char      * skinMPlayerDir;
-extern char      * skinMPlayerDir_obsolete;
+    int IndexOfMenuItems;
+    wItem menuItems[MAX_ITEMS];
+} guiItems;
 
-void appInitStruct( listItems * item );
-void appClearItem( wItem * item );
-void appCopy( listItems * item1, listItems * item2 );
-int appFindMessage( unsigned char * str );
-int appFindKey( unsigned char * name );
+extern guiItems guiApp;
 
-void btnModify( int event, float state );
-float btnGetValue( int event );
-void btnSet( int event, int set );
+int appFindMessage(unsigned char *str);
+void appFreeStruct(void);
+void btnModify(int event, float state);
+void btnSet(int event, int set);
 
 #endif /* MPLAYER_GUI_APP_H */

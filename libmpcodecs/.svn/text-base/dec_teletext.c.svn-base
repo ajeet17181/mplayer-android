@@ -88,7 +88,7 @@
 #include <math.h>
 #include <stdio.h>
 
-#ifdef HAVE_PTHREADS
+#if HAVE_PTHREADS
 // pthreads are needed for async updates from v4l(2)
 // FIXME: try to avoid using pthread calls when running only a single
 // thread as e.g. with DVB teletext
@@ -148,7 +148,7 @@ typedef struct {
     int pll_fixed;
     /// vbi stream properties (buffer size,bytes per line, etc)
     tt_stream_props* ptsp;
-#ifdef HAVE_PTHREADS
+#if HAVE_PTHREADS
     pthread_mutex_t buffer_mutex;
 #endif
 
@@ -1639,7 +1639,7 @@ static int teletext_set_format(priv_vbi_t * priv, teletext_format flag)
  */
 static void vbi_add_dec(priv_vbi_t * priv, char *dec)
 {
-    int count, shift;
+    int count;
     if (!dec)
         return;
     if (!priv->on)
@@ -1658,7 +1658,6 @@ static void vbi_add_dec(priv_vbi_t * priv, char *dec)
         else
             priv->pagenumdec=0;
     } else {
-        shift = count * 4;
         count++;
         priv->pagenumdec=
             (((priv->pagenumdec)<<4|(*dec-'0'))&0xfff)|(count<<12);

@@ -1,4 +1,4 @@
-// $Revision: 32817 $
+// $Revision: 33639 $
 // MASTER FILE. Use this file as base for translations.
 // Translated files should be sent to the mplayer-DOCS mailing list or
 // to the help messages maintainer, see DOCS/tech/MAINTAINERS.
@@ -65,11 +65,14 @@ static const char help_text[]=
 #define MSGTR_GetpathProblem "get_path(\"config\") problem\n"
 #define MSGTR_CreatingCfgFile "Creating config file: %s\n"
 #define MSGTR_BuiltinCodecsConf "Using built-in default codecs.conf.\n"
-#define MSGTR_CantLoadFont "Cannot load bitmap font: %s\n"
-#define MSGTR_CantLoadSub "Cannot load subtitles: %s\n"
+#define MSGTR_CantLoadFont "Cannot load bitmap font '%s'.\n"
+#define MSGTR_CantLoadSub "Cannot load subtitles '%s'.\n"
 #define MSGTR_DumpSelectedStreamMissing "dump: FATAL: Selected stream missing!\n"
 #define MSGTR_CantOpenDumpfile "Cannot open dump file.\n"
 #define MSGTR_CoreDumped "Core dumped ;)\n"
+#define MSGTR_DumpBytesWrittenPercent "dump: %"PRIu64" bytes written (~%.1f%%)\r"
+#define MSGTR_DumpBytesWritten "dump: %"PRIu64" bytes written\r"
+#define MSGTR_DumpBytesWrittenTo "dump: %"PRIu64" bytes written to '%s'.\n"
 #define MSGTR_FPSnotspecified "FPS not specified in the header or invalid, use the -fps option.\n"
 #define MSGTR_TryForceAudioFmtStr "Trying to force audio codec driver family %s...\n"
 #define MSGTR_CantFindAudioCodec "Cannot find codec for audio format 0x%X.\n"
@@ -156,7 +159,6 @@ static const char help_text[]=
 #define MSGTR_IncreaseRTCMaxUserFreq "Try adding \"echo %lu > /proc/sys/dev/rtc/max-user-freq\" to your system startup scripts.\n"
 #define MSGTR_LinuxRTCInitErrorPieOn "Linux RTC init error in ioctl (rtc_pie_on): %s\n"
 #define MSGTR_UsingTimingType "Using %s timing.\n"
-#define MSGTR_NoIdleAndGui "The -idle option cannot be used with GMPlayer.\n"
 #define MSGTR_MenuInitialized "Menu initialized: %s\n"
 #define MSGTR_MenuInitFailed "Menu init failed.\n"
 #define MSGTR_Getch2InitializedTwice "WARNING: getch2_init called twice!\n"
@@ -406,7 +408,7 @@ static const char help_text[]=
 "Cannot set LAME options, check bitrate/samplerate, some very low bitrates\n"\
 "(<32) need lower samplerates (i.e. -srate 8000).\n"\
 "If everything else fails, try a preset."
-#define MSGTR_ConfigFileError "config file error"
+#define MSGTR_ConfigFileError "Config file error"
 #define MSGTR_ErrorParsingCommandLine "error parsing command line"
 #define MSGTR_VideoStreamRequired "Video stream is mandatory!\n"
 #define MSGTR_ForcingInputFPS "Input fps will be interpreted as %5.3f instead.\n"
@@ -568,37 +570,36 @@ static const char help_text[]=
 #define MSGTR_Browse "Browse"
 
 // --- error messages ---
-#define MSGTR_NEMDB "Sorry, not enough memory to draw buffer."
+#define MSGTR_NEMDB "Sorry, not enough memory to draw buffer.\n"
 #define MSGTR_NEMFMR "Sorry, not enough memory for menu rendering."
-#define MSGTR_IDFGCVD "Sorry, I did not find a GUI-compatible video output driver."
+#define MSGTR_IDFGCVD "Sorry, no GUI-compatible video output driver found.\n"
 #define MSGTR_NEEDLAVC "Sorry, you cannot play non-MPEG files with your DXR3/H+ device without reencoding.\nPlease enable lavc in the DXR3/H+ configuration box."
-#define MSGTR_UNKNOWNWINDOWTYPE "Unknown window type found ..."
+#define MSGTR_ICONERROR "Icon '%s' not found or unsupported format.\n"
 
 // --- skin loader error messages
-#define MSGTR_SKIN_ERRORMESSAGE "[skin] error in skin config file on line %d: %s"
-#define MSGTR_SKIN_WARNING1 "[skin] warning: in config file line %d:\nwidget (%s) found but no \"section\" found before"
-#define MSGTR_SKIN_WARNING2 "[skin] warning: in config file line %d:\nwidget (%s) found but no \"subsection\" found before"
-#define MSGTR_SKIN_WARNING3 "[skin] warning: in config file line %d:\nthis subsection is not supported by widget (%s)"
-#define MSGTR_SKIN_SkinFileNotFound "[skin] file ( %s ) not found.\n"
-#define MSGTR_SKIN_SkinFileNotReadable "[skin] file ( %s ) not readable.\n"
-#define MSGTR_SKIN_BITMAP_16bit  "Bitmaps of 16 bits or less depth not supported (%s).\n"
-#define MSGTR_SKIN_BITMAP_FileNotFound  "File not found (%s)\n"
-#define MSGTR_SKIN_BITMAP_BMPReadError "BMP read error (%s)\n"
-#define MSGTR_SKIN_BITMAP_TGAReadError "TGA read error (%s)\n"
-#define MSGTR_SKIN_BITMAP_PNGReadError "PNG read error (%s)\n"
-#define MSGTR_SKIN_BITMAP_RLENotSupported "RLE packed TGA not supported (%s)\n"
-#define MSGTR_SKIN_BITMAP_UnknownFileType "unknown file type (%s)\n"
-#define MSGTR_SKIN_BITMAP_ConversionError "24 bit to 32 bit conversion error (%s)\n"
-#define MSGTR_SKIN_BITMAP_UnknownMessage "unknown message: %s\n"
-#define MSGTR_SKIN_FONT_NotEnoughtMemory "not enough memory\n"
+#define MSGTR_SKIN_ERRORMESSAGE "Error in skin config file on line %d: %s"
+#define MSGTR_SKIN_ERROR_SECTION "No section specified for '%s'.\n"
+#define MSGTR_SKIN_ERROR_WINDOW "No window specified for '%s'.\n"
+#define MSGTR_SKIN_ERROR_ITEM "This item is not supported by '%s'.\n"
+#define MSGTR_SKIN_UNKNOWN_ITEM "Unknown item '%s'\n"
+#define MSGTR_SKIN_UNKNOWN_NAME "Unknown name '%s'\n"
+#define MSGTR_SKIN_SkinFileNotFound "Skin file %s not found.\n"
+#define MSGTR_SKIN_SkinFileNotReadable "Skin file %s not readable.\n"
+#define MSGTR_SKIN_BITMAP_16bit  "Color depth of bitmap %s is 16 bits or less which is not supported.\n"
+#define MSGTR_SKIN_BITMAP_FileNotFound  "Bitmap %s not found.\n"
+#define MSGTR_SKIN_BITMAP_PNGReadError "PNG read error in %s\n"
+#define MSGTR_SKIN_BITMAP_ConversionError "24 bit to 32 bit conversion error in %s\n"
+#define MSGTR_SKIN_UnknownMessage "Unknown message '%s'\n"
+#define MSGTR_SKIN_NotEnoughMemory "Not enough memory\n"
+#define MSGTR_SKIN_TooManyItemsDeclared "Too many items declared.\n"
 #define MSGTR_SKIN_FONT_TooManyFontsDeclared "Too many fonts declared.\n"
-#define MSGTR_SKIN_FONT_FontFileNotFound "Font file not found.\n"
+#define MSGTR_SKIN_FONT_FontFileNotFound "Font description file not found.\n"
 #define MSGTR_SKIN_FONT_FontImageNotFound "Font image file not found.\n"
-#define MSGTR_SKIN_FONT_NonExistentFontID "non-existent font identifier (%s)\n"
-#define MSGTR_SKIN_UnknownParameter "unknown parameter (%s)\n"
-#define MSGTR_SKIN_SKINCFG_SkinNotFound "Skin not found (%s).\n"
-#define MSGTR_SKIN_SKINCFG_SelectedSkinNotFound "Selected skin ( %s ) not found, trying 'default'...\n"
-#define MSGTR_SKIN_SKINCFG_SkinCfgReadError "skin config file read error (%s)\n"
+#define MSGTR_SKIN_FONT_NonExistentFont "Font '%s' not found.\n"
+#define MSGTR_SKIN_UnknownParameter "Unknown parameter '%s'\n"
+#define MSGTR_SKIN_SKINCFG_SkinNotFound "Skin '%s' not found.\n"
+#define MSGTR_SKIN_SKINCFG_SelectedSkinNotFound "Selected skin '%s' not found, trying skin 'default'...\n"
+#define MSGTR_SKIN_SKINCFG_SkinCfgError "Config file processing error with skin '%s'\n"
 #define MSGTR_SKIN_LABEL "Skins:"
 
 // --- GTK menus
@@ -772,6 +773,7 @@ static const char help_text[]=
 #define MSGTR_PREFERENCES_SaveWinPos "Save window position"
 #define MSGTR_PREFERENCES_XSCREENSAVER "Stop XScreenSaver"
 #define MSGTR_PREFERENCES_PlayBar "Enable playbar"
+#define MSGTR_PREFERENCES_NoIdle "Quit after playing"
 #define MSGTR_PREFERENCES_AutoSync "AutoSync on/off"
 #define MSGTR_PREFERENCES_AutoSyncValue "Autosync: "
 #define MSGTR_PREFERENCES_CDROMDevice "CD-ROM device:"
@@ -793,25 +795,18 @@ static const char help_text[]=
 #define MSGTR_MSGBOX_LABEL_Error "Error!"
 #define MSGTR_MSGBOX_LABEL_Warning "Warning!"
 
-// bitmap.c
-#define MSGTR_NotEnoughMemoryC32To1 "[c32to1] not enough memory for image\n"
-#define MSGTR_NotEnoughMemoryC1To32 "[c1to32] not enough memory for image\n"
-
 // cfg.c
-#define MSGTR_ConfigFileReadError "[cfg] config file read error ...\n"
-#define MSGTR_UnableToSaveOption "[cfg] Unable to save the '%s' option.\n"
+#define MSGTR_UnableToSaveOption "Unable to save option '%s'.\n"
 
 // interface.c
-#define MSGTR_DeletingSubtitles "[GUI] Deleting subtitles.\n"
-#define MSGTR_LoadingSubtitles "[GUI] Loading subtitles: %s\n"
-#define MSGTR_AddingVideoFilter "[GUI] Adding video filter: %s\n"
-#define MSGTR_RemovingVideoFilter "[GUI] Removing video filter: %s\n"
+#define MSGTR_DeletingSubtitles "Deleting subtitles.\n"
+#define MSGTR_LoadingSubtitles "Loading subtitles '%s'.\n"
+#define MSGTR_AddingVideoFilter "Adding video filter '%s'.\n"
 
 // mw.c
 #define MSGTR_NotAFile "This does not seem to be a file: %s !\n"
 
 // ws.c
-#define MSGTR_WS_CouldNotOpenDisplay "[ws] Could not open the display.\n"
 #define MSGTR_WS_RemoteDisplay "[ws] Remote display, disabling XMITSHM.\n"
 #define MSGTR_WS_NoXshm "[ws] Sorry, your system does not support the X shared memory extension.\n"
 #define MSGTR_WS_NoXshape "[ws] Sorry, your system does not support the XShape extension.\n"
@@ -1191,7 +1186,7 @@ static const char help_text[]=
 
 // ao_pcm.c
 #define MSGTR_AO_PCM_FileInfo "[AO PCM] File: %s (%s)\nPCM: Samplerate: %iHz Channels: %s Format %s\n"
-#define MSGTR_AO_PCM_HintInfo "[AO PCM] Info: Faster dumping is achieved with -vc null -vo null -ao pcm:fast\n[AO PCM] Info: To write WAVE files use -ao pcm:waveheader (default).\n"
+#define MSGTR_AO_PCM_HintInfo "[AO PCM] Info: Faster dumping is achieved with -benchmark -vc null -vo null -ao pcm:fast\n[AO PCM] Info: To write WAVE files use -ao pcm:waveheader (default).\n"
 #define MSGTR_AO_PCM_CantOpenOutputFile "[AO PCM] Failed to open %s for writing!\n"
 
 // ao_sdl.c
@@ -1447,7 +1442,7 @@ static const char help_text[]=
 #define MSGTR_EnterTelecineMode "\ndemux_mpg: 24000/1001fps progressive NTSC content detected, switching framerate.\n"
 
 #define MSGTR_CacheFill "\rCache fill: %5.2f%% (%"PRId64" bytes)   "
-#define MSGTR_NoBindFound "No bind found for key '%s'."
+#define MSGTR_NoBindFound "No bind found for key '%s'.\n"
 #define MSGTR_FailedToOpen "Failed to open %s.\n"
 
 #define MSGTR_VideoID "[%s] Video stream found, -vid %d\n"
@@ -1900,6 +1895,17 @@ static const char help_text[]=
 
 #define MSGTR_CantOpenBluray "Couldn't open Blu-ray device: %s\n"
 #define MSGTR_CantOpenDVD "Couldn't open DVD device: %s (%s)\n"
+
+#define MSGTR_URLParsingFailed "URL parsing failed on url %s\n"
+#define MSGTR_FailedSetStreamOption "Failed to set stream option %s=%s\n"
+#define MSGTR_StreamNeedType "Streams need a type!\n"
+#define MSGTR_StreamProtocolNULL "Stream type %s has protocols == NULL, it's a bug\n"
+#define MSGTR_StreamCantHandleURL "No stream found to handle url %s\n"
+#define MSGTR_StreamNULLFilename "open_output_stream(), NULL filename, report this bug\n"
+#define MSGTR_StreamErrorWritingCapture "Error writing capture file: %s\n"
+#define MSGTR_StreamSeekFailed "Seek failed\n"
+#define MSGTR_StreamNotSeekable "Stream not seekable!\n"
+#define MSGTR_StreamCannotSeekBackward "Cannot seek backward in linear streams!\n"
 
 // stream_cdda.c
 #define MSGTR_MPDEMUX_CDDA_CantOpenCDDADevice "Can't open CDDA device.\n"

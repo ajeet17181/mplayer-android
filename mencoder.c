@@ -103,7 +103,6 @@
 int vo_doublebuffering=0;
 int vo_directrendering=0;
 int vo_config_count=1;
-int forced_subs_only=0;
 
 //--------------------------
 
@@ -120,7 +119,6 @@ int dvdsub_id=-1;
 int vobsub_id=-1;
 char* audio_lang=NULL;
 char* dvdsub_lang=NULL;
-static char* spudec_ifo=NULL;
 
 static char** audio_codec_list=NULL;  // override audio codec
 static char** video_codec_list=NULL;  // override video codec
@@ -141,7 +139,6 @@ double cur_vout_time_usage=0;
 int benchmark=0;
 
 // A-V sync:
-int delay_corrected=1;
 static float default_max_pts_correction=-1;//0.01f;
 static float max_pts_correction=0;//default_max_pts_correction;
 static float c_total=0;
@@ -158,7 +155,7 @@ static int skip_limit=-1;
 float playback_speed=1.0;
 
 static int force_srate=0;
-static int audio_output_format=0;
+static int audio_output_format=AF_FORMAT_UNKNOWN;
 
 char *vobsub_out=NULL;
 unsigned int vobsub_out_index=0;
@@ -179,6 +176,7 @@ char *font_name=NULL;
 char *sub_font_name=NULL;
 float font_factor=0.75;
 char **sub_name=NULL;
+char **sub_paths = NULL;
 float sub_delay=0;
 float sub_fps=0;
 int   sub_auto = 0;
@@ -228,7 +226,7 @@ m_config_t* mconfig;
 
 static int cfg_inc_verbose(m_option_t *conf){ ++verbose; return 0;}
 
-static int cfg_include(m_option_t *conf, char *filename){
+static int cfg_include(m_option_t *conf, const char *filename){
 	return m_config_parse_config_file(mconfig, filename);
 }
 
@@ -300,7 +298,7 @@ static int dec_audio(sh_audio_t *sh_audio,unsigned char* buffer,int total){
 		fast_memcpy(buffer+size,sh_audio->a_out_buffer,len);
 		sh_audio->a_out_buffer_len-=len; size+=len;
 		if(sh_audio->a_out_buffer_len>0)
-		    fast_memcpy(sh_audio->a_out_buffer,&sh_audio->a_out_buffer[len],sh_audio->a_out_buffer_len);
+		    memmove(sh_audio->a_out_buffer,&sh_audio->a_out_buffer[len],sh_audio->a_out_buffer_len);
     }
     return size;
 }
@@ -392,23 +390,13 @@ static float stop_time(demuxer_t* demuxer, muxer_stream_t* mux_v)
 	return timeleft;
 }
 
-/// Returns a_pts
-static float calc_a_pts(demux_stream_t *d_audio)
-{
-    sh_audio_t * sh_audio = d_audio ? d_audio->sh : NULL;
-    float a_pts = 0.;
-    if (sh_audio)
-        a_pts = d_audio->pts + (ds_tell_pts(d_audio) - sh_audio->a_in_buffer_len)/(float)sh_audio->i_bps;
-    return a_pts;
-}
-
 /** \brief Seeks audio forward to pts by dumping audio packets
  *  \return The current audio pts. */
 static float forward_audio(float pts, demux_stream_t *d_audio, muxer_stream_t* mux_a)
 {
     sh_audio_t * sh_audio = d_audio ? d_audio->sh : NULL;
     int samplesize, avg;
-    float a_pts = calc_a_pts(d_audio);
+    float a_pts = calc_a_pts(sh_audio, d_audio);
 
     if (!sh_audio) return a_pts;
 
@@ -420,7 +408,7 @@ static float forward_audio(float pts, demux_stream_t *d_audio, muxer_stream_t* m
     // carefully checking if a_pts is truely correct by reading tiniest amount of data possible.
     if (pts > a_pts && a_pts == 0.0 && samplesize) {
         if (demux_read_data(sh_audio->ds,mux_a->buffer,samplesize) <= 0) return a_pts; // EOF
-        a_pts = calc_a_pts(d_audio);
+        a_pts = calc_a_pts(sh_audio, d_audio);
     }
 
     while (pts > a_pts) {
@@ -435,7 +423,7 @@ static float forward_audio(float pts, demux_stream_t *d_audio, muxer_stream_t* m
             len = ds_get_packet(sh_audio->ds, &crap);
         }
         if (len <= 0) break; // EOF of audio.
-        a_pts = calc_a_pts(d_audio);
+        a_pts = calc_a_pts(sh_audio, d_audio);
     }
     return a_pts;
 }
@@ -789,6 +777,9 @@ if(sh_audio && (out_audio_codec || seek_to_sec || !sh_audio->wf || playback_spee
     }
   }
 
+  if (vobsub_name)
+    vo_vobsub = vobsub_open(vobsub_name, spudec_ifo, 1, &vo_spudec);
+
 // set up video encoder:
 
 if (!curfile) { // curfile is non zero when a second file is opened
@@ -818,20 +809,8 @@ if (vobsub_out) {
     }
 #endif
 }
-else {
-if (spudec_ifo) {
-  unsigned int palette[16], width, height;
-  if (vobsub_parse_ifo(NULL,spudec_ifo, palette, &width, &height, 1, -1, NULL) >= 0)
-    vo_spudec=spudec_new_scaled(palette, sh_video->disp_w, sh_video->disp_h, NULL, 0);
-}
-#ifdef CONFIG_DVDREAD
-if (vo_spudec==NULL) {
-vo_spudec=spudec_new_scaled(stream->type==STREAMTYPE_DVD?((dvd_priv_t *)(stream->priv))->cur_pgc->palette:NULL,
-                           sh_video->disp_w, sh_video->disp_h, NULL, 0);
-}
-#endif
-if (vo_spudec)
-  spudec_set_forced_subs_only(vo_spudec, forced_subs_only);
+else if (!vo_spudec) {
+init_vo_spudec(stream, sh_video, d_dvdsub ? d_dvdsub->sh : NULL);
 }
 
 ostream = open_output_stream(out_filename, 0);
@@ -856,7 +835,7 @@ muxer->audio_delay_fix = audio_delay_fix;
 
 mux_v=muxer_new_stream(muxer,MUXER_TYPE_VIDEO);
 
-mux_v->buffer_size=0x200000; // 2MB
+mux_v->buffer_size=0x800000; // 8MB
 mux_v->buffer=malloc(mux_v->buffer_size);
 
 mux_v->source=sh_video;
@@ -1081,6 +1060,7 @@ if(!init_audio_filters(sh_audio,
 
 aparams.channels = ao_data.channels;
 aparams.sample_rate = ao_data.samplerate;
+aparams.sample_format = ao_data.format;
 aparams.audio_preload = 1000 * audio_preload;
 if(mux_a->codec != ACODEC_COPY) {
     aencoder = new_audio_encoder(mux_a, &aparams);
@@ -1092,6 +1072,9 @@ if(mux_a->codec != ACODEC_COPY) {
       mp_msg(MSGT_CPLAYER,MSGL_FATAL,MSGTR_NoMatchingFilter);
       mencoder_exit(1,NULL);
     }
+    ao_data.format = aencoder->input_format;
+    ao_data.channels = aparams.channels;
+    ao_data.samplerate = aparams.sample_rate;
 }
 switch(mux_a->codec){
 case ACODEC_COPY:
@@ -1392,7 +1375,7 @@ if(sh_audio){
 	    mux_a->wf->nAvgBytesPerSec=0.5f+(double)mux_a->size/a_muxer_time; // avg bps (VBR)
 	if(mux_a->buffer_len>=len){
 	    mux_a->buffer_len-=len;
-	    fast_memcpy(mux_a->buffer,mux_a->buffer+len,mux_a->buffer_len);
+	    memmove(mux_a->buffer,mux_a->buffer+len,mux_a->buffer_len);
 	}
 
 
@@ -1543,14 +1526,11 @@ if(sh_audio && !demuxer2){
           ((ds_tell(d_audio)-sh_audio->a_in_buffer_len)/sh_audio->audio.dwSampleSize) :
           (d_audio->block_no); // <- used for VBR audio
         a_pts=samples*(float)sh_audio->audio.dwScale/(float)sh_audio->audio.dwRate;
-      delay_corrected=1;
     } else
 #endif
     {
       // PTS = (last timestamp) + (bytes after last timestamp)/(bytes per sec)
-      a_pts=d_audio->pts;
-      if(!delay_corrected) if(a_pts) delay_corrected=1;
-      a_pts+=(ds_tell_pts(d_audio)-sh_audio->a_in_buffer_len)/(float)sh_audio->i_bps;
+      a_pts=calc_a_pts(sh_audio, d_audio);
     }
     v_pts=sh_video ? sh_video->pts : d_video->pts;
     // av = compensated (with out buffering delay) A-V diff
@@ -1669,6 +1649,9 @@ if(aencoder)
     if(aencoder->fixup)
         aencoder->fixup(aencoder);
 
+/* flush muxer just in case, this is a no-op unless
+ * we created a stream but never wrote frames to it... */
+muxer_flush(muxer);
 if (muxer->cont_write_index) muxer_write_index(muxer);
 muxer_f_size=stream_tell(muxer->stream);
 stream_seek(muxer->stream,0);

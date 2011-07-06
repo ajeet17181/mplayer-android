@@ -125,45 +125,58 @@
 #define IMGFMT_444P16_BE 0x34343451
 #define IMGFMT_422P16_LE 0x51323234
 #define IMGFMT_422P16_BE 0x34323251
+#define IMGFMT_422P10_LE 0x52323234
+#define IMGFMT_422P10_BE 0x34323252
 #define IMGFMT_420P16_LE 0x51303234
 #define IMGFMT_420P16_BE 0x34323051
+#define IMGFMT_420P10_LE 0x52303234
+#define IMGFMT_420P10_BE 0x34323052
+#define IMGFMT_420P9_LE 0x53303234
+#define IMGFMT_420P9_BE 0x34323053
 #if HAVE_BIGENDIAN
 #define IMGFMT_444P16 IMGFMT_444P16_BE
 #define IMGFMT_422P16 IMGFMT_422P16_BE
+#define IMGFMT_422P10 IMGFMT_422P10_BE
 #define IMGFMT_420P16 IMGFMT_420P16_BE
+#define IMGFMT_420P10 IMGFMT_420P10_BE
+#define IMGFMT_420P9 IMGFMT_420P9_BE
+#define IMGFMT_IS_YUVP16_NE(fmt) IMGFMT_IS_YUVP16_BE(fmt)
 #else
 #define IMGFMT_444P16 IMGFMT_444P16_LE
 #define IMGFMT_422P16 IMGFMT_422P16_LE
+#define IMGFMT_422P10 IMGFMT_422P10_LE
 #define IMGFMT_420P16 IMGFMT_420P16_LE
+#define IMGFMT_420P10 IMGFMT_420P10_LE
+#define IMGFMT_420P9 IMGFMT_420P9_LE
+#define IMGFMT_IS_YUVP16_NE(fmt) IMGFMT_IS_YUVP16_LE(fmt)
 #endif
 
-#define IMGFMT_IS_YUVP16_LE(fmt) (((fmt  ^ IMGFMT_420P16_LE) & 0xff0000ff) == 0)
-#define IMGFMT_IS_YUVP16_BE(fmt) (((fmt  ^ IMGFMT_420P16_BE) & 0xff0000ff) == 0)
-#define IMGFMT_IS_YUVP16_NE(fmt) (((fmt  ^ IMGFMT_420P16   ) & 0xff0000ff) == 0)
+#define IMGFMT_IS_YUVP16_LE(fmt) (((fmt - 0x51000034) & 0xfc0000ff) == 0)
+#define IMGFMT_IS_YUVP16_BE(fmt) (((fmt - 0x34000051) & 0xff0000fc) == 0)
 #define IMGFMT_IS_YUVP16(fmt)    (IMGFMT_IS_YUVP16_LE(fmt) || IMGFMT_IS_YUVP16_BE(fmt))
 
 /* Packed YUV Formats */
 
-#define IMGFMT_IUYV 0x56595549
-#define IMGFMT_IY41 0x31435949
+#define IMGFMT_IUYV 0x56595549 // Interlaced UYVY
+#define IMGFMT_IY41 0x31435949 // Interlaced Y41P
 #define IMGFMT_IYU1 0x31555949
 #define IMGFMT_IYU2 0x32555949
 #define IMGFMT_UYVY 0x59565955
-#define IMGFMT_UYNV 0x564E5955
-#define IMGFMT_cyuv 0x76757963
-#define IMGFMT_Y422 0x32323459
+#define IMGFMT_UYNV 0x564E5955 // Exactly same as UYVY
+#define IMGFMT_cyuv 0x76757963 // upside-down UYVY
+#define IMGFMT_Y422 0x32323459 // Exactly same as UYVY
 #define IMGFMT_YUY2 0x32595559
-#define IMGFMT_YUNV 0x564E5559
+#define IMGFMT_YUNV 0x564E5559 // Exactly same as YUY2
 #define IMGFMT_YVYU 0x55595659
 #define IMGFMT_Y41P 0x50313459
 #define IMGFMT_Y211 0x31313259
-#define IMGFMT_Y41T 0x54313459
-#define IMGFMT_Y42T 0x54323459
-#define IMGFMT_V422 0x32323456
+#define IMGFMT_Y41T 0x54313459 // Y41P, Y lsb = transparency
+#define IMGFMT_Y42T 0x54323459 // UYVY, Y lsb = transparency
+#define IMGFMT_V422 0x32323456 // upside-down UYVY?
 #define IMGFMT_V655 0x35353656
 #define IMGFMT_CLJR 0x524A4C43
-#define IMGFMT_YUVP 0x50565559
-#define IMGFMT_UYVP 0x50565955
+#define IMGFMT_YUVP 0x50565559 // 10-bit YUYV
+#define IMGFMT_UYVP 0x50565955 // 10-bit UYVY
 
 /* Compressed Formats */
 #define IMGFMT_MPEGPES (('M'<<24)|('P'<<16)|('E'<<8)|('S'))
@@ -207,8 +220,9 @@ const char *vo_format_name(int format);
 /**
  * Calculates the scale shifts for the chroma planes for planar YUV
  *
+ * \param component_bits bits per component
  * \return bits-per-pixel for format if successful (i.e. format is 3 or 4-planes planar YUV), 0 otherwise
  */
-int mp_get_chroma_shift(int format, int *x_shift, int *y_shift);
+int mp_get_chroma_shift(int format, int *x_shift, int *y_shift, int *component_bits);
 
 #endif /* MPLAYER_IMG_FORMAT_H */

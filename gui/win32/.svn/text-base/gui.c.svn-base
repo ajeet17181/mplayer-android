@@ -41,7 +41,7 @@
 #include "libvo/video_out.h"
 #include "libmpcodecs/vd.h"
 #include "gui/interface.h"
-#include "gui/mplayer/gmplayer.h"
+#include "gui/ui/gmplayer.h"
 #include "gui.h"
 #include "dialogs.h"
 
@@ -56,8 +56,6 @@
 #endif
 
 /* Globals / Externs */
-void renderinfobox(skin_t *skin, window_priv_t *priv);
-void renderwidget(skin_t *skin, image *dest, widget *item, int state);
 float sub_aspect;
 
 DWORD oldtime;
@@ -68,7 +66,7 @@ play_tree_t *playtree = NULL;
 static HBRUSH    colorbrush = NULL;           //Handle to colorkey brush
 static COLORREF windowcolor = RGB(255,0,255); //Windowcolor == colorkey
 
-void console_toggle(void)
+static void console_toggle(void)
 {
     if (console_state)
     {
@@ -249,11 +247,11 @@ static void updatedisplay(gui_t *gui, HWND hwnd)
         if(gui->skin->widgets[i]->type == tyHpotmeter || gui->skin->widgets[i]->type == tyPotmeter)
         {
             if(gui->skin->widgets[i]->msg == evSetVolume)
-                gui->skin->widgets[i]->value = guiIntfStruct.Volume;
+                gui->skin->widgets[i]->value = guiInfo.Volume;
             else if(gui->skin->widgets[i]->msg == evSetMoviePosition)
-                gui->skin->widgets[i]->value = guiIntfStruct.Position;
+                gui->skin->widgets[i]->value = guiInfo.Position;
             else if(gui->skin->widgets[i]->msg == evSetBalance)
-                gui->skin->widgets[i]->value = guiIntfStruct.Balance;
+                gui->skin->widgets[i]->value = guiInfo.Balance;
             if(gui->skin->widgets[i]->window == get_windowtype(hwnd))
                 renderwidget(gui->skin, get_drawground(hwnd), gui->skin->widgets[i],
                              gui->skin->widgets[i]->pressed ? 0 : 1);
@@ -263,15 +261,15 @@ static void updatedisplay(gui_t *gui, HWND hwnd)
         {
             if(gui->skin->widgets[i]->msg == evPlaySwitchToPause)
             {
-                gui->skin->widgets[i]->value = guiIntfStruct.Playing;
+                gui->skin->widgets[i]->value = guiInfo.Playing;
                     renderwidget(gui->skin, get_drawground(hwnd), gui->skin->widgets[i],
-                                 guiIntfStruct.Playing == 1 ? 0 : 1);
+                                 guiInfo.Playing == GUI_PLAY ? 0 : 1);
             }
             if(gui->skin->widgets[i]->msg == evMute)
             {
-                gui->skin->widgets[i]->value = guiIntfStruct.Volume;
+                gui->skin->widgets[i]->value = guiInfo.Volume;
                     renderwidget(gui->skin, get_drawground(hwnd), gui->skin->widgets[i],
-                                 guiIntfStruct.Volume == 0.0f ? 0 : 1);
+                                 guiInfo.Volume == 0.0f ? 0 : 1);
             }
         }
     }
@@ -453,7 +451,7 @@ static LRESULT CALLBACK SubProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM l
                 for(i=0; i<filecount; i++)
                 {
                     DragQueryFile((HDROP) wParam, i, file, MAX_PATH);
-                    mplSetFileName(NULL, file, STREAMTYPE_FILE);
+                    uiSetFileName(NULL, file, STREAMTYPE_FILE);
                     if(!parse_filename(file, playtree, mconfig, 1))
                         gui->playlist->add_track(gui->playlist, file, NULL, NULL, 0);
                 }
@@ -487,7 +485,7 @@ static LRESULT CALLBACK SubProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM l
             point.x = GET_X_LPARAM(lParam);
             point.y = GET_Y_LPARAM(lParam);
             ClientToScreen(hWnd, &point);
-            if(guiIntfStruct.StreamType == STREAMTYPE_DVD)
+            if(guiInfo.StreamType == STREAMTYPE_DVD)
                 EnableMenuItem(gui->dvdmenu, ID_CHAPTERSEL, MF_BYCOMMAND | MF_ENABLED);
             TrackPopupMenu(gui->submenu, 0, point.x, point.y, 0, hWnd, NULL);
             return 0;
@@ -609,7 +607,7 @@ static LRESULT CALLBACK SubProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM l
             GetClientRect(hWnd, &rect);
             width = rect.right - rect.left;
             height = rect.bottom - rect.top;
-            if(guiIntfStruct.Playing == 0)
+            if(guiInfo.Playing == GUI_STOP)
             {
                 int i;
                 window *desc = NULL;
@@ -725,7 +723,7 @@ static LRESULT CALLBACK EventProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
             {
                 PCOPYDATASTRUCT cdData;
                 cdData = (PCOPYDATASTRUCT) lParam;
-                mplSetFileName(NULL, cdData->lpData, STREAMTYPE_FILE);
+                uiSetFileName(NULL, cdData->lpData, STREAMTYPE_FILE);
                 if(!parse_filename(cdData->lpData, playtree, mconfig, 1))
                     gui->playlist->add_track(gui->playlist, cdData->lpData, NULL, NULL, 0);
                 gui->startplay(gui);
@@ -742,7 +740,7 @@ static LRESULT CALLBACK EventProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
                 for(i=0; i<filecount; i++)
                 {
                     DragQueryFile((HDROP) wParam, i, file, MAX_PATH);
-                    mplSetFileName(NULL, file, STREAMTYPE_FILE);
+                    uiSetFileName(NULL, file, STREAMTYPE_FILE);
                     if(!parse_filename(file, playtree, mconfig, 1))
                         gui->playlist->add_track(gui->playlist, file, NULL, NULL, 0);
                 }
@@ -889,15 +887,15 @@ static LRESULT CALLBACK EventProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
                             item->value = 0.0f;
 
                         if(item->msg == evSetVolume)
-                            guiIntfStruct.Volume = (float) item->value;
+                            guiInfo.Volume = (float) item->value;
                         else if(item->msg == evSetMoviePosition)
-                            guiIntfStruct.Position = (float) item->value;
+                            guiInfo.Position = (float) item->value;
                         else if(item->msg == evSetBalance)
                         {
                             /* make the range for 50% a bit bigger, because the sliders for balance usually suck */
                             if((item->value - 50.0f < 1.5f) && (item->value - 50.0f > -1.5f))
                                 item->value = 50.0f;
-                            guiIntfStruct.Balance = (float) item->value;
+                            guiInfo.Balance = (float) item->value;
                         }
                         updatedisplay(gui, hWnd);
                         handlemsg(hWnd, item->msg);
@@ -1146,12 +1144,12 @@ static void create_menu(gui_t *gui)
     gui->diskmenu = CreatePopupMenu();
     gui->menu=CreatePopupMenu();
     gui->trayplaymenu = CreatePopupMenu();
-    AppendMenu(gui->menu, MF_STRING | MF_POPUP, (UINT) gui->trayplaymenu, "Open...");
+    AppendMenu(gui->menu, MF_STRING | MF_POPUP, (UINT_PTR) gui->trayplaymenu, "Open...");
     AppendMenu(gui->trayplaymenu, MF_STRING, IDFILE_OPEN, "File...");
     AppendMenu(gui->trayplaymenu, MF_STRING, IDURL_OPEN, "Url...");
     AppendMenu(gui->trayplaymenu, MF_STRING, IDDIR_OPEN, "Directory...");
     AppendMenu(gui->menu, MF_SEPARATOR, 0, 0);
-    AppendMenu(gui->menu, MF_STRING | MF_POPUP, (UINT) gui->diskmenu, "Play &CD/DVD/VCD/SVCD");
+    AppendMenu(gui->menu, MF_STRING | MF_POPUP, (UINT_PTR) gui->diskmenu, "Play &CD/DVD/VCD/SVCD");
     AppendMenu(gui->menu, MF_SEPARATOR, 0, 0);
     AppendMenu(gui->menu, MF_STRING, IDSUBTITLE_OPEN, "Open Subtitle");
     AppendMenu(gui->menu, MF_STRING, ID_SKINBROWSER, "Skin Browser");
@@ -1167,9 +1165,9 @@ static void create_traymenu(gui_t *gui)
 {
     gui->traymenu = CreatePopupMenu();
     gui->trayplaybackmenu = CreatePopupMenu();
-    AppendMenu(gui->traymenu, MF_STRING | MF_POPUP, (UINT) gui->trayplaymenu, "Open...");
+    AppendMenu(gui->traymenu, MF_STRING | MF_POPUP, (UINT_PTR) gui->trayplaymenu, "Open...");
     AppendMenu(gui->traymenu, MF_SEPARATOR, 0, 0);
-    AppendMenu(gui->traymenu, MF_STRING | MF_POPUP, (UINT) gui->trayplaybackmenu, "Playback");
+    AppendMenu(gui->traymenu, MF_STRING | MF_POPUP, (UINT_PTR) gui->trayplaybackmenu, "Playback");
     AppendMenu(gui->trayplaybackmenu, MF_STRING, ID_SEEKB, "Seek Backwards");
     AppendMenu(gui->trayplaybackmenu, MF_STRING, ID_PTRACK, "Previous Track");
     AppendMenu(gui->trayplaybackmenu, MF_STRING, ID_PLAY, "Play/Pause");
@@ -1197,7 +1195,7 @@ static void create_submenu(gui_t *gui)
     gui->dvdmenu = CreatePopupMenu();
     gui->aspectmenu = CreatePopupMenu();
     gui->subtitlemenu = CreatePopupMenu();
-    AppendMenu(gui->submenu, MF_STRING | MF_POPUP, (UINT) gui->trayplaymenu, "Open...");
+    AppendMenu(gui->submenu, MF_STRING | MF_POPUP, (UINT_PTR) gui->trayplaymenu, "Open...");
     AppendMenu(gui->submenu, MF_SEPARATOR, 0, 0);
     AppendMenu(gui->submenu, MF_STRING, ID_SEEKB, "Seek Backwards");
     AppendMenu(gui->submenu, MF_STRING, ID_PTRACK, "Previous Track");
@@ -1209,9 +1207,9 @@ static void create_submenu(gui_t *gui)
     AppendMenu(gui->submenu, MF_STRING, ID_FULLSCREEN, "Toggle Fullscreen");
     AppendMenu(gui->submenu, MF_STRING, ID_MUTE, "Toggle Mute");
     AppendMenu(gui->submenu, MF_SEPARATOR, 0, 0);
-    AppendMenu(gui->submenu, MF_STRING | MF_POPUP, (UINT) gui->aspectmenu, "Aspect Ratio");
-    AppendMenu(gui->submenu, MF_STRING | MF_POPUP, (UINT) gui->subtitlemenu, "Subtitle Options");
-    AppendMenu(gui->submenu, MF_STRING | MF_POPUP, (UINT) gui->dvdmenu, "DVD Options");
+    AppendMenu(gui->submenu, MF_STRING | MF_POPUP, (UINT_PTR) gui->aspectmenu, "Aspect Ratio");
+    AppendMenu(gui->submenu, MF_STRING | MF_POPUP, (UINT_PTR) gui->subtitlemenu, "Subtitle Options");
+    AppendMenu(gui->submenu, MF_STRING | MF_POPUP, (UINT_PTR) gui->dvdmenu, "DVD Options");
 #ifdef CONFIG_DVDREAD
     AppendMenu(gui->dvdmenu, MF_STRING | MF_GRAYED, ID_CHAPTERSEL, "Select Title/Chapter...");
 #endif
@@ -1275,7 +1273,7 @@ static void maketransparent(HWND hwnd, COLORREF crTransparent)
 static int window_render(gui_t *gui, HWND hWnd, HDC hdc, window_priv_t *priv, window *desc, BITMAPINFO binfo)
 {
     int i;
-    SetWindowLongPtr(hWnd, GWLP_USERDATA, (DWORD) gui);
+    SetWindowLongPtr(hWnd, GWLP_USERDATA, (LONG_PTR) gui);
     (gui->window_priv_count)++;
     gui->window_priv = realloc(gui->window_priv, sizeof(window_priv_t *) * gui->window_priv_count);
     priv = gui->window_priv[gui->window_priv_count - 1] = calloc(1, sizeof(window_priv_t));

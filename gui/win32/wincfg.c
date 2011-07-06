@@ -34,7 +34,7 @@
 #include "libvo/video_out.h"
 #include "osdep/priority.h"
 #include "mixer.h"
-#include "gui/mplayer/gmplayer.h"
+#include "gui/ui/gmplayer.h"
 #include "gui/interface.h"
 #include "gui.h"
 
@@ -56,7 +56,7 @@ int gui_main_pos_y = -2;
 int gui_sub_pos_x = -1;
 int gui_sub_pos_y = -1;
 
-static m_config_t *gui_conf;
+m_config_t *gui_conf;
 static const m_option_t gui_opts[] =
 {
     {   "priority", &proc_priority, CONF_TYPE_STRING, 0, 0, 0, NULL},
@@ -86,6 +86,13 @@ static const m_option_t gui_opts[] =
     {   "console", &console, CONF_TYPE_FLAG, 0, 0, 1, NULL},
     {   NULL, NULL, 0, 0, 0, 0, NULL }
 };
+
+int cfg_gui_include(m_option_t *conf, const char *filename)
+{
+    (void)conf;
+
+    return m_config_parse_config_file(gui_conf, filename);
+}
 
 int cfg_read(void)
 {

@@ -35,10 +35,9 @@ typedef struct dd_priv {
 extern const demuxer_desc_t demuxer_desc_demuxers;
 
 demuxer_t*  new_demuxers_demuxer(demuxer_t* vd, demuxer_t* ad, demuxer_t* sd) {
-  demuxer_t* ret;
+  // Video is the most important :-)
+  demuxer_t* ret = alloc_demuxer(vd->stream, DEMUXER_TYPE_DEMUXERS, vd->filename);
   dd_priv_t* priv;
-
-  ret = calloc(1,sizeof(demuxer_t));
 
   priv = malloc(sizeof(dd_priv_t));
   priv->vd = vd;
@@ -47,8 +46,6 @@ demuxer_t*  new_demuxers_demuxer(demuxer_t* vd, demuxer_t* ad, demuxer_t* sd) {
   ret->priv = priv;
 
   ret->type = ret->file_format = DEMUXER_TYPE_DEMUXERS;
-  // Video is the most important :-)
-  ret->stream = vd->stream;
   ret->seekable = vd->seekable && ad->seekable && sd->seekable;
 
   ret->video = vd->video;
@@ -107,7 +104,13 @@ static void demux_demuxers_seek(demuxer_t *demuxer,float rel_seek_secs,float aud
   // Get the new pos
   pos = demuxer->video->pts;
   if (!pos) {
-    demux_fill_buffer(priv->vd, demuxer->video);
+    // since the video demuxer might provide multiple
+    // streams (e.g. subs) we might have to call
+    // demux_fill_buffer multiple times.
+    int limit = 10;
+    do {
+      demux_fill_buffer(priv->vd, demuxer->video);
+    } while (--limit && !demuxer->video->first);
     if (demuxer->video->first)
       pos = demuxer->video->first->pts;
   }
@@ -156,6 +159,8 @@ static int demux_demuxers_control(demuxer_t *demuxer,int cmd, void *arg){
     case DEMUXER_CTRL_GET_PERCENT_POS:
       *((int *)arg) = demuxer_get_percent_pos(priv->vd);
       return DEMUXER_CTRL_OK;
+    case DEMUXER_CTRL_CORRECT_PTS:
+      return demux_control(priv->vd, DEMUXER_CTRL_CORRECT_PTS, NULL);
   }
   return DEMUXER_CTRL_NOTIMPL;
 }

@@ -150,7 +150,6 @@ static const char help_text[]=
 #define MSGTR_IncreaseRTCMaxUserFreq "Spróbuj dodać \"echo %lu > /proc/sys/dev/rtc/max-user-freq\" do skryptów startowych swojego systemu.\n"
 #define MSGTR_LinuxRTCInitErrorPieOn "Błąd RTC Linuxa w ioctl (rtc_pie_on): %s\n"
 #define MSGTR_UsingTimingType "Używam synchronizacji %s.\n"
-#define MSGTR_NoIdleAndGui "Opcja -idle nie może być używana z GMPlayer.\n"
 #define MSGTR_MenuInitialized "Menu zainicjowane: %s\n"
 #define MSGTR_MenuInitFailed "Nie mogę zainicjować menu.\n"
 #define MSGTR_Getch2InitializedTwice "UWAGA: getch2_init wywołany dwukrotnie!\n"
@@ -596,7 +595,7 @@ static const char help_text[]=
 // Coś na temat było w encoding-guide.xml albo mencoder.xml
 
 #define MSGTR_CacheFill "\rWypełnienie pamięci cache: %5.2f%% (%"PRId64" bajtów)   "
-#define MSGTR_NoBindFound "Brak akcji dla klawisza '%s'."
+#define MSGTR_NoBindFound "Brak akcji dla klawisza '%s'.\n"
 #define MSGTR_FailedToOpen "Otwieranie %s nie powiodło się.\n"
 
 // dec_video.c & dec_audio.c:
@@ -707,7 +706,6 @@ static const char help_text[]=
 #define MSGTR_NEMFMR "Za mało pamięci na renderowanie menu."
 #define MSGTR_IDFGCVD "Brak sterownika video zgodnego z GUI."
 #define MSGTR_NEEDLAVC "Niestety, nie można odtwarzać plików innych niż MPEG przy użyciu urządzenia DXR3/H+ bez kowersji.\nProszę włączyć lavc w polu sterowania DXR3/H+."
-#define MSGTR_UNKNOWNWINDOWTYPE "Okno nieznanego typu ..."
 
 // --- skin loader error messages
 #define MSGTR_SKIN_ERRORMESSAGE "[skórka] błąd w pliku konfiguracyjnym skórki, linia %d: %s"
@@ -718,22 +716,17 @@ static const char help_text[]=
 #define MSGTR_SKIN_SkinFileNotReadable "[skórka] nie mogę odczytać pliku ( %s ).\n"
 #define MSGTR_SKIN_BITMAP_16bit  "Bitmapy o głębokości <=16 bitów nie są obsgługiwane (%s).\n"
 #define MSGTR_SKIN_BITMAP_FileNotFound  "Pliku nie znaleziono (%s)\n"
-#define MSGTR_SKIN_BITMAP_BMPReadError "Błąd odczytu BMP (%s)\n"
-#define MSGTR_SKIN_BITMAP_TGAReadError "Błąd odczytu TGA (%s)\n"
 #define MSGTR_SKIN_BITMAP_PNGReadError "Błąd odczytu PNG (%s)\n"
-#define MSGTR_SKIN_BITMAP_RLENotSupported "TGA spakowany RLE nie jest obsługiwany (%s)\n"
-#define MSGTR_SKIN_BITMAP_UnknownFileType "nieznany typ pliku (%s)\n"
 #define MSGTR_SKIN_BITMAP_ConversionError "Błąd konwersji 24 bitów do 32 bitów (%s)\n"
-#define MSGTR_SKIN_BITMAP_UnknownMessage "nieznana wiadomość: %s\n"
-#define MSGTR_SKIN_FONT_NotEnoughtMemory "za mało pamięci\n"
+#define MSGTR_SKIN_UnknownMessage "nieznana wiadomość: %s\n"
+#define MSGTR_SKIN_NotEnoughMemory "za mało pamięci\n"
 #define MSGTR_SKIN_FONT_TooManyFontsDeclared "Zadeklarowano za dużo czcionek.\n"
 #define MSGTR_SKIN_FONT_FontFileNotFound "Nie znalazłem pliku z czcionką.\n"
 #define MSGTR_SKIN_FONT_FontImageNotFound "Nie znalazłem pliku z obrazem czcionki.\n"
-#define MSGTR_SKIN_FONT_NonExistentFontID "Nieistniejący identyfikator czcionki (%s)\n"
+#define MSGTR_SKIN_FONT_NonExistentFont "Nieistniejący identyfikator czcionki (%s)\n"
 #define MSGTR_SKIN_UnknownParameter "nieznany parametr (%s)\n"
 #define MSGTR_SKIN_SKINCFG_SkinNotFound "Skórka nie znaleziona (%s).\n"
 #define MSGTR_SKIN_SKINCFG_SelectedSkinNotFound "Wybrana skórka ( %s ) nie odnaleziona, próbuję 'default'...\n"
-#define MSGTR_SKIN_SKINCFG_SkinCfgReadError "błąd odczytu pliku konfiguracyjnego skórki (%s)\n"
 #define MSGTR_SKIN_LABEL "Skórki:"
 
 // --- gtk menus
@@ -927,14 +920,8 @@ static const char help_text[]=
 #define MSGTR_MSGBOX_LABEL_Error "Błąd!"
 #define MSGTR_MSGBOX_LABEL_Warning "Uwaga!"
 
-// bitmap.c
-
-#define MSGTR_NotEnoughMemoryC32To1 "[c32to1] za mało pamięci na obraz\n"
-#define MSGTR_NotEnoughMemoryC1To32 "[c1to32] za mało pamięci na obraz\n"
-
 // cfg.c
 
-#define MSGTR_ConfigFileReadError "[cfg] błąd wczytywania pliku konfiguracyjnego ...\n"
 #define MSGTR_UnableToSaveOption "[cfg] Nie udało się zapisać opcji '%s'.\n"
 
 // interface.c
@@ -942,7 +929,6 @@ static const char help_text[]=
 #define MSGTR_DeletingSubtitles "[GUI] Usuwam napisy.\n"
 #define MSGTR_LoadingSubtitles "[GUI] Wczytuję napisy: %s\n"
 #define MSGTR_AddingVideoFilter "[GUI] Dodaję filtr video: %s\n"
-#define MSGTR_RemovingVideoFilter "[GUI] Usuwam filtr video: %s\n"
 
 // mw.c
 
@@ -950,7 +936,6 @@ static const char help_text[]=
 
 // ws.c
 
-#define MSGTR_WS_CouldNotOpenDisplay "[ws] Nie udało sie otworzyć ekranu.\n"
 #define MSGTR_WS_RemoteDisplay "[ws] Ekran zdalny, wyłączam XMITSHM.\n"
 #define MSGTR_WS_NoXshm "[ws] Niestety Twój system nie obsługuje rozszerzeń dzielonej pamięci X.\n"
 #define MSGTR_WS_NoXshape "[ws] Niestety Twój system nie obsługuje rozszerzenia XShape.\n"

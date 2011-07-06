@@ -19,7 +19,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-/* $Id: vo_zr.c 32624 2010-11-14 09:12:34Z cboesch $ */
+/* $Id: vo_zr.c 33392 2011-05-07 10:59:11Z iive $ */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -831,7 +831,7 @@ static int preinit(const char *arg)
     return 0;
 }
 
-static int control(uint32_t request, void *data, ...)
+static int control(uint32_t request, void *data)
 {
   switch (request) {
   case VOCTRL_QUERY_FORMAT:

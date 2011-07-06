@@ -506,7 +506,9 @@ static DEFINE_GUID(MEDIATYPE_VBI,   0xf72a76e1, 0xeb0a, 0x11d0, 0xac, 0xe4, 0x00
 *  Methods, called only from this file
 *---------------------------------------------------------------------------------------*/
 
-void set_buffer_preference(int nDiv,WAVEFORMATEX* pWF,IPin* pOutPin,IPin* pInPin){
+static void set_buffer_preference(int nDiv, WAVEFORMATEX *pWF,
+                                  IPin *pOutPin, IPin *pInPin)
+{
     ALLOCATOR_PROPERTIES prop;
     IAMBufferNegotiation* pBN;
     HRESULT hr;
@@ -595,9 +597,10 @@ static long STDCALL CSampleGrabberCB_Release(ISampleGrabberCB * This)
 }
 
 
-HRESULT STDCALL CSampleGrabberCB_BufferCB(ISampleGrabberCB * This,
-					  double SampleTime,
-					  BYTE * pBuffer, long lBufferLen)
+static HRESULT STDCALL CSampleGrabberCB_BufferCB(ISampleGrabberCB *This,
+                                                 double SampleTime,
+                                                 BYTE *pBuffer,
+                                                 long lBufferLen)
 {
     CSampleGrabberCB *this = (CSampleGrabberCB *) This;
     grabber_ringbuffer_t *rb = this->pbuf;
@@ -629,9 +632,9 @@ HRESULT STDCALL CSampleGrabberCB_BufferCB(ISampleGrabberCB * This,
 }
 
 /// wrapper. directshow does the same when BufferCB callback is requested
-HRESULT STDCALL CSampleGrabberCB_SampleCB(ISampleGrabberCB * This,
-					  double SampleTime,
-					  LPMEDIASAMPLE pSample)
+static HRESULT STDCALL CSampleGrabberCB_SampleCB(ISampleGrabberCB *This,
+                                                 double SampleTime,
+                                                 LPMEDIASAMPLE pSample)
 {
     char* buf;
     long len;
@@ -2801,7 +2804,9 @@ static int init(priv_t * priv)
         hr = init_chain_common(priv->pBuilder, priv->chains[1]);
         if(FAILED(hr))
         {
-            mp_msg(MSGT_TV, MSGL_V, "tvi_dshow: Unable to initialize audio chain (Error:0x%x). Audio disabled\n", (unsigned long)hr);
+            mp_msg(MSGT_TV, MSGL_V,
+                   "tvi_dshow: Unable to initialize audio chain (Error:0x%lx). Audio disabled\n",
+                   (unsigned long)hr);
             priv->chains[1]->arpmt=calloc(1, sizeof(AM_MEDIA_TYPE*));
             priv->chains[1]->arStreamCaps=calloc(1, sizeof(void*));
         }
@@ -2815,7 +2820,9 @@ static int init(priv_t * priv)
         hr = init_chain_common(priv->pBuilder, priv->chains[2]);
         if(FAILED(hr))
         {
-            mp_msg(MSGT_TV, MSGL_V, "tvi_dshow: Unable to initialize VBI chain (Error:0x%x). Teletext disabled\n", (unsigned long)hr);
+            mp_msg(MSGT_TV, MSGL_V,
+                   "tvi_dshow: Unable to initialize VBI chain (Error:0x%lx). Teletext disabled\n",
+                   (unsigned long)hr);
             priv->chains[2]->arpmt=calloc(1, sizeof(AM_MEDIA_TYPE*));
             priv->chains[2]->arStreamCaps=calloc(1, sizeof(void*));
         }

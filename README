@@ -1,4 +1,4 @@
-modify NDKHOME in conf1.sh and cos3.sh
+modify NDKHOME in confn.sh and cos3.sh
 run conf1.sh
 run make
 run cos3.sh (to test dependencies)
